@@ -142,17 +142,14 @@ void schaffer_F7_func(double *x, double *f, int nx, double *Os, double *Mr,
   int i;
   double tmp;
   f[0] = 0.0;
-//  double *y = malloc(nx * sizeof(double));
   double *z = malloc(nx * sizeof(double));
-  sr_func(x, z, nx, Os, Mr, 1.0, s_flag, r_flag, y); /* shift and rotate
-                                                      */
+  sr_func(x, z, nx, Os, Mr, 1.0, s_flag, r_flag, y);        
   for (i = 0; i < nx - 1; i++) {
     z[i] = pow(y[i] * y[i] + y[i + 1] * y[i + 1], 0.5);
     tmp = sin(50.0 * pow(z[i], 0.2));
     f[0] += pow(z[i], 0.5) + pow(z[i], 0.5) * tmp * tmp;
   }
   f[0] = f[0] * f[0] / (nx - 1) / (nx - 1);
-//  free(y);
   free(z);
 }
 
