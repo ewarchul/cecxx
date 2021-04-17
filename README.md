@@ -1,4 +1,6 @@
-# About
+
+
+# CEC [WIP] 
 
 This repository contains a tidied up codebase of CEC, i.e. set of optimization benchmark problems.
 
