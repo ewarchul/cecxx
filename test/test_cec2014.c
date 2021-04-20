@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <cmocka.h>
 
-#define REPEATS 100
+#define REPEATS 5000
 
 CecData cd = {
   .prevDimension = 0,
