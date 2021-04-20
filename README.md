@@ -1,6 +1,10 @@
 
 
-# CEC [WIP] 
+# CEC
+
+faster & safer.
+
+# About 
 
 This repository contains a tidied up codebase of CEC, i.e. set of optimization benchmark problems.
 
@@ -20,10 +24,19 @@ following link:
 
 [https://github.com/P-N-Suganthan?tab=repositories](https://github.com/P-N-Suganthan?tab=repositories).
 
+Simple example of how to use given interface is in the `main.c` file. 
 
 # Tests
 
 To run test you need [CMocka](https://cmocka.org/) unit test framework and [CMake](https://cmake.org/) (3.16.3v). 
 If you meet the requirements then execute `test.sh` script.
 
-Simple example of how to use given interface is in the `main.c` file. 
+## Nix 
+
+If you use [Nix package manager](https://nixos.org/) type commands written below:
+
+```Nix
+nix-shell --command "bash test.sh"
+```
+
+
