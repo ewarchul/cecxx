@@ -12,7 +12,6 @@ jobs:
         nix_path: nixpkgs=channel:nixos-unstable
     - uses: workflow/nix-shell-action@v1
       with:
-        packages: hello,docker
+        packages: cmake,cmocka
         script: |
-          hello
-          docker --help
+          nix-shell --command "bash test.sh"
