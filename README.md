@@ -1,4 +1,4 @@
-![example workflow](https://github.com/github/ewarchul/actions/workflows/main.yml/badge.svg)
+[![CMocka-test](https://github.com/ewarchul/cec/workflows/CMocka-test/badge.svg)](https://github.com/ewarchul/cec/actions)
 
 
 # CEC
