@@ -53,7 +53,7 @@ file(GLOB_RECURSE ORIGNAL_CEC_INC "${PROJECT_SOURCE_DIR}/test/cecs/*.h")
 
 
 add_executable(${EXECUTABLE} main.c ${SRC_FILES} ${INC_FILES})
-target_compile_options(${EXECUTABLE} PUBLIC -Wall -O3 -g -Wextra -pedantic -Werror)
+target_compile_options(${EXECUTABLE} PUBLIC -Wall -O3 -Wextra -pedantic -Werror)
 target_link_libraries(${EXECUTABLE} ${CMOCKA_LIBRARIES} ${EXTRA_LIBS})
 
 list(APPEND tests_names "test_cec2014")
@@ -84,7 +84,7 @@ foreach(i RANGE ${count})
     ${INC_FILES}
   )
 target_link_libraries(${test_name} ${CMOCKA_LIBRARIES} ${EXTRA_LIBS})
-target_compile_options(${test_name} PUBLIC -Wall -g -Wextra -pedantic)
+target_compile_options(${test_name} PUBLIC -Wall -O3 -Wextra -pedantic)
 add_test(${test_name} "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${test_name}")
 endforeach()
 
