@@ -520,10 +520,10 @@ void step_rastrigin_func(double *x, double *f, int nx, double *Os, double *Mr,
   f[0] = 0.0;
   double *y = malloc(nx * sizeof(double));
   double *z = malloc(nx * sizeof(double));
-  for (int i = 0; i < nx; i++) {
-    if (fabs(y[i] - Os[i]) > 0.5)
-      y[i] = Os[i] + floor(2 * (y[i] - Os[i]) + 0.5) / 2;
-  }
+  /*for (int i = 0; i < nx; i++) {*/
+    /*if (fabs(y[i] - Os[i]) > 0.5)*/
+      /*y[i] = Os[i] + floor(2 * (y[i] - Os[i]) + 0.5) / 2;*/
+  /*}*/
   sr_func(x, z, nx, Os, Mr, 5.12 / 100.0, s_flag, r_flag, y);
   for (int i = 0; i < nx; i++) {
     f[0] += (z[i] * z[i] - 10.0 * cos(2.0 * M_PI * z[i]) + 10.0);

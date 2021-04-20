@@ -34,6 +34,10 @@ void Chebyshev(double *, int, double *);
 void sphere_func(double *, double *, int, double *, double *, int, int);
 void ellips_func(double *, double *, int, double *, double *, int, int);
 void bent_cigar_func(double *, double *, int, double *, double *, int, int);
+
+
+void cec2017_bent_cigar_func(double *, double *, int, double *, double *, int, int);
+
 void discus_func(double *, double *, int, double *, double *, int, int);
 void dif_powers_func(double *, double *, int, double *, double *, int, int);
 void rosenbrock_func(double *, double *, int, double *, double *, int, int);

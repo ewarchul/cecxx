@@ -2,6 +2,7 @@
 #define CEC_H
 
 #include "interfaces.h"
+#include "utils.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>

@@ -11,7 +11,13 @@
 
 #include <cmocka.h>
 
-#define REPEATS 100
+#define REPEATS 5000
+
+CecData cd = {
+  .prevDimension = 0,
+  .prevFunction = 0,
+  .dataLoaded = 0,
+};
 
 
 inline static void fillRandomArray(size_t n, double* input) {
@@ -19,7 +25,6 @@ inline static void fillRandomArray(size_t n, double* input) {
     input[i] = rand();
   }
 }
-
 
 static void test_cec2015_equiv(void **state) {
   (void)state;
