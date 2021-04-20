@@ -33,7 +33,7 @@ If you meet the requirements then execute `test.sh` script.
 
 ## Nix 
 
-If you use [Nix package manager](https://nixos.org/) type commands written below:
+If you use [Nix package manager](https://nixos.org/) type command written below:
 
 ```Nix
 nix-shell --command "bash test.sh"
