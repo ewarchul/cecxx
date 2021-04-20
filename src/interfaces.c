@@ -1,9 +1,5 @@
 #include "interfaces.h"
 
-/*extern double *M, *OShift;*/
-/*extern int *SS;*/
-//extern int dataLoaded, prevDimension, prevFunction;
-
 extern CecData cd;
 
 void cec2014_interface(char *datapath, double *x, double *f, int nx, int mx,
@@ -16,210 +12,149 @@ void cec2014_interface(char *datapath, double *x, double *f, int nx, int mx,
                   (func_num >= 29 && func_num <= 30))) {
     perror("Error: hf0{1..6}, cf0{7..8} are NOT defined for D=2.");
   }
-  int cf_num = 10;
-  char FileName[256];
-  /*
-   * Load M matrix:
-   */
-  sprintf(FileName, "%s/M_%d_D%d.txt", datapath, func_num, nx);
-  FILE *fptMData = fopen(FileName, "r");
-  if (fptMData == NULL) {
-    perror("Error: Cannot open input file for reading");
-  }
-  int MatrixSize = func_num < 23 ? nx * nx : cf_num * nx * nx;
-  double *M = malloc(MatrixSize * sizeof(double));
-  if (M == NULL) {
-    perror("Error: there is insufficient memory available!");
-  } else {
-    for (int i = 0; i < MatrixSize; ++i) {
-      if (fscanf(fptMData, "%lf", &M[i]) == -1) {
-        break;
-      }
-    }
-  }
-  fclose(fptMData);
-  /*
-   * Load shift data:
-   */
-  sprintf(FileName, "%s/shift_data_%d.txt", datapath, func_num);
-  FILE *fptOShiftData = fopen(FileName, "r");
-  if (fptOShiftData == NULL) {
-    perror("Error: Cannot open input file for reading");
-  }
-  int OShiftSize = func_num < 20 ? nx : cf_num * nx;
-  double *OShift = malloc(OShiftSize * sizeof(double));
-  if (OShift == NULL) {
-    perror("Error: there is insufficient memory available!");
-  }
-  if (func_num < 23) {
-    for (int i = 0; i < OShiftSize; ++i) {
-      if (fscanf(fptOShiftData, "%lf", &OShift[i]) == -1) {
-        break;
-      }
-    }
-  } else {
-    for (int i = 0; i < cf_num - 1; i++) {
-      for (int j = 0; j < nx; j++) {
-        int count = fscanf(fptOShiftData, "%lf", &OShift[i * nx + j]);
-        if (count == -1) {
-          break;
-        }
-      }
-      int count = fscanf(fptOShiftData, "%*[^\n]%*c");
-      if (count == -1) {
-        break;
-      }
-    }
-    for (int j = 0; j < nx; j++) {
-      if (fscanf(fptOShiftData, "%lf", &OShift[(cf_num - 1) * nx + j]) == -1) {
-        break;
-      }
-    }
-  }
-  fclose(fptOShiftData);
-  /*
-   * Load shuffle data:
-   */
-  int *SS = NULL;
+
   int shuffleFlag =
       ((func_num >= 17 && func_num <= 22) || (func_num == 29 || func_num == 30))
           ? 1
           : 0;
-  if (shuffleFlag) {
-    sprintf(FileName, "%s/shuffle_data_%d_D%d.txt", datapath, func_num, nx);
-    FILE *fptShuffleData = fopen(FileName, "r");
-    if (fptShuffleData == NULL) {
-      perror("Error: Cannot open input file for reading");
+  if (cd.dataLoaded == 1) {
+    if ((cd.prevDimension != nx) || (cd.prevFunction != func_num)) {
+      cd.dataLoaded = 0;
     }
-    int ShuffleSize = (func_num >= 11 && func_num <= 20) ? nx : cf_num * nx;
-    SS = malloc(ShuffleSize * sizeof(int));
-    for (int i = 0; i < ShuffleSize; ++i) {
-      if (fscanf(fptShuffleData, "%d", &SS[i]) == -1) {
-        break;
-      }
+  }
+  if (!cd.dataLoaded) {
+    free(cd.M);
+    free(cd.OShift);
+    if (shuffleFlag) {
+      free(cd.SS);
+      loadShuffleData(&cd, datapath, nx, func_num, 2014);
     }
-    fclose(fptShuffleData);
+    loadMatrixData(&cd, datapath, nx, func_num, 2014);
+    loadOShiftData(&cd, datapath, nx, func_num, 2014);
+    cd.prevFunction = func_num;
+    cd.prevDimension = nx;
+    cd.dataLoaded = 1;
   }
   for (int i = 0; i < mx; i++) {
     switch (func_num) {
     case 1:
-      ellips_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      ellips_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 100.0;
       break;
     case 2:
-      bent_cigar_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      bent_cigar_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 200.0;
       break;
     case 3:
-      discus_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      discus_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 300.0;
       break;
     case 4:
-      rosenbrock_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      rosenbrock_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 400.0;
       break;
     case 5:
-      ackley_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      ackley_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 500.0;
       break;
     case 6:
-      weierstrass_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      weierstrass_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 600.0;
       break;
     case 7:
-      griewank_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      griewank_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 700.0;
       break;
     case 8:
-      rastrigin_func(&x[i * nx], &f[i], nx, OShift, M, 1, 0);
+      rastrigin_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 0);
       f[i] += 800.0;
       break;
     case 9:
-      rastrigin_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      rastrigin_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 900.0;
       break;
     case 10:
-      schwefel_func(&x[i * nx], &f[i], nx, OShift, M, 1, 0);
+      schwefel_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 0);
       f[i] += 1000.0;
       break;
     case 11:
-      schwefel_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      schwefel_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 1100.0;
       break;
     case 12:
-      katsuura_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      katsuura_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 1200.0;
       break;
     case 13:
-      happycat_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      happycat_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 1300.0;
       break;
     case 14:
-      hgbat_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      hgbat_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 1400.0;
       break;
     case 15:
-      grie_rosen_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      grie_rosen_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 1500.0;
       break;
     case 16:
-      escaffer6_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      escaffer6_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 1600.0;
       break;
     case 17:
-      cec2014_hf01(&x[i * nx], &f[i], nx, OShift, M, SS, 1, 1);
+      cec2014_hf01(&x[i * nx], &f[i], nx, cd.OShift, cd.M, cd.SS, 1, 1);
       f[i] += 1700.0;
       break;
     case 18:
-      cec2014_hf02(&x[i * nx], &f[i], nx, OShift, M, SS, 1, 1);
+      cec2014_hf02(&x[i * nx], &f[i], nx, cd.OShift, cd.M, cd.SS, 1, 1);
       f[i] += 1800.0;
       break;
     case 19:
-      cec2014_hf03(&x[i * nx], &f[i], nx, OShift, M, SS, 1, 1);
+      cec2014_hf03(&x[i * nx], &f[i], nx, cd.OShift, cd.M, cd.SS, 1, 1);
       f[i] += 1900.0;
       break;
     case 20:
-      cec2014_hf04(&x[i * nx], &f[i], nx, OShift, M, SS, 1, 1);
+      cec2014_hf04(&x[i * nx], &f[i], nx, cd.OShift, cd.M, cd.SS, 1, 1);
       f[i] += 2000.0;
       break;
     case 21:
-      cec2014_hf05(&x[i * nx], &f[i], nx, OShift, M, SS, 1, 1);
+      cec2014_hf05(&x[i * nx], &f[i], nx, cd.OShift, cd.M, cd.SS, 1, 1);
       f[i] += 2100.0;
       break;
     case 22:
-      cec2014_hf06(&x[i * nx], &f[i], nx, OShift, M, SS, 1, 1);
+      cec2014_hf06(&x[i * nx], &f[i], nx, cd.OShift, cd.M, cd.SS, 1, 1);
       f[i] += 2200.0;
       break;
     case 23:
-      cec2014_cf01(&x[i * nx], &f[i], nx, OShift, M, 1);
+      cec2014_cf01(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1);
       f[i] += 2300.0;
       break;
     case 24:
-      cec2014_cf02(&x[i * nx], &f[i], nx, OShift, M, 1);
+      cec2014_cf02(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1);
       f[i] += 2400.0;
       break;
     case 25:
-      cec2014_cf03(&x[i * nx], &f[i], nx, OShift, M, 1);
+      cec2014_cf03(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1);
       f[i] += 2500.0;
       break;
     case 26:
-      cec2014_cf04(&x[i * nx], &f[i], nx, OShift, M, 1);
+      cec2014_cf04(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1);
       f[i] += 2600.0;
       break;
     case 27:
-      cec2014_cf05(&x[i * nx], &f[i], nx, OShift, M, 1);
+      cec2014_cf05(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1);
       f[i] += 2700.0;
       break;
     case 28:
-      cec2014_cf06(&x[i * nx], &f[i], nx, OShift, M, 1);
+      cec2014_cf06(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1);
       f[i] += 2800.0;
       break;
     case 29:
-      cec2014_cf07(&x[i * nx], &f[i], nx, OShift, M, SS, 1);
+      cec2014_cf07(&x[i * nx], &f[i], nx, cd.OShift, cd.M, cd.SS, 1);
       f[i] += 2900.0;
       break;
     case 30:
-      cec2014_cf08(&x[i * nx], &f[i], nx, OShift, M, SS, 1);
+      cec2014_cf08(&x[i * nx], &f[i], nx, cd.OShift, cd.M, cd.SS, 1);
       f[i] += 3000.0;
       break;
     default:
@@ -228,11 +163,6 @@ void cec2014_interface(char *datapath, double *x, double *f, int nx, int mx,
       f[i] = 0.0;
       break;
     }
-  }
-  free(M);
-  free(OShift);
-  if (shuffleFlag) {
-    free(SS);
   }
 }
 
@@ -248,157 +178,93 @@ void cec2015_interface(char *datapath, double *x, double *f, int nx, int mx,
   }
 
   int cf_nums[] = {0, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 5, 5, 5, 7, 10};
-  int bShuffle[] = {0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0};
-  int cf_num = cf_nums[func_num];
-  char FileName[256];
-  /*
-   * Load M matrix:
-   */
-  sprintf(FileName, "%s/M_%d_D%d.txt", datapath, func_num, nx);
-  FILE *fptMData = fopen(FileName, "r");
-  if (fptMData == NULL) {
-    perror("Error: Cannot open input file for reading");
-  }
-  int MatrixSize = cf_num * nx * nx;
-  double *M = malloc(MatrixSize * sizeof(double));
-  if (M == NULL) {
-    perror("Error: there is insufficient memory available!");
-  } else {
-    for (int i = 0; i < MatrixSize; ++i) {
-      if (fscanf(fptMData, "%lf", &M[i]) == -1) {
-        perror("Cannot read M matrix data.");
-      }
-    }
-  }
-  fclose(fptMData);
-  /*
-   * Load bias data:
-   */
-  double *bias = NULL;
-  if (cf_num > 1) {
-    sprintf(FileName, "%s/bias_%d.txt", datapath, func_num);
-    FILE *fptBiasData = fopen(FileName, "r");
-    if (fptBiasData == NULL) {
-      perror("Error: Cannot open input file for reading");
-    }
-    bias = malloc(cf_num * sizeof(double));
-    if (M == NULL) {
-      perror("Error: there is insufficient memory available!");
-    } else {
-      for (int i = 0; i < cf_num; ++i) {
-        if (fscanf(fptBiasData, "%lf", &bias[i]) == -1) {
-          perror("Cannot read M matrix data.");
-        }
-      }
-    }
-    fclose(fptBiasData);
-  }
-  /*
-   * Load shift data:
-   */
-  sprintf(FileName, "%s/shift_data_%d.txt", datapath, func_num);
-  FILE *fptOShiftData = fopen(FileName, "r");
-  if (fptOShiftData == NULL) {
-    perror("Error: Cannot open input file for reading");
-  }
-  double *OShift = (double *)malloc(cf_num * nx * sizeof(double));
-  if (OShift == NULL) {
-    perror("Error: there is insufficient memory available!");
-  }
-  char tmpchar;
-  for (int i = 0; i < nx * cf_nums[func_num]; ++i) {
-    if (fscanf(fptOShiftData, "%lf", &OShift[i]) == -1) {
-      perror("Cannot read shift data.");
-    }
-    if (cf_nums[func_num] > 1 && ((i + 1) % nx) == 0) {
-      fscanf(fptOShiftData, "%c", &tmpchar);
-      while (tmpchar != '\n') {
-        fscanf(fptOShiftData, "%c", &tmpchar);
-      }
-    }
-  }
-  fclose(fptOShiftData);
-
-  /*
-   * Load shuffle data:
-   */
-  int *SS = NULL;
+  int bShuffle[] = {0, 0,0,0,0,0,1,1,1,0,1, 0, 0, 1, 0, 0};
+  int biasFlag = cf_nums[func_num] > 1 ? 1 : 0;
   int shuffleFlag = bShuffle[func_num] == 1 ? 1 : 0;
-  if (shuffleFlag) {
-    sprintf(FileName, "%s/shuffle_data_%d_D%d.txt", datapath, func_num, nx);
-    FILE *fptShuffleData = fopen(FileName, "r");
-    if (fptShuffleData == NULL) {
-      perror("Error: Cannot open input file for reading");
+
+  if (cd.dataLoaded == 1) {
+    if ((cd.prevDimension != nx) || (cd.prevFunction != func_num)) {
+      cd.dataLoaded = 0;
     }
-    int ShuffleSize = nx * cf_num;
-    SS = malloc(ShuffleSize * sizeof(int));
-    for (int i = 0; i < ShuffleSize; ++i) {
-      if (fscanf(fptShuffleData, "%d", &SS[i]) == -1) {
-        perror("Cannot read shuffle data");
-      }
-    }
-    fclose(fptShuffleData);
   }
+  if (!cd.dataLoaded) {
+    free(cd.M);
+    free(cd.OShift);
+    if (shuffleFlag) {
+      free(cd.SS);
+      loadShuffleData(&cd, datapath, nx, func_num, 2015);
+    }
+    if (biasFlag) {
+      free(cd.bias);
+      loadBiasData(&cd, datapath, func_num);
+    }
+    loadMatrixData(&cd, datapath, nx, func_num, 2015);
+    loadOShiftData_(&cd, datapath, nx, func_num);
+    cd.prevFunction = func_num;
+    cd.prevDimension = nx;
+    cd.dataLoaded = 1;
+  }
+
   for (int i = 0; i < mx; i++) {
     switch (func_num) {
     case 1:
-      ellips_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      ellips_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 100.0;
       break;
     case 2:
-      bent_cigar_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      bent_cigar_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 200.0;
       break;
     case 3:
-      ackley_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      ackley_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 300.0;
       break;
     case 4:
-      rastrigin_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      rastrigin_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 400.0;
       break;
     case 5:
-      schwefel_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      schwefel_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 500.0;
       break;
     case 6:
-      cec2015_hf01(&x[i * nx], &f[i], nx, OShift, M, SS, 1, 1);
+      cec2015_hf01(&x[i * nx], &f[i], nx, cd.OShift, cd.M, cd.SS, 1, 1);
       f[i] += 600.0;
       break;
     case 7:
-      cec2015_hf02(&x[i * nx], &f[i], nx, OShift, M, SS, 1, 1);
+      cec2015_hf02(&x[i * nx], &f[i], nx, cd.OShift, cd.M, cd.SS, 1, 1);
       f[i] += 700.0;
       break;
     case 8:
-      cec2015_hf03(&x[i * nx], &f[i], nx, OShift, M, SS, 1, 1);
+      cec2015_hf03(&x[i * nx], &f[i], nx, cd.OShift, cd.M, cd.SS, 1, 1);
       f[i] += 800.0;
       break;
     case 9:
-      cec2015_cf01(&x[i * nx], &f[i], nx, OShift, M, bias, 1);
+      cec2015_cf01(&x[i * nx], &f[i], nx, cd.OShift, cd.M, cd.bias, 1);
       f[i] += 900.0;
       break;
     case 10:
-      cec2015_cf02(&x[i * nx], &f[i], nx, OShift, M, SS, bias, 1);
+      cec2015_cf02(&x[i * nx], &f[i], nx, cd.OShift, cd.M, cd.SS, cd.bias, 1);
       f[i] += 1000.0;
       break;
     case 11:
-      cec2015_cf03(&x[i * nx], &f[i], nx, OShift, M, bias, 1);
+      cec2015_cf03(&x[i * nx], &f[i], nx, cd.OShift, cd.M, cd.bias, 1);
       f[i] += 1100.0;
       break;
     case 12:
-      cec2015_cf04(&x[i * nx], &f[i], nx, OShift, M, bias, 1);
+      cec2015_cf04(&x[i * nx], &f[i], nx, cd.OShift, cd.M, cd.bias, 1);
       f[i] += 1200.0;
       break;
     case 13:
-      cec2015_cf05(&x[i * nx], &f[i], nx, OShift, M, SS, bias, 1);
+      cec2015_cf05(&x[i * nx], &f[i], nx, cd.OShift, cd.M, cd.SS, cd.bias, 1);
       f[i] += 1300.0;
       break;
     case 14:
-      cec2015_cf06(&x[i * nx], &f[i], nx, OShift, M, bias, 1);
+      cec2015_cf06(&x[i * nx], &f[i], nx, cd.OShift, cd.M, cd.bias, 1);
       f[i] += 1400.0;
       break;
     case 15:
-      cec2015_cf07(&x[i * nx], &f[i], nx, OShift, M, bias, 1);
+      cec2015_cf07(&x[i * nx], &f[i], nx, cd.OShift, cd.M, cd.bias, 1);
       f[i] += 1500.0;
       break;
     default:
@@ -408,16 +274,7 @@ void cec2015_interface(char *datapath, double *x, double *f, int nx, int mx,
       break;
     }
   }
-  free(M);
-  free(OShift);
-  if (shuffleFlag) {
-    free(SS);
-  }
-  if (cf_num > 1) {
-    free(bias);
-  }
 }
-
 
 void cec2017_interface(char *datapath, double *x, double *f, int nx, int mx,
                        int func_num) {
@@ -430,26 +287,26 @@ void cec2017_interface(char *datapath, double *x, double *f, int nx, int mx,
     perror("Error: hf0{1..6}, cf0{7..8} are NOT defined for D=2.");
   }
 
+  int shuffleFlag =
+      ((func_num >= 11 && func_num <= 20) || (func_num == 29 || func_num == 30))
+          ? 1
+          : 0;
+
   if (cd.dataLoaded == 1) {
     if ((cd.prevDimension != nx) || (cd.prevFunction != func_num)) {
       cd.dataLoaded = 0;
     }
   }
 
-  int shuffleFlag = ((func_num >= 11 && func_num <= 20) ||
-    (func_num == 29 || func_num == 30))
-    ? 1
-    : 0;
-
   if (!cd.dataLoaded) {
     free(cd.M);
     free(cd.OShift);
     if (shuffleFlag) {
       free(cd.SS);
-      loadShuffleData(&cd, nx, func_num, 2017);
+      loadShuffleData(&cd, datapath, nx, func_num, 2017);
     }
-    loadMatrixData(&cd, nx, func_num);
-    loadOShiftData(&cd, nx, func_num, 2017);
+    loadMatrixData(&cd, datapath, nx, func_num, 2017);
+    loadOShiftData(&cd, datapath, nx, func_num, 2017);
     cd.prevFunction = func_num;
     cd.prevDimension = nx;
     cd.dataLoaded = 1;
@@ -479,7 +336,8 @@ void cec2017_interface(char *datapath, double *x, double *f, int nx, int mx,
       f[i] += 500.0;
       break;
     case 6:
-      schaffer_F7_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1, schafferF7_hack);
+      schaffer_F7_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1,
+                       schafferF7_hack);
       f[i] += 600.0;
       break;
     case 7:
@@ -594,51 +452,24 @@ void cec2019_interface(char *datapath, double *x, double *f, int nx, int mx,
           F1 is defined on D=9 \n F2 is defined on D=16 \n\
           F3 is defined on D=18 \n F4-F10 are defined on D=10.");
   }
-  char FileName[256];
-  /*
-   * Load M matrix:
-   */
   int externalDataFlag = func_num > 3 ? 1 : 0;
-  double *M = NULL;
-  double *OShift = NULL;
-  if (externalDataFlag) {
-    sprintf(FileName, "%s/M_%d_D%d.txt", datapath, func_num, nx);
-    FILE *fptMData = fopen(FileName, "r");
-    if (fptMData == NULL) {
-      perror("Error: Cannot open input file for reading");
+
+  if (cd.dataLoaded == 1 && externalDataFlag) {
+    if ((cd.prevDimension != nx) || (cd.prevFunction != func_num)) {
+      cd.dataLoaded = 0;
     }
-    int MatrixSize = nx * nx;
-    M = malloc(MatrixSize * sizeof(double));
-    if (M == NULL) {
-      perror("Error: there is insufficient memory available!");
-    } else {
-      for (int i = 0; i < MatrixSize; ++i) {
-        if (fscanf(fptMData, "%lf", &M[i]) == -1) {
-          perror("Cannot read M matrix data.");
-        }
-      }
-    }
-    fclose(fptMData);
-    /*
-     * Load shift data:
-     */
-    sprintf(FileName, "%s/shift_data_%d.txt", datapath, func_num);
-    FILE *fptOShiftData = fopen(FileName, "r");
-    if (fptOShiftData == NULL) {
-      perror("Error: Cannot open input file for reading");
-    }
-    int OShiftSize = nx;
-    OShift = malloc(OShiftSize * sizeof(double));
-    if (OShift == NULL) {
-      perror("Error: there is insufficient memory available!");
-    }
-    for (int i = 0; i < OShiftSize; ++i) {
-      if (fscanf(fptOShiftData, "%lf", &OShift[i]) == -1) {
-        perror("Cannot read shift  data.");
-      }
-    }
-    fclose(fptOShiftData);
   }
+
+  if (!cd.dataLoaded && externalDataFlag) {
+    free(cd.M);
+    free(cd.OShift);
+    loadMatrixData(&cd, datapath, nx, func_num, 2019);
+    loadOShiftData(&cd, datapath, nx, func_num, 2019);
+    cd.prevFunction = func_num;
+    cd.prevDimension = nx;
+    cd.dataLoaded = 1;
+  }
+
   for (int i = 0; i < mx; i++) {
     switch (func_num) {
     case 1:
@@ -654,43 +485,39 @@ void cec2019_interface(char *datapath, double *x, double *f, int nx, int mx,
       f[i] += 1.0;
       break;
     case 4:
-      rastrigin_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      rastrigin_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 1.0;
       break;
     case 5:
-      griewank_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      griewank_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 1.0;
       break;
     case 6:
-      weierstrass_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      weierstrass_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 1.0;
       break;
     case 7:
-      schwefel_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      schwefel_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 1.0;
       break;
     case 8:
-      escaffer6_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      escaffer6_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 1.0;
       break;
     case 9:
-      happycat_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      happycat_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 1.0;
       break;
     case 10:
-      ackley_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      ackley_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       f[i] += 1.0;
       break;
     default:
       perror("Error: There are only 10 test functions in this test suite! "
-             "[CEC2015-LB]");
+             "[CEC2019]");
       f[i] = 0.0;
       break;
     }
-  }
-  if (externalDataFlag) {
-    free(M);
-    free(OShift);
   }
 }
 
@@ -703,99 +530,28 @@ void cec2021_interface(char *datapath, double *x, double *f, int nx, int mx,
     perror("Error: Test function is not defined");
   }
 
-  int cf_num = 10;
-  char FileName[256];
-
-  if (!strcmp(suite, "basic") || !strcmp(suite, "bias") ||
-      !strcmp(suite, "bias_shift") || !strcmp(suite, "shift")) {
-    sprintf(FileName, "%s/M_%d_D%d_nr.txt", datapath, func_num, nx);
-  } else {
-    sprintf(FileName, "%s/M_%d_D%d.txt", datapath, func_num, nx);
-  }
-  /*
-   * Load M matrix:
-   */
-  FILE *fptMData = fopen(FileName, "r");
-  if (fptMData == NULL) {
-    perror("Error: Cannot open input file for reading");
-  }
-  int MatrixSize = func_num < 7 ? nx * nx : cf_num * nx * nx;
-  double *M = malloc(MatrixSize * sizeof(double));
-  if (M == NULL) {
-    perror("Error: there is insufficient memory available!");
-  } else {
-    for (int i = 0; i < MatrixSize; ++i) {
-      if (fscanf(fptMData, "%lf", &M[i]) == -1) {
-        break;
-      }
-    }
-  }
-  fclose(fptMData);
-  /*
-   * Load shift data:
-   */
-  if (!strcmp(suite, "basic") || !strcmp(suite, "rot") ||
-      !strcmp(suite, "bias") || !(strcmp(suite, "bias_rot"))) {
-    sprintf(FileName, "%s/shift_data_%d_ns.txt", datapath, func_num);
-  } else {
-    sprintf(FileName, "%s/shift_data_%d.txt", datapath, func_num);
-  }
-  FILE *fptOShiftData = fopen(FileName, "r");
-  if (fptOShiftData == NULL) {
-    perror("Error: Cannot open input file for reading");
-  }
-  int OShiftSize = func_num < 7 ? nx : cf_num * nx;
-  double *OShift = malloc(OShiftSize * sizeof(double));
-  if (OShift == NULL) {
-    perror("Error: there is insufficient memory available!");
-  }
-  if (func_num < 7) {
-    for (int i = 0; i < OShiftSize; ++i) {
-      if (fscanf(fptOShiftData, "%lf", &OShift[i]) == -1) {
-        break;
-      }
-    }
-  } else {
-    for (int i = 0; i < cf_num - 1; i++) {
-      for (int j = 0; j < nx; j++) {
-        int count = fscanf(fptOShiftData, "%lf", &OShift[i * nx + j]);
-        if (count == -1) {
-          break;
-        }
-      }
-      int count = fscanf(fptOShiftData, "%*[^\n]%*c");
-      if (count == -1) {
-        break;
-      }
-    }
-    for (int j = 0; j < nx; j++) {
-      if (fscanf(fptOShiftData, "%lf", &OShift[nx * (cf_num - 1) + j]) == -1) {
-        break;
-      }
-    }
-  }
-  fclose(fptOShiftData);
-  /*
-   * Load shuffle data:
-   */
-  int *SS = NULL;
   int const shuffleFlag = (func_num >= 5 && func_num <= 7) ? 1 : 0;
-  if (shuffleFlag) {
-    sprintf(FileName, "%s/shuffle_data_%d_D%d.txt", datapath, func_num, nx);
-    FILE *fptShuffleData = fopen(FileName, "r");
-    if (fptShuffleData == NULL) {
-      perror("Error: Cannot open input file for reading");
+
+  if (cd.dataLoaded == 1) {
+    if ((cd.prevDimension != nx) || (cd.prevFunction != func_num)) {
+      cd.dataLoaded = 0;
     }
-    int ShuffleSize = nx;
-    SS = malloc(ShuffleSize * sizeof(int));
-    for (int i = 0; i < ShuffleSize; ++i) {
-      if (fscanf(fptShuffleData, "%d", &SS[i]) == -1) {
-        perror("Cannot read shuffle data");
-      }
-    }
-    fclose(fptShuffleData);
   }
 
+  if (!cd.dataLoaded) {
+    free(cd.M);
+    free(cd.OShift);
+    if (shuffleFlag) {
+      free(cd.SS);
+      loadShuffleData(&cd, datapath, nx, func_num, 2021);
+    }
+    loadMatrixDataSuite(&cd, datapath, nx, func_num, suite);
+    loadOShiftDataSuite(&cd, datapath, nx, func_num, suite);
+    cd.prevFunction = func_num;
+    cd.prevDimension = nx;
+    cd.dataLoaded = 1;
+  }
+ 
   int shiftFlag = 0;
   if (!strcmp(suite, "bias_shift") || !strcmp(suite, "shift") ||
       !strcmp(suite, "bias_shift_rot") || !strcmp(suite, "shift_rot")) {
@@ -811,37 +567,37 @@ void cec2021_interface(char *datapath, double *x, double *f, int nx, int mx,
   for (int i = 0; i < mx; i++) {
     switch (func_num) {
     case 1:
-      bent_cigar_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      bent_cigar_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       break;
     case 2:
-      schwefel_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      schwefel_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       break;
     case 3:
-      bi_rastrigin_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      bi_rastrigin_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       break;
     case 4:
-      grie_rosen_func(&x[i * nx], &f[i], nx, OShift, M, 1, 1);
+      grie_rosen_func(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1, 1);
       break;
     case 5:
-      cec2021_hf01(&x[i * nx], &f[i], nx, OShift, M, SS, 1, 1);
+      cec2021_hf01(&x[i * nx], &f[i], nx, cd.OShift, cd.M, cd.SS, 1, 1);
       break;
     case 6:
-      cec2021_hf02(&x[i * nx], &f[i], nx, OShift, M, SS, 1, 1);
+      cec2021_hf02(&x[i * nx], &f[i], nx, cd.OShift, cd.M, cd.SS, 1, 1);
       break;
     case 7:
-      cec2021_hf03(&x[i * nx], &f[i], nx, OShift, M, SS, 1, 1);
+      cec2021_hf03(&x[i * nx], &f[i], nx, cd.OShift, cd.M, cd.SS, 1, 1);
       break;
     case 8:
-      shiftFlag ? cec2021_cf01_s(&x[i * nx], &f[i], nx, OShift, M, 1)
-                : cec2021_cf01(&x[i * nx], &f[i], nx, OShift, M, 1);
+      shiftFlag ? cec2021_cf01_s(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1)
+                : cec2021_cf01(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1);
       break;
     case 9:
-      shiftFlag ? cec2021_cf02_s(&x[i * nx], &f[i], nx, OShift, M, 1)
-                : cec2021_cf02(&x[i * nx], &f[i], nx, OShift, M, 1);
+      shiftFlag ? cec2021_cf02_s(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1)
+                : cec2021_cf02(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1);
       break;
     case 10:
-      shiftFlag ? cec2021_cf03_s(&x[i * nx], &f[i], nx, OShift, M, 1)
-                : cec2021_cf03(&x[i * nx], &f[i], nx, OShift, M, 1);
+      shiftFlag ? cec2021_cf03_s(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1)
+                : cec2021_cf03(&x[i * nx], &f[i], nx, cd.OShift, cd.M, 1);
       break;
     default:
       perror("Error: There are only 10 test functions in this test suite!");
@@ -850,9 +606,4 @@ void cec2021_interface(char *datapath, double *x, double *f, int nx, int mx,
     }
   }
   f[0] += getFunctionBias(biasFlag, func_num);
-  free(M);
-  free(OShift);
-  if (shuffleFlag) {
-    free(SS);
-  }
 }

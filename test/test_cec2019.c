@@ -13,6 +13,12 @@
 
 #define REPEATS 100
 
+CecData cd = {
+  .prevDimension = 0,
+  .prevFunction = 0,
+  .dataLoaded = 0,
+};
+
 
 inline static void fillRandomArray(size_t n, double* input) {
   for(size_t i = 0; i < n; ++i) {

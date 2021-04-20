@@ -51,7 +51,7 @@ file(GLOB_RECURSE INC_FILES "${PROJECT_SOURCE_DIR}/include/*.h")
 file(GLOB_RECURSE ORIGNAL_CEC_SRC "${PROJECT_SOURCE_DIR}/test/cecs/*.c")
 file(GLOB_RECURSE ORIGNAL_CEC_INC "${PROJECT_SOURCE_DIR}/test/cecs/*.h")
 
-add_compile_options(-Wall -g -Wextra -pedantic -Werror)
+add_compile_options(-Wall -g -Wextra -pedantic)
 
 add_executable(${EXECUTABLE} main.c ${SRC_FILES} ${INC_FILES})
 target_link_libraries(${EXECUTABLE} ${CMOCKA_LIBRARIES} ${EXTRA_LIBS})
