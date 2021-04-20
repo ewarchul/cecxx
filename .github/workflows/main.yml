@@ -1,4 +1,6 @@
 name: "Test"
+env: 
+  ACTIONS_ALLOW_UNSECURE_COMMANDS=true
 on:
   pull_request:
   push:
@@ -8,7 +10,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: cachix/install-nix-action@v10
-      with:
+      with: |
+        echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> $GITHUB_ENV
         nix_path: nixpkgs=channel:nixos-unstable
     - uses: workflow/nix-shell-action@v1
       with:
