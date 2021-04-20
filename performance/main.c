@@ -1,4 +1,4 @@
-#include "cec.h"
+#include "cec2017.h"
 
 #include <stddef.h>
 #include <stdio.h>
@@ -6,16 +6,7 @@
 
 #define REP 1
 
-CecData cd = {
-  .prevDimension = 0,
-  .prevFunction = 0,
-  .dataLoaded = 0,
-};
-
 int main() {
-  int year = 2017;
-  char dataPath[50];
-  sprintf(dataPath, "../data/cec%d", year);
   int dims[1] = {100};
   for (int d = 0; d < 1; ++d) {
     for (int fn = 1; fn < 31; ++fn) {
@@ -25,15 +16,11 @@ int main() {
         for (int i = 0; i < dims[d]; ++i) {
           input[i] = 0.1;
         }
-        cec2017_interface(dataPath, input, output, dims[d], 1, fn);
-//        printf("<f=%d|d=%d\toutput[0] = %0.3f\n",fn, dims[d], output[0]);
+        cec17_test_func(input, output, dims[d], 1, fn);
         free(output);
         free(input);
       }
     }
   }
-  free(cd.M);
-  free(cd.OShift);
-  free(cd.SS);
   return 0;
 }

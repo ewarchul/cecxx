@@ -30,7 +30,6 @@
 #define M_PI 3.1415926535897932384626433832795029
 #endif
 
-
 void shiftfunc(double *, double *, int, double *);
 void rotatefunc(double *, double *, int, double *);
 void sr_func(double *, double *, int, double *, double *, double, int, int,
