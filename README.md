@@ -1,3 +1,4 @@
+![example workflow](https://github.com/github/ewarchul/actions/workflows/main.yml/badge.svg)
 
 
 # CEC
