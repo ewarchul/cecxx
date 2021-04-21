@@ -1,10 +1,5 @@
 [![CMocka-test](https://github.com/ewarchul/cec/workflows/CMocka-test/badge.svg)](https://github.com/ewarchul/cec/actions)
 
-
-# CEC
-
-faster & safer.
-
 # About 
 
 This repository contains a tidied up codebase of CEC, i.e. set of optimization benchmark problems.
@@ -27,6 +22,7 @@ following link:
 
 Simple example of how to use given interface is in the `main.c` file. 
 
+
 # Tests
 
 To run test you need [CMocka](https://cmocka.org/) unit test framework and [CMake](https://cmake.org/) (3.16.3v). 
@@ -39,5 +35,3 @@ If you use [Nix package manager](https://nixos.org/) type command written below:
 ```Nix
 nix-shell --command "bash test.sh"
 ```
-
-
