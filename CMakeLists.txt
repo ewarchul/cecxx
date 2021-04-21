@@ -53,8 +53,18 @@ file(GLOB_RECURSE ORIGNAL_CEC_INC "${PROJECT_SOURCE_DIR}/test/cecs/*.h")
 
 
 add_executable(${EXECUTABLE} main.c ${SRC_FILES} ${INC_FILES})
-target_compile_options(${EXECUTABLE} PUBLIC -Wall -O3 -Wextra -pedantic -Werror)
-target_link_libraries(${EXECUTABLE} ${CMOCKA_LIBRARIES} ${EXTRA_LIBS})
+target_compile_options(${EXECUTABLE}
+  PUBLIC
+  -Wall
+  -fpic
+  -fstack-protector-strong
+  -O3
+  -Wextra
+  -pedantic
+  -Werror
+)
+
+target_link_libraries(${EXECUTABLE} ${CMOCKA_LIBRARIES} ${EXTRA_LIBS} -fno-omit-frame-pointer)
 
 list(APPEND tests_names "test_cec2014")
 list(APPEND cecs_ver "2014")
