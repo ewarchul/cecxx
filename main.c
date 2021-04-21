@@ -4,32 +4,46 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define REP 50000
+#define REP 10000
 
 CecData cd = {
-  .prevDimension = 0,
-  .prevFunction = 0,
-  .dataLoaded = 0,
+    .prevDimension = 0,
+    .prevFunction = 0,
+    .dataLoaded = 0,
 };
 
 int main() {
-  int year = 2017;
+  int year[] = { 2014, 2015, 2017, 2019, 2021 };
   char dataPath[50];
-  sprintf(dataPath, "../data/cec%d", year);
-  int fn_max = 30;
-  int dims[1] = {100};
-  for (int d = 0; d < 1; ++d) {
-    for (int fn = 1; fn < fn_max + 1; ++fn) {
-      for (int i = 0; i < REP; i++) {
-        double *output = malloc(dims[d] * sizeof(double));
-        double *input = malloc(dims[d] * sizeof(double));
-        for (int i = 0; i < dims[d]; ++i) {
-          input[i] = 0.1;
+  int fn_max[] = { 30, 15, 30, 10, 10 };
+  int dims[1] = {10};
+  double input[10] = { 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1 };
+  for (int y = 0; y < 5; ++y) {
+    for (int d = 0; d < 1; ++d) {
+      sprintf(dataPath, "../data/cec%d", year[y]);
+      for (int fn = 1; fn < fn_max[y] + 1; ++fn) {
+        for (int i = 0; i < REP; i++) {
+          double *output = malloc(dims[d] * sizeof(double));
+          switch (year[y]) {
+          case 2014:
+            cec2014_interface(dataPath, input, output, dims[d], 1, fn);
+            break;
+          case 2015:
+            cec2015_interface(dataPath, input, output, dims[d], 1, fn);
+            break;
+          case 2017:
+            cec2017_interface(dataPath, input, output, dims[d], 1, fn);
+            break;
+          case 2019:
+            cec2019_interface(dataPath, input, output, dims[d], 1, fn);
+            break;
+          case 2021:
+            cec2021_interface(dataPath, input, output, dims[d], 1, fn,
+                              "bias_shift_rot");
+            break;
+          }
+          free(output);
         }
-        cec2017_interface(dataPath, input, output, dims[d], 1, fn);
-       // printf("<f=%d|d=%d\toutput[0] = %0.3f\n",fn, dims[d], output[0]);
-        free(output);
-        free(input);
       }
     }
   }
