@@ -9,6 +9,7 @@ Modified code is equivalent to the official one - you can run tests and check it
 
 Currently, the repository contains the modified implementation and their technical specifications (check `doc/` directory) of the following editions: 
 
+- CEC 2022 Special Session and Competition on Single Objective Bound Constrained Numerical Optimization
 - CEC 2021 Special Session and Competition on Single Objective Bound Constrained Numerical Optimization
 - CEC 2019 Special Session and Competition on Single Objective Bound Constrained Numerical Optimization
 - CEC 2017 Special Session and Competition on Single Objective Bound Constrained Numerical Optimization
