@@ -1,38 +1,44 @@
-[![CMocka-test](https://github.com/ewarchul/cec/workflows/CMocka-test/badge.svg)](https://github.com/ewarchul/cec/actions)
+## Usage
 
-# About 
+```cpp
 
-This repository contains a tidied up codebase of CEC, i.e. set of optimization benchmark problems.
+#include <cecxx/cecxx.hpp>
+...
 
-During working with the official code of the benchmark I had encountered minor issues with memory management so I decided to tidy up the code and fix those issues.
-Modified code is equivalent to the official one - you can run tests and check it by yourself. 
+namespace rv = ranges::views;
 
-Currently, the repository contains the modified implementation and their technical specifications (check `doc/` directory) of the following editions: 
+auto main() -> int {
+  try {
+    // Create an evaluator object for the CEC2017 benchmark
+    auto cec2017_eval =
+        cecxx::evaluator(cecxx::cec_edition_t::cec2017, DIMENSION, CEC_STORAGE);
 
-- CEC 2022 Special Session and Competition on Single Objective Bound Constrained Numerical Optimization
-- CEC 2021 Special Session and Competition on Single Objective Bound Constrained Numerical Optimization
-- CEC 2019 Special Session and Competition on Single Objective Bound Constrained Numerical Optimization
-- CEC 2017 Special Session and Competition on Single Objective Bound Constrained Numerical Optimization
-- CEC 2015 Learning-based Real-Parameter Single Objective Optimization
-- CEC 2014 Special Session and Competition on Single Objective Bound Constrained Numerical Optimization
+    // Prepare input which resembles multidimensional array
+    const auto input = std::vector<std::vector<double>>{
+        rv::repeat(20.0) | rv::take(DIMENSION) | ranges::to_vector};
 
-For more information about the benchmark check the official repository of the CEC availabled under the
-following link:
+    // Evaluate given input on each optimization problem from CEC2017
+    const auto start = std::chrono::system_clock::now();
+    for (const auto& fn : rv::closed_iota(1, 30)) {
+      auto output = cec2017_eval(fn, input);
+      fmt::println("fn = {}, output = {}", fn, output);
+    }
+    fmt::println("Elapsed time: {}",
+                 std::chrono::duration_cast<std::chrono::nanoseconds>(
+                     std::chrono::system_clock::now() - start));
 
-[https://github.com/P-N-Suganthan?tab=repositories](https://github.com/P-N-Suganthan?tab=repositories).
+    // Create a closure for 1st optimizaiton problem from CEC2017
+    const auto first_fn = [eval = cec2017_eval](const auto& xs) {
+      return eval(1, xs);
+    };
+    auto output = first_fn(input);
+    fmt::println("fn = 1, output = {}", output);
 
-Simple example of how to use given interface is in the `main.c` file. 
+  } catch (std::exception& e) {
+    fmt::println("Error: {}", e.what());
+    return EXIT_FAILURE;
+  }
 
-
-# Tests
-
-To run test you need [CMocka](https://cmocka.org/) unit test framework and [CMake](https://cmake.org/) (3.16.3v). 
-If you meet the requirements then execute `test.sh` script.
-
-## Nix 
-
-If you use [Nix package manager](https://nixos.org/) type command written below:
-
-```Nix
-nix-shell --command "bash test.sh"
+  return EXIT_SUCCESS;
+}
 ```

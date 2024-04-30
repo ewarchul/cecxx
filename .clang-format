@@ -1,0 +1,7 @@
+Language: Cpp
+ColumnLimit: 120
+BasedOnStyle: Google
+IndentPPDirectives: AfterHash
+IndentCaseLabels: false
+AlwaysBreakTemplateDeclarations: false
+DerivePointerAlignment: false

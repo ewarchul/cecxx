@@ -1,102 +1,79 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.19)
+set(PROJECT_VER 0.2.1)
 
-set(PROJECT_NAME cec)
-
-
-project(${PROJECT_NAME} VERSION 1.0
-             DESCRIPTION "Re-implementation of CECs benchmarks in C"
-             LANGUAGES C
+project(cecxx
+  VERSION ${PROJECT_VER}
+  DESCRIPTION "An implementation of CECs benchmarks in C++20"
+  LANGUAGES CXX
 )
 
-include(CTest)
-enable_testing()
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+include(Package)
+include(config)
+include(GNUInstallDirs)
+include(CMakePackageConfigHelpers)
+include(GenerateExportHeader)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(EXECUTABLE ${PROJECT_NAME})
-set(TEST ${PROJECT_NAME}-test)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY
-  ${PROJECT_SOURCE_SIR}/bin/${CMAKE_BUILD_TYPE})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
+set(ROOT_DIR ${CMAKE_SOURCE_DIR})
+set(HEADER_DIR ${ROOT_DIR}/include)
+set(SOURCE_DIR ${ROOT_DIR}/src)
 
-set(EXTRA_LIBS m)
-
-
-find_path(CMOCKA_INCLUDE_DIR
-  NAMES
-  cmocka.h
-  PATHS
-  $(CMOCKA_INCLUDE_DIR)/include
+file(
+  GLOB_RECURSE
+  HEADERS
+  CONFIGURE_DEPENDS
+  ${HEADER_DIR}/*.hpp
+  ${HEADER_DIR}/**/*.hpp
 )
 
-find_library(CMOCKA_LIBRARY
-  NAMES
-  cmocka cmocka_shared
-  PATHS
-  ${CMOCKA_ROOT_DIR}/include
+file(
+  GLOB_RECURSE
+  SOURCES
+  CONFIGURE_DEPENDS
+  ${SOURCE_DIR}/*.cpp
+  ${SOURCE_DIR}/**/*.cpp
+  ${SOURCE_DIR}/*.hpp
+  ${SOURCE_DIR}/**/*.hpp
 )
 
-if (CMOCKA_LIBRARY)
-  set(CMOCKA_LIBRARIES
-    ${CMOCKA_LIBRARIES}
-    ${CMOCKA_LIBRARY}
-  )
-endif (CMOCKA_LIBRARY)
+if (BUILD_SHARED_LIBS)
+  set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+endif()
 
 
-include_directories(${CMOCKA_INCLUDE_DIR} include)
+add_library(cecxx)
+target_sources(cecxx PRIVATE ${SOURCES})
+target_sources(cecxx PUBLIC FILE_SET HEADERS BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/include" FILES ${HEADERS})
+target_compile_options(cecxx PRIVATE ${COMPILE_FLAGS})
+target_compile_features(cecxx PRIVATE cxx_std_20)
+#target_compile_definitions(cecxx PUBLIC DEFAULT_BENCHMARK_DATADIR="${BENCHMARK_DATA_STORAGE}")
 
-file(GLOB_RECURSE SRC_FILES "${PROJECT_SOURCE_DIR}/src/*.c")
-file(GLOB_RECURSE INC_FILES "${PROJECT_SOURCE_DIR}/include/*.h")
-file(GLOB_RECURSE ORIGNAL_CEC_SRC "${PROJECT_SOURCE_DIR}/test/cecs/*.c")
-file(GLOB_RECURSE ORIGNAL_CEC_INC "${PROJECT_SOURCE_DIR}/test/cecs/*.h")
+configure_file(defaults.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/include/cecxx/benchmark/defaults.hpp) 
+generate_export_header(cecxx)
 
-
-add_executable(${EXECUTABLE} main.c ${SRC_FILES} ${INC_FILES})
-target_compile_options(${EXECUTABLE}
-  PUBLIC
-  -Wall
-  -fpic
-  -fstack-protector-strong
-  -O3
-  -Wextra
-  -pedantic
-  -Werror
+write_basic_package_version_file("${PROJECT_BINARY_DIR}/cecxxConfigVersion.cmake"
+  VERSION ${PROJECT_VER}
+  COMPATIBILITY AnyNewerVersion
 )
 
-target_link_libraries(${EXECUTABLE} ${CMOCKA_LIBRARIES} ${EXTRA_LIBS} -fno-omit-frame-pointer)
+include(CPack)
+message("${BENCHMARK_DATA_STORAGE}")
 
-list(APPEND tests_names "test_cec2014")
-list(APPEND cecs_ver "2014")
+install(TARGETS cecxx EXPORT cecxxTargets FILE_SET HEADERS)
+install(EXPORT cecxxTargets NAMESPACE cecxx:: DESTINATION lib/cmake/cecxx)
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/data/ DESTINATION "${BENCHMARK_DATA_STORAGE}")
 
-list(APPEND tests_names "test_cec2015")
-list(APPEND cecs_ver "2015")
+if (WITH_EXAMPLES)
+  add_subdirectory(example)
+endif()
 
-list(APPEND tests_names "test_cec2017")
-list(APPEND cecs_ver "2017")
+if (WITH_BENCHMARKS)
+  add_subdirectory(benchmark)
+endif()
 
-list(APPEND tests_names "test_cec2019")
-list(APPEND cecs_ver "2019")
-
-list(APPEND tests_names "test_cec2021")
-list(APPEND cecs_ver "2021")
-
-list(LENGTH tests_names count)
-math(EXPR count "${count} -1")
-foreach(i RANGE ${count})
-  list(GET tests_names ${i} test_name)
-  list(GET cecs_ver ${i} cec_ver)
-  add_executable(
-    ${test_name}
-    ${PROJECT_SOURCE_DIR}/test/${test_name}.c
-    ${PROJECT_SOURCE_DIR}/test/cecs/cec${cec_ver}.c
-    ${SRC_FILES}
-    ${INC_FILES}
-  )
-target_link_libraries(${test_name} ${CMOCKA_LIBRARIES} ${EXTRA_LIBS})
-target_compile_options(${test_name} PUBLIC -Wall -O3 -Wextra -pedantic)
-add_test(${test_name} "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${test_name}")
-endforeach()
-
-
-
+if (WITH_TESTS)
+  add_subdirectory(test)
+endif(WITH_TESTS)
