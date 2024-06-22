@@ -23,25 +23,24 @@
 #include "cecxx/functions/unimodal/sum_diff_pow.hpp"
 
 namespace cecxx::benchmark::detail::cec2017 {
-const auto sum_diff_pow = basic_problem{cecxx::functions::unimodal::sum_diff_pow};
-const auto bent_cigar = basic_problem{cecxx::functions::unimodal::bent_cigar};
-const auto ellips = basic_problem{cecxx::functions::unimodal::ellips};
-
-const auto discus = basic_problem{cecxx::functions::multimodal::discus};
-const auto zakharov = basic_problem{cecxx::functions::multimodal::zakharov};
-const auto rosenbrock = basic_problem{cecxx::functions::multimodal::rosenbrock, 2.048 / 100.0};
-const auto rastrigin = basic_problem{cecxx::functions::multimodal::rastrigin, 5.12 / 100.0};
-const auto schaffer = basic_problem{cecxx::functions::multimodal::legacy::schaffer};
-const auto bi_rastrigin = basic_problem{cecxx::functions::multimodal::legacy::bi_rastrigin};
-const auto step_rastrigin = basic_problem{cecxx::functions::multimodal::step_rastrigin, 5.12 / 100.0};
-const auto levy = basic_problem{cecxx::functions::multimodal::levy};
-const auto schwefel = basic_problem{cecxx::functions::multimodal::schwefel, 10.0};
-const auto ackley = basic_problem{cecxx::functions::multimodal::ackley};
-const auto hgbat = basic_problem{cecxx::functions::multimodal::hgbat, 5.0 / 100.0};
-const auto happycat = basic_problem{cecxx::functions::multimodal::happycat, 5.0 / 100.0};
-const auto escaffer = basic_problem{cecxx::functions::multimodal::escaffer};
-const auto katsuura = basic_problem{cecxx::functions::multimodal::katsuura, 5.0 / 100.0};
-const auto grie_rosen = basic_problem{cecxx::functions::multimodal::grie_rosen, 5.0 / 100.0};
-const auto weierstrass = basic_problem{cecxx::functions::multimodal::weierstrass, 0.5 / 100.0};
-const auto griewank = basic_problem{cecxx::functions::multimodal::griewank, 6.0};
+static constexpr auto sum_diff_pow = basic_problem{cecxx::functions::unimodal::sum_diff_pow};
+static constexpr auto bent_cigar = basic_problem{cecxx::functions::unimodal::bent_cigar};
+static constexpr auto ellips = basic_problem{cecxx::functions::unimodal::ellips};
+static constexpr auto discus = basic_problem{cecxx::functions::multimodal::discus};
+static constexpr auto zakharov = basic_problem{cecxx::functions::multimodal::zakharov};
+static constexpr auto rosenbrock = basic_problem{cecxx::functions::multimodal::rosenbrock, 2.048 / 100.0};
+static constexpr auto rastrigin = basic_problem{cecxx::functions::multimodal::rastrigin, 5.12 / 100.0};
+static constexpr auto schaffer = basic_problem{cecxx::functions::multimodal::legacy::schaffer};
+static constexpr auto bi_rastrigin = basic_problem{cecxx::functions::multimodal::legacy::bi_rastrigin};
+static constexpr auto step_rastrigin = basic_problem{cecxx::functions::multimodal::step_rastrigin, 5.12 / 100.0};
+static constexpr auto levy = basic_problem{cecxx::functions::multimodal::levy};
+static constexpr auto schwefel = basic_problem{cecxx::functions::multimodal::schwefel, 10.0};
+static constexpr auto ackley = basic_problem{cecxx::functions::multimodal::ackley};
+static constexpr auto hgbat = basic_problem{cecxx::functions::multimodal::hgbat, 5.0 / 100.0};
+static constexpr auto happycat = basic_problem{cecxx::functions::multimodal::happycat, 5.0 / 100.0};
+static constexpr auto escaffer = basic_problem{cecxx::functions::multimodal::escaffer};
+static constexpr auto katsuura = basic_problem{cecxx::functions::multimodal::katsuura, 5.0 / 100.0};
+static constexpr auto grie_rosen = basic_problem{cecxx::functions::multimodal::grie_rosen, 5.0 / 100.0};
+static constexpr auto weierstrass = basic_problem{cecxx::functions::multimodal::weierstrass, 0.5 / 100.0};
+static constexpr auto griewank = basic_problem{cecxx::functions::multimodal::griewank, 6.0};
 }  // namespace cecxx::benchmark::detail::cec2017
