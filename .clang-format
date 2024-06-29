@@ -1,6 +1,6 @@
 Language: Cpp
-ColumnLimit: 120
-BasedOnStyle: Google
+ColumnLimit: 80
+BasedOnStyle: LLVM
 IndentPPDirectives: AfterHash
 IndentCaseLabels: false
 AlwaysBreakTemplateDeclarations: false
