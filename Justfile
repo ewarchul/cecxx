@@ -1,7 +1,7 @@
 set dotenv-load
 
+alias i := init_build
 alias b := build
-alias r := rebuild
 alias p := package
 alias e := exe
 alias t := test
@@ -12,19 +12,21 @@ c_compiler := "${CC}"
 build_dir := "build-" + cxx_compiler
 ncores := `nproc`
 
-build: clean
-  mkdir -p {{build_dir}}
-  cd {{build_dir}} && CC={{c_compiler}} CXX={{cxx_compiler}} cmake -DFUZZTEST_FUZZING_MODE=on -DWITH_TESTS=on .. 
-  ln -fs {{build_dir}}/compile_commands.json compile_commands.json
-  cd {{build_dir}} && make -j {{ncores}}
 
-rebuild: 
+# cd {{build_dir}} && CC={{c_compiler}} CXX={{cxx_compiler}} cmake -DWITH_TESTS=off .. 
+
+init_build: clean
+  mkdir -p {{build_dir}}
+  cd {{build_dir}} && CC={{c_compiler}} CXX={{cxx_compiler}} cmake -DFUZZTEST_FUZZING_MODE=on -DWITH_TESTS=on -DWITH_EXAMPLES=on .. 
+  ln -fs {{build_dir}}/compile_commands.json compile_commands.json
+
+build: 
   cd {{build_dir}} && make -j {{ncores}}
 
 exe:
   ./{{build_dir}}/main
 
-fuzz_duration := "2s"
+fuzz_duration := "15s"
 test: 
   #!/usr/bin/env bash
   set -euxo pipefail

@@ -11,7 +11,6 @@ include(GoogleTest)
 
 fuzztest_setup_fuzzing_flags()
 
-
 add_compile_definitions(DATA_STORAGE_PATH="${CMAKE_SOURCE_DIR}/data")
 
 add_executable(cecxx-fuzz gtest/cec2017_oracle_test.cpp oracle/cec2017.cpp)

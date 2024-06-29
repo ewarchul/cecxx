@@ -1,9 +1,15 @@
 #pragma once
 
+// clang-format off
 #include "gtest/gtest.h"
-#include "cecxx/evaluator.hpp"
+// clang-format on
 
-template <cecxx::cec_edition_t Edition, int Dimension> struct CecTestFixture : public testing::Test {
-  CecTestFixture() : cec_evaluator{cecxx::evaluator(Edition, Dimension, DATA_STORAGE_PATH)} {}
-  cecxx::evaluator cec_evaluator;
+#include "cecxx/benchmark/evaluator.hpp"
+
+template <cecxx::benchmark::cec_edition_t Edition, int Dimension>
+struct CecTestFixture : public testing::Test {
+  CecTestFixture()
+      : cec_evaluator{cecxx::benchmark::evaluator(Edition, Dimension,
+                                                  DATA_STORAGE_PATH)} {}
+  cecxx::benchmark::evaluator cec_evaluator;
 };

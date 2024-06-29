@@ -5,7 +5,6 @@
 #include "cecxx/benchmark/detail/context.hpp"
 
 namespace cecxx::benchmark::detail {
-
 struct complex_problem_params {
   std::vector<double> deltas{};
   std::vector<double> biases{};

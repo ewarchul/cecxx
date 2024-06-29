@@ -7,7 +7,7 @@ int ini_flag, n_flag, func_flag, *SS;
 
 auto STORAGE_PREFIX(const auto& format) -> std::string {
   using namespace std::string_literals;
-  return std::string{CEC_STORAGE} + "/cec2017/"s + format;
+  return std::string{DATA_STORAGE_PATH} + "/cec2017/"s + format;
 }
 
 long double fast_pow(long double x, int p) {

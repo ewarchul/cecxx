@@ -22,21 +22,19 @@ auto main() -> int {
 
     // Prepare input which resembles multidimensional array
     const auto input = std::vector<std::vector<f64>>{
-        rv::repeat(10.0) | rv::take(DIMENSION) | ranges::to_vector};
-
-
+        rv::repeat(0.0) | rv::take(DIMENSION) | ranges::to_vector};
 
     // Evaluate given input on each optimization problem from CEC2017
     const auto start = std::chrono::system_clock::now();
-    for (const auto &fn : rv::closed_iota(11, 11)) {
+    for (const auto &fn : rv::closed_iota(1, 30)) {
       auto output = cec2017_eval(fn, input);
       fmt::println("fn = {}, output = {:}", fn, output);
     }
+
     fmt::println("Elapsed time: {}",
                  std::chrono::duration_cast<std::chrono::microseconds>(
                      std::chrono::system_clock::now() - start));
 
-    return EXIT_SUCCESS;
     // Create a closure for 1st optimizaiton problem from CEC2017
     const auto first_fn = [&eval = cec2017_eval](const auto &xs) {
       return eval(11, xs);

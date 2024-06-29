@@ -11,6 +11,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 include(Package)
 include(config)
+
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 include(GenerateExportHeader)
@@ -49,7 +50,6 @@ target_sources(cecxx PRIVATE ${SOURCES})
 target_sources(cecxx PUBLIC FILE_SET HEADERS BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/include" FILES ${HEADERS})
 target_compile_options(cecxx PRIVATE ${COMPILE_FLAGS})
 target_compile_features(cecxx PRIVATE cxx_std_20)
-#target_compile_definitions(cecxx PUBLIC DEFAULT_BENCHMARK_DATADIR="${BENCHMARK_DATA_STORAGE}")
 
 configure_file(defaults.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/include/cecxx/benchmark/defaults.hpp) 
 generate_export_header(cecxx)
@@ -60,7 +60,6 @@ write_basic_package_version_file("${PROJECT_BINARY_DIR}/cecxxConfigVersion.cmake
 )
 
 include(CPack)
-message("${BENCHMARK_DATA_STORAGE}")
 
 install(TARGETS cecxx EXPORT cecxxTargets FILE_SET HEADERS)
 install(EXPORT cecxxTargets NAMESPACE cecxx:: DESTINATION lib/cmake/cecxx)
