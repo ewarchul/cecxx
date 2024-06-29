@@ -9,7 +9,7 @@ namespace cecxx::benchmark::detail {
 void shufflefunc(std::span<const f64> input, std::span<f64> output,
                  std::span<const i64> shuffle_vec) {
   for (auto i = 0u; i < output.size(); i++) {
-    auto idx = static_cast<u64>(std::min(shuffle_vec[i] - 1, 1L));
+    auto idx = static_cast<u64>(std::max(shuffle_vec[i] - 1, 1L));
     output[i] = input[idx];
   }
 }
