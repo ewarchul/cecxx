@@ -10,8 +10,6 @@
 
 #include "cecxx/benchmark/evaluator.hpp"
 
-constexpr auto CEC_STORAGE{"/home/ewarchul/open-source/optim/cecxx/data"};
-
 namespace rv = ranges::views;
 using namespace cecxx;
 
@@ -20,8 +18,9 @@ auto main() -> int {
     const auto dimensions = std::vector{10ul, 30ul, 50ul, 100ul};
 
     // Create an evaluator object for the CEC2017 benchmark
-    auto cec2017_eval = benchmark::evaluator(
-        cecxx::benchmark::cec_edition_t::cec2017, dimensions, CEC_STORAGE);
+    auto cec2017_eval =
+        benchmark::evaluator(cecxx::benchmark::cec_edition_t::cec2017,
+                             dimensions, DATA_STORAGE_PATH);
 
     // create problem grid [problem_number X dimension]
     const auto problem_grid =

@@ -22,7 +22,7 @@ constexpr auto MAX_ABS_ERROR = 1e-8;
 constexpr auto CEC_2017_LOWER_BOUND = -100.0;
 constexpr auto CEC_2017_UPPER_BOUND = 100.0;
 
-class Cec2017ConformanceTest
+class Cec2017ComplianceTest
     : public PerFuzzTestFixtureAdapter<
           CecTestFixture<cec_edition_t::cec2017, 10, 30, 50, 100>> {
 public:
@@ -51,25 +51,25 @@ private:
   }
 };
 
-FUZZ_TEST_F(Cec2017ConformanceTest, Cec2017D10ImplsAreEquiv)
+FUZZ_TEST_F(Cec2017ComplianceTest, Cec2017D10ImplsAreEquiv)
     .WithDomains(PositiveVectorOf<double>(InRange(CEC_2017_LOWER_BOUND,
                                                   CEC_2017_UPPER_BOUND))
                      .WithSize(10),
                  InCecProblemRange(cec_edition_t::cec2017));
 
-FUZZ_TEST_F(Cec2017ConformanceTest, Cec2017D30ImplsAreEquiv)
+FUZZ_TEST_F(Cec2017ComplianceTest, Cec2017D30ImplsAreEquiv)
     .WithDomains(PositiveVectorOf<double>(InRange(CEC_2017_LOWER_BOUND,
                                                   CEC_2017_UPPER_BOUND))
                      .WithSize(30),
                  InCecProblemRange(cec_edition_t::cec2017));
 
-FUZZ_TEST_F(Cec2017ConformanceTest, Cec2017D50ImplsAreEquiv)
+FUZZ_TEST_F(Cec2017ComplianceTest, Cec2017D50ImplsAreEquiv)
     .WithDomains(PositiveVectorOf<double>(InRange(CEC_2017_LOWER_BOUND,
                                                   CEC_2017_UPPER_BOUND))
                      .WithSize(50),
                  InCecProblemRange(cec_edition_t::cec2017));
 
-FUZZ_TEST_F(Cec2017ConformanceTest, Cec2017D100ImplsAreEquiv)
+FUZZ_TEST_F(Cec2017ComplianceTest, Cec2017D100ImplsAreEquiv)
     .WithDomains(PositiveVectorOf<double>(InRange(CEC_2017_LOWER_BOUND,
                                                   CEC_2017_UPPER_BOUND))
                      .WithSize(100),

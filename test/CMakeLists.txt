@@ -13,7 +13,7 @@ fuzztest_setup_fuzzing_flags()
 
 add_compile_definitions(DATA_STORAGE_PATH="${CMAKE_SOURCE_DIR}/data")
 
-add_executable(cecxx-fuzz gtest/cec2017_oracle_test.cpp oracle/cec2017.cpp)
+add_executable(cecxx-fuzz gtest/cec2017_oracle_compliance_test.cpp oracle/cec2017.cpp)
 target_include_directories(cecxx-fuzz PUBLIC .)
 target_link_libraries(cecxx-fuzz PRIVATE cecxx)
 
