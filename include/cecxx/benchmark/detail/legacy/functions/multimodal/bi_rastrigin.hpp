@@ -8,13 +8,13 @@
 
 namespace cecxx::functions::multimodal::legacy {
 
-inline auto bi_rastrigin(std::span<const double> input, benchmark::detail::problem_context_view ctx,
-                  benchmark::detail::affine_mask_t mask) -> double {
+inline auto bi_rastrigin(std::span<const f64> input, benchmark::detail::problem_context_view ctx,
+                         benchmark::detail::affine_mask_t mask) -> f64 {
   using namespace cecxx::benchmark;
   const auto nrow = input.size();
-  auto y = std::vector<double>(nrow);
-  auto z = std::vector<double>(nrow);
-  auto tmpx = std::vector<double>(nrow);
+  auto y = std::vector<f64>(nrow);
+  auto z = std::vector<f64>(nrow);
+  auto tmpx = std::vector<f64>(nrow);
 
   if (to_underlying(mask.shift) == 1) {
     detail::shiftfunc(input, y, ctx.shift);
@@ -41,11 +41,11 @@ inline auto bi_rastrigin(std::span<const double> input, benchmark::detail::probl
     tmpx[i] += mu0;
   }
 
-  double tmp{};
-  double tmp1{};
-  double tmp2{};
+  f64 tmp{};
+  f64 tmp1{};
+  f64 tmp2{};
   constexpr auto d = 1.0;
-  auto s = 1.0 - 1.0 / (2.0 * std::pow(static_cast<double>(nrow) + 20.0, 0.5) - 8.2);
+  auto s = 1.0 - 1.0 / (2.0 * std::pow(static_cast<f64>(nrow) + 20.0, 0.5) - 8.2);
   auto mu1 = -std::pow((mu0 * mu0 - d) / s, 0.5);
   for (auto i = 0u; i < nrow; i++) {
     tmp = tmpx[i] - mu0;
@@ -54,7 +54,7 @@ inline auto bi_rastrigin(std::span<const double> input, benchmark::detail::probl
     tmp2 += tmp * tmp;
   }
   tmp2 *= s;
-  tmp2 += d * static_cast<double>(nrow);
+  tmp2 += d * static_cast<f64>(nrow);
   tmp = 0.0;
   auto output{0.0};
 
@@ -68,7 +68,7 @@ inline auto bi_rastrigin(std::span<const double> input, benchmark::detail::probl
     } else {
       output = tmp2;
     }
-    output += 10.0 * (static_cast<double>(nrow) - tmp);
+    output += 10.0 * (static_cast<f64>(nrow) - tmp);
   } else {
     for (auto i = 0u; i < nrow; i++) {
       tmp += std::cos(2.0 * M_PI * z[i]);
@@ -78,10 +78,10 @@ inline auto bi_rastrigin(std::span<const double> input, benchmark::detail::probl
     } else {
       output = tmp2;
     }
-    output += 10.0 * (static_cast<double>(nrow) - tmp);
+    output += 10.0 * (static_cast<f64>(nrow) - tmp);
   }
 
   return output;
 }
 
-}  // namespace cecxx::problem::multimodal::legacy
+}  // namespace cecxx::functions::multimodal::legacy

@@ -13,10 +13,10 @@ auto calc_hybrid_chunks(std::ranges::range auto&& mix_ratios, const std::integra
   auto chunk_size = std::vector<double>(fn_num);
   double acc{};
   for (auto i = 0u; i < fn_num - 1; ++i) {
-    chunk_size[i] = std::ceil(mix_ratios[i] * dim);
+    chunk_size[i] = std::ceil(mix_ratios[i] * static_cast<double>(dim));
     acc += chunk_size[i];
   }
-  chunk_size[fn_num - 1] = dim - acc;
+  chunk_size[fn_num - 1] = static_cast<double>(dim) - acc;
   auto chunk_offset = std::vector<double>(fn_num);
   for (auto i = 1u; i < fn_num; i++) {
     chunk_offset[i] = chunk_offset[i - 1] + chunk_size[i - 1];

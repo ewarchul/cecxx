@@ -3,11 +3,13 @@
 #include <cmath>
 #include <span>
 
+#include "cecxx/types.hpp"
+
 namespace cecxx::functions::multimodal {
-constexpr auto escaffer(std::span<const double> input) -> double {
+constexpr auto escaffer(std::span<const f64> input) -> f64 {
   const auto nrow = input.size();
   auto output{0.0};
-  double temp1{}, temp2{};
+  f64 temp1{}, temp2{};
   for (auto i = 0u; i < nrow - 1; i++) {
     temp1 = std::sin(sqrt(input[i] * input[i] + input[i + 1] * input[i + 1]));
     temp1 = temp1 * temp1;

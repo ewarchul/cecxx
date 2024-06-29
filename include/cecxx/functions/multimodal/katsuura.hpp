@@ -3,12 +3,14 @@
 #include <cmath>
 #include <span>
 
+#include "cecxx/types.hpp"
+
 namespace cecxx::functions::multimodal {
-constexpr auto katsuura(std::span<const double> input) -> double {
+constexpr auto katsuura(std::span<const f64> input) -> f64 {
   const auto nrow = input.size();
   auto output{1.0};
-  double temp{}, tmp1{}, tmp2{}, tmp3{};
-  tmp3 = std::pow(1.0 * static_cast<double>(nrow), 1.2);
+  f64 temp{}, tmp1{}, tmp2{}, tmp3{};
+  tmp3 = std::pow(1.0 * static_cast<f64>(nrow), 1.2);
   for (auto i = 0u; i < nrow; i++) {
     temp = 0.0;
     for (auto j = 1u; j <= 32; j++) {
@@ -18,7 +20,7 @@ constexpr auto katsuura(std::span<const double> input) -> double {
     }
     output *= std::pow(1.0 + (i + 1) * temp, 10.0 / tmp3);
   }
-  tmp1 = 10.0 / static_cast<double>(nrow) / static_cast<double>(nrow);
+  tmp1 = 10.0 / static_cast<f64>(nrow) / static_cast<f64>(nrow);
 
   return output * tmp1 - tmp1;
 }

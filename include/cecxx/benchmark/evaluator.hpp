@@ -13,15 +13,15 @@ namespace cecxx::benchmark {
 
 class evaluator {
  public:
-  evaluator(const cec_edition_t edition, const int dimension,
+  evaluator(const cec_edition_t edition, const u8 dimension,
             const std::filesystem::path& storage = detail::default_benchmark_datadir());
 
-  auto operator()(const int fn, const matrix<double> auto& input) const -> std::vector<double> {
+  auto operator()(const u8 fn, const matrix<double> auto& input) const -> std::vector<double> {
     return detail::dispatch_cec(edition_, ctx_.problem_context(fn), fn, input);
   }
 
  private:
-  int dim_{};
+  u8 dim_{};
   detail::context_t ctx_;
   cec_edition_t edition_{};
 };

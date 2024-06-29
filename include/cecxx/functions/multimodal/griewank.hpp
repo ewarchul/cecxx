@@ -3,8 +3,10 @@
 #include <cmath>
 #include <span>
 
+#include "cecxx/types.hpp"
+
 namespace cecxx::functions::multimodal {
-constexpr auto griewank(std::span<const double> input) -> double {
+constexpr auto griewank(std::span<const f64> input) -> f64 {
   auto sum = 0.0;
   auto tmp = 1.0;
   for (auto i = 0u; i < input.size(); i++) {
