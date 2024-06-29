@@ -17,10 +17,12 @@ constexpr auto escaffer(std::span<const f64> input) -> f64 {
     output += 0.5 + (temp1 - 0.5) / (temp2 * temp2);
   }
 
-  temp1 = std::sin(sqrt(input[nrow - 1] * input[nrow - 1] + input[0] * input[0]));
+  temp1 =
+      std::sin(sqrt(input[nrow - 1] * input[nrow - 1] + input[0] * input[0]));
   temp1 = temp1 * temp1;
-  temp2 = 1.0 + 0.001 * (input[nrow - 1] * input[nrow - 1] + input[0] * input[0]);
+  temp2 =
+      1.0 + 0.001 * (input[nrow - 1] * input[nrow - 1] + input[0] * input[0]);
 
   return output + 0.5 + (temp1 - 0.5) / (temp2 * temp2);
 }
-}  // namespace cecxx::functions::multimodal
+} // namespace cecxx::functions::multimodal

@@ -21,4 +21,4 @@ constexpr auto grie_rosen(std::span<const f64> input) -> f64 {
 
   return output;
 }
-}  // namespace cecxx::functions::multimodal
+} // namespace cecxx::functions::multimodal

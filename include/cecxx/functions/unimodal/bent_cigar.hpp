@@ -14,4 +14,4 @@ constexpr auto bent_cigar(std::span<const f64> input) -> f64 {
 
   return output;
 }
-}  // namespace cecxx::functions::unimodal
+} // namespace cecxx::functions::unimodal

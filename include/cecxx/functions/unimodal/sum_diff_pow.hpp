@@ -13,4 +13,4 @@ constexpr auto sum_diff_pow(std::span<const f64> input) -> f64 {
   }
   return output;
 }
-}  // namespace cecxx::functions::unimodal
+} // namespace cecxx::functions::unimodal

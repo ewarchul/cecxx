@@ -8,8 +8,12 @@
 namespace cecxx::benchmark::detail {
 
 using stateless_eval_func = double (*)(std::span<const f64>);
-using local_statefull_eval_func = double (*)(std::span<const f64>, problem_context_view, affine_mask_t);
-using nonlocal_statefull_eval_func = double (*)(std::span<const f64>, problem_context_view, affine_mask_t,
+using local_statefull_eval_func = double (*)(std::span<const f64>,
+                                             problem_context_view,
+                                             affine_mask_t);
+using nonlocal_statefull_eval_func = double (*)(std::span<const f64>,
+                                                problem_context_view,
+                                                affine_mask_t,
                                                 std::vector<f64>);
 
-}  // namespace cecxx::benchmark::detail
+} // namespace cecxx::benchmark::detail

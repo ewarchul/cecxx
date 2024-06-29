@@ -7,7 +7,8 @@
 
 namespace cecxx::benchmark::detail {
 
-template <typename Enum> constexpr auto to_underlying(Enum e) noexcept -> std::underlying_type_t<Enum> {
+template <typename Enum>
+constexpr auto to_underlying(Enum e) noexcept -> std::underlying_type_t<Enum> {
   return static_cast<std::underlying_type_t<Enum>>(e);
 }
 
@@ -26,4 +27,4 @@ struct affine_mask_t {
   f64 rate{1.0};
 };
 
-}  // namespace cecxx::benchmark::detail
+} // namespace cecxx::benchmark::detail

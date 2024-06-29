@@ -8,7 +8,8 @@
 
 namespace cecxx::benchmark::detail::cec2017 {
 
-auto dispatch_problem(problem_context_view ctx, const u8 fn, const auto& input) {
+auto dispatch_problem(problem_context_view ctx, const u8 fn,
+                      const auto &input) {
   switch (fn) {
   case 1:
     return bent_cigar(input, ctx);
@@ -75,7 +76,7 @@ auto dispatch_problem(problem_context_view ctx, const u8 fn, const auto& input) 
   throw std::runtime_error{"Unknown CEC problem"};
 }
 
-auto evaluate(problem_context_view ctx, const u8 fn_num, const auto& input) {
+auto evaluate(problem_context_view ctx, const u8 fn_num, const auto &input) {
   const auto ncol = input.size();
   const auto nrow = input.at(0).size();
   if (not cec2017::VALID_DIMENSIONS.contains(nrow)) {
@@ -84,10 +85,11 @@ auto evaluate(problem_context_view ctx, const u8 fn_num, const auto& input) {
 
   auto output = std::vector<f64>(ncol);
   for (auto col{0u}; col < output.size(); ++col) {
-    output[col] = dispatch_problem(ctx, fn_num, input.at(col)) + cec2017::CEC2017_OFFSET.at(fn_num);
+    output[col] = dispatch_problem(ctx, fn_num, input.at(col)) +
+                  cec2017::CEC2017_OFFSET.at(fn_num);
   }
 
   return output;
 }
 
-}  // namespace cecxx::benchmark::detail::cec2017
+} // namespace cecxx::benchmark::detail::cec2017

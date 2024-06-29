@@ -25,4 +25,4 @@ constexpr auto total_problem_num(const cec_edition_t edition) -> u8 {
   throw std::runtime_error("Unknown CEC edition");
 }
 
-}  // namespace cecxx::benchmark::detail
+} // namespace cecxx::benchmark::detail

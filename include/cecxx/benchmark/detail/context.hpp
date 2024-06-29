@@ -9,7 +9,8 @@
 #include "cecxx/types.hpp"
 
 namespace cecxx::benchmark::detail {
-template <typename Number> using context_table_t = std::unordered_map<fn_num, table_data<Number>>;
+template <typename Number>
+using context_table_t = std::unordered_map<fn_num, table_data<Number>>;
 
 struct problem_context_view {
   std::span<const f64> shift{};
@@ -18,8 +19,9 @@ struct problem_context_view {
 };
 
 class context_t {
- public:
-  context_t(const cec_edition_t edition, const std::filesystem::path& storage, const u8 dim);
+public:
+  context_t(const cec_edition_t edition, const std::filesystem::path &storage,
+            const u8 dim);
 
   auto shift(const u8 fn) const { return shift_.at(fn); }
   auto rotate(const u8 fn) const { return rotate_.at(fn); }
@@ -28,10 +30,10 @@ class context_t {
     return problem_context_view{shift_.at(fn), rotate_.at(fn), shuffle_.at(fn)};
   }
 
- private:
+private:
   context_table_t<f64> rotate_{};
   context_table_t<i64> shuffle_{};
   context_table_t<f64> shift_{};
 };
 
-}  // namespace cecxx::benchmark::detail
+} // namespace cecxx::benchmark::detail

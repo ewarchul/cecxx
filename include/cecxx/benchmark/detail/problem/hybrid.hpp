@@ -8,7 +8,8 @@
 
 namespace cecxx::benchmark::detail {
 
-auto calc_hybrid_chunks(std::ranges::range auto&& mix_ratios, const std::integral auto dim) {
+auto calc_hybrid_chunks(std::ranges::range auto &&mix_ratios,
+                        const std::integral auto dim) {
   const auto fn_num = mix_ratios.size();
   auto chunk_size = std::vector<double>(fn_num);
   double acc{};
@@ -26,32 +27,42 @@ auto calc_hybrid_chunks(std::ranges::range auto&& mix_ratios, const std::integra
 }
 
 template <typename... F> class hybrid_problem {
- public:
-  hybrid_problem(std::tuple<F...> compounds, std::vector<double> compound_ratios)
+public:
+  hybrid_problem(std::tuple<F...> compounds,
+                 std::vector<double> compound_ratios)
       : compounds{compounds}, compound_ratios{std::move(compound_ratios)} {}
 
   auto operator()(std::span<const double> input, problem_context_view ctx,
-                  affine_mask_t mask = {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}) const -> double {
-    constexpr auto fn_indxs = std::make_index_sequence<std::tuple_size_v<decltype(compounds)>>();
+                  affine_mask_t mask = {
+                      .rot = do_affine_trans::yes,
+                      .shift = do_affine_trans::yes}) const -> double {
+    constexpr auto fn_indxs =
+        std::make_index_sequence<std::tuple_size_v<decltype(compounds)>>();
     const auto partial_eval = invoke_impl(input, ctx, mask, fn_indxs);
-    return std::accumulate(partial_eval.begin(), partial_eval.end(), 0.0, std::plus{});
+    return std::accumulate(partial_eval.begin(), partial_eval.end(), 0.0,
+                           std::plus{});
   }
 
- private:
+private:
   template <std::size_t... CompoundIndices>
-  auto invoke_impl(std::span<const double> input, problem_context_view ctx, affine_mask_t mask,
+  auto invoke_impl(std::span<const double> input, problem_context_view ctx,
+                   affine_mask_t mask,
                    std::index_sequence<CompoundIndices...>) const {
-    const auto [sizes, offsets] = calc_hybrid_chunks(compound_ratios, input.size());
+    const auto [sizes, offsets] =
+        calc_hybrid_chunks(compound_ratios, input.size());
     auto [y, z] = apply_geom_transformations(input, ctx, mask);
     shufflefunc(z, y, ctx.shuffle);
 
-    auto partial_eval = std::array<double, std::tuple_size_v<decltype(compounds)>>{};
+    auto partial_eval =
+        std::array<double, std::tuple_size_v<decltype(compounds)>>{};
     (
         [&](auto) {
           auto comp_fn = std::get<CompoundIndices>(compounds);
-          const auto partial_input = std::span{y}.subspan(offsets[CompoundIndices], sizes[CompoundIndices]);
-          partial_eval[CompoundIndices] =
-              comp_fn(partial_input, ctx, {.rot = do_affine_trans::no, .shift = do_affine_trans::no}, y);
+          const auto partial_input = std::span{y}.subspan(
+              offsets[CompoundIndices], sizes[CompoundIndices]);
+          partial_eval[CompoundIndices] = comp_fn(
+              partial_input, ctx,
+              {.rot = do_affine_trans::no, .shift = do_affine_trans::no}, y);
         }(CompoundIndices),
         ...);
 
@@ -61,4 +72,4 @@ template <typename... F> class hybrid_problem {
   std::tuple<F...> compounds{};
   std::vector<double> compound_ratios{};
 };
-}  // namespace cecxx::benchmark::detail
+} // namespace cecxx::benchmark::detail

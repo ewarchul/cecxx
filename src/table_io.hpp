@@ -11,7 +11,7 @@
 namespace cecxx::benchmark::detail {
 
 struct FILE_deleter_t {
-  auto operator()(std::FILE* ptr) { std::fclose(ptr); }
+  auto operator()(std::FILE *ptr) { std::fclose(ptr); }
 };
 
 struct table_size_t {
@@ -20,16 +20,20 @@ struct table_size_t {
   bool scaler_applied{false};
 };
 
-auto ROT_TABLE_FILENAME(const std::filesystem::path& datadir, const u8 dim, const u8 fn) -> std::string;
-auto SHUFFLE_TABLE_FILENAME(const std::filesystem::path& datadir, const u8 dim, const u8 fn) -> std::string;
-auto SHIFT_TABLE_FILENAME(const std::filesystem::path& datadir, const u8, const u8 fn) -> std::string;
+auto ROT_TABLE_FILENAME(const std::filesystem::path &datadir, const u8 dim,
+                        const u8 fn) -> std::string;
+auto SHUFFLE_TABLE_FILENAME(const std::filesystem::path &datadir, const u8 dim,
+                            const u8 fn) -> std::string;
+auto SHIFT_TABLE_FILENAME(const std::filesystem::path &datadir, const u8,
+                          const u8 fn) -> std::string;
 
 auto ROT_TABLE_SIZE(const u8 dim, const u8 fn) -> table_size_t;
 auto SHIFT_TABLE_SIZE(const u8 dim, const u8 fn) -> table_size_t;
 auto SHUFFLE_TABLE_SIZE(const u8 dim, const u8 fn) -> table_size_t;
 
 template <table_type_t Table, typename... Args>
-constexpr auto get_table_name(const std::filesystem::path& datapath, Args... args) {
+constexpr auto get_table_name(const std::filesystem::path &datapath,
+                              Args... args) {
   switch (Table) {
   case table_type_t::rotate:
     return ROT_TABLE_FILENAME(datapath, args...);
@@ -42,7 +46,8 @@ constexpr auto get_table_name(const std::filesystem::path& datapath, Args... arg
   throw std::runtime_error("Unknown table type.");
 }
 
-template <table_type_t Table, typename ValueType> constexpr auto get_table_size(const u8 dim, const u8 fn) {
+template <table_type_t Table, typename ValueType>
+constexpr auto get_table_size(const u8 dim, const u8 fn) {
   switch (Table) {
   case table_type_t::rotate:
     return ROT_TABLE_SIZE(dim, fn);
@@ -55,14 +60,16 @@ template <table_type_t Table, typename ValueType> constexpr auto get_table_size(
   throw std::runtime_error("Unknown table type.");
 }
 
-template <table_type_t Table, numeric T> auto scan_table(auto* fs, const u8 dim, const u8 fn) -> std::vector<T> {
+template <table_type_t Table, numeric T>
+auto scan_table(auto *fs, const u8 dim, const u8 fn) -> std::vector<T> {
   const auto sz_info = get_table_size<Table, T>(dim, fn);
   auto table = std::vector<T>(sz_info.size);
 
   const auto scan_scaled_shift_table = [&]() {
     for (auto i = 0u; i < sz_info.scaler - 1; ++i) {
       for (auto j = 0u; j < dim; ++j) {
-        if (std::fscanf(fs, number_formatter<T>().data(), &table[i * dim + j]) == -1) {
+        if (std::fscanf(fs, number_formatter<T>().data(),
+                        &table[i * dim + j]) == -1) {
           throw std::runtime_error{"Failed to parse table data from file."};
         }
       }
@@ -84,9 +91,11 @@ template <table_type_t Table, numeric T> auto scan_table(auto* fs, const u8 dim,
 }
 
 template <table_type_t Table, numeric T>
-auto load_table_data(const std::filesystem::path& datapath, const u8 dim, const u8 fn) {
+auto load_table_data(const std::filesystem::path &datapath, const u8 dim,
+                     const u8 fn) {
   const auto filename = get_table_name<Table>(datapath, dim, fn);
-  auto fs_ptr = std::unique_ptr<std::FILE, FILE_deleter_t>{std::fopen(filename.data(), "r")};
+  auto fs_ptr = std::unique_ptr<std::FILE, FILE_deleter_t>{
+      std::fopen(filename.data(), "r")};
   if (not fs_ptr) {
     throw std::runtime_error{"Failed to open [" + filename + "]."};
   }
@@ -94,4 +103,4 @@ auto load_table_data(const std::filesystem::path& datapath, const u8 dim, const 
   return scan_table<Table, T>(fs_ptr.get(), dim, fn);
 }
 
-}  // namespace cecxx::benchmark::detail
+} // namespace cecxx::benchmark::detail
