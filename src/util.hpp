@@ -16,7 +16,7 @@ template <typename T> constexpr auto number_formatter() -> std::string_view {
   }
 }
 
-constexpr auto total_problem_num(const cec_edition_t edition) -> u8 {
+constexpr auto total_problem_num(const cec_edition_t edition) -> i64 {
   switch (edition) {
   case cec_edition_t::cec2017:
     return 30;

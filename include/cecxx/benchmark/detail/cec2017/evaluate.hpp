@@ -8,7 +8,7 @@
 
 namespace cecxx::benchmark::detail::cec2017 {
 
-auto dispatch_problem(problem_context_view ctx, const u8 fn,
+auto dispatch_problem(problem_context_view ctx, const usize fn,
                       const auto &input) {
   switch (fn) {
   case 1:
@@ -76,7 +76,7 @@ auto dispatch_problem(problem_context_view ctx, const u8 fn,
   throw std::runtime_error{"Unknown CEC problem"};
 }
 
-auto evaluate(problem_context_view ctx, const u8 fn_num, const auto &input) {
+auto evaluate(problem_context_view ctx, const usize fn_num, const auto &input) {
   const auto ncol = input.size();
   const auto nrow = input.at(0).size();
   if (not cec2017::VALID_DIMENSIONS.contains(nrow)) {

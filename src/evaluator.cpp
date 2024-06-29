@@ -2,8 +2,9 @@
 
 namespace cecxx::benchmark {
 
-evaluator::evaluator(const cec_edition_t edition, const u8 dimension,
+evaluator::evaluator(const cec_edition_t edition,
+                     std::span<const usize> dimensions,
                      const std::filesystem::path &storage)
-    : dim_{dimension}, ctx_{edition, storage, dim_}, edition_{edition} {}
+    : ctx_{edition, storage, dimensions}, edition_{edition} {}
 
 } // namespace cecxx::benchmark

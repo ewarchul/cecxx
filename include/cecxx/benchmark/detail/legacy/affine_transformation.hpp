@@ -17,5 +17,5 @@ void sr_func(std::span<const f64> input, std::span<f64> sr_x,
              const do_affine_trans rotate, std::span<f64> output);
 void cf_cal(std::span<const f64> input, std::span<f64> output,
             std::span<const f64> shift_vec, std::span<const f64> delta,
-            std::span<const f64> bias, std::span<f64> fit, u8 cf_num);
+            std::span<const f64> bias, std::span<f64> fit, usize cf_num);
 } // namespace cecxx::benchmark::detail

@@ -9,7 +9,7 @@ namespace cecxx::benchmark::detail {
 void shufflefunc(std::span<const f64> input, std::span<f64> output,
                  std::span<const i64> shuffle_vec) {
   for (auto i = 0u; i < output.size(); i++) {
-    auto idx = static_cast<u64>(std::max(shuffle_vec[i] - 1, 0L));
+    auto idx = static_cast<usize>(std::max(shuffle_vec[i] - 1, 0L));
     output[i] = input[idx];
   }
 }
@@ -65,7 +65,7 @@ void sr_func(std::span<const f64> input, std::span<f64> sr_x,
 
 void cf_cal(std::span<const f64> input, std::span<f64> output,
             std::span<const f64> shift_vec, std::span<const f64> delta,
-            std::span<const f64> bias, std::span<f64> fit, u8 cf_num) {
+            std::span<const f64> bias, std::span<f64> fit, usize cf_num) {
   const auto nrow = input.size();
   auto w = std::vector<f64>(cf_num);
   f64 w_max = 0, w_sum = 0;
@@ -93,7 +93,7 @@ void cf_cal(std::span<const f64> input, std::span<f64> output,
     for (auto i = 0u; i < cf_num; i++) {
       w[i] = 1;
     }
-    w_sum = cf_num;
+    w_sum = static_cast<f64>(cf_num);
   }
   output[0] = 0.0;
   for (auto i = 0u; i < cf_num; i++) {

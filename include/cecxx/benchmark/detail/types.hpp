@@ -12,7 +12,7 @@ constexpr auto to_underlying(Enum e) noexcept -> std::underlying_type_t<Enum> {
   return static_cast<std::underlying_type_t<Enum>>(e);
 }
 
-using fn_num = u8;
+using fn_num = usize;
 
 template <typename T> using table_data = std::vector<T>;
 

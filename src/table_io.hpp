@@ -15,21 +15,21 @@ struct FILE_deleter_t {
 };
 
 struct table_size_t {
-  u64 size{};
+  usize size{};
   i64 scaler{};
   bool scaler_applied{false};
 };
 
-auto ROT_TABLE_FILENAME(const std::filesystem::path &datadir, const u8 dim,
-                        const u8 fn) -> std::string;
-auto SHUFFLE_TABLE_FILENAME(const std::filesystem::path &datadir, const u8 dim,
-                            const u8 fn) -> std::string;
-auto SHIFT_TABLE_FILENAME(const std::filesystem::path &datadir, const u8,
-                          const u8 fn) -> std::string;
+auto ROT_TABLE_FILENAME(const std::filesystem::path &datadir, const usize dim,
+                        const usize fn) -> std::string;
+auto SHUFFLE_TABLE_FILENAME(const std::filesystem::path &datadir,
+                            const usize dim, const usize fn) -> std::string;
+auto SHIFT_TABLE_FILENAME(const std::filesystem::path &datadir, const usize,
+                          const usize fn) -> std::string;
 
-auto ROT_TABLE_SIZE(const u8 dim, const u8 fn) -> table_size_t;
-auto SHIFT_TABLE_SIZE(const u8 dim, const u8 fn) -> table_size_t;
-auto SHUFFLE_TABLE_SIZE(const u8 dim, const u8 fn) -> table_size_t;
+auto ROT_TABLE_SIZE(const usize dim, const usize fn) -> table_size_t;
+auto SHIFT_TABLE_SIZE(const usize dim, const usize fn) -> table_size_t;
+auto SHUFFLE_TABLE_SIZE(const usize dim, const usize fn) -> table_size_t;
 
 template <table_type_t Table, typename... Args>
 constexpr auto get_table_name(const std::filesystem::path &datapath,
@@ -47,7 +47,7 @@ constexpr auto get_table_name(const std::filesystem::path &datapath,
 }
 
 template <table_type_t Table, typename ValueType>
-constexpr auto get_table_size(const u8 dim, const u8 fn) {
+constexpr auto get_table_size(const usize dim, const usize fn) {
   switch (Table) {
   case table_type_t::rotate:
     return ROT_TABLE_SIZE(dim, fn);
@@ -61,7 +61,7 @@ constexpr auto get_table_size(const u8 dim, const u8 fn) {
 }
 
 template <table_type_t Table, numeric T>
-auto scan_table(auto *fs, const u8 dim, const u8 fn) -> std::vector<T> {
+auto scan_table(auto *fs, const usize dim, const usize fn) -> std::vector<T> {
   const auto sz_info = get_table_size<Table, T>(dim, fn);
   auto table = std::vector<T>(sz_info.size);
 
@@ -91,8 +91,8 @@ auto scan_table(auto *fs, const u8 dim, const u8 fn) -> std::vector<T> {
 }
 
 template <table_type_t Table, numeric T>
-auto load_table_data(const std::filesystem::path &datapath, const u8 dim,
-                     const u8 fn) {
+auto load_table_data(const std::filesystem::path &datapath, const usize dim,
+                     const usize fn) {
   const auto filename = get_table_name<Table>(datapath, dim, fn);
   auto fs_ptr = std::unique_ptr<std::FILE, FILE_deleter_t>{
       std::fopen(filename.data(), "r")};

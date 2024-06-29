@@ -26,13 +26,13 @@ build:
 exe:
   ./{{build_dir}}/main
 
-fuzz_duration := "15s"
+fuzz_duration := "30s"
 test: 
   #!/usr/bin/env bash
   set -euxo pipefail
   dimensions=(10 30 50 100)
   for dim in ${dimensions[@]}; do
-    ./{{build_dir}}/test/cecxx-fuzz --fuzz="CecFuzzTest${dim}D.Cec2017ImplsAreEquiv" --fuzz_for={{fuzz_duration}} || true
+    ./{{build_dir}}/test/cecxx-fuzz --fuzz="Cec2017ConformanceTest.Cec2017D${dim}ImplsAreEquiv" --fuzz_for={{fuzz_duration}} || true
   done
 
 package:
