@@ -10,7 +10,7 @@ project(cecxx
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 include(Package)
-include(config)
+include(ProjectConfig)
 
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
@@ -51,6 +51,8 @@ target_sources(cecxx PUBLIC FILE_SET HEADERS BASE_DIRS "${CMAKE_CURRENT_SOURCE_D
 target_compile_options(cecxx PRIVATE ${COMPILE_FLAGS})
 target_compile_features(cecxx PRIVATE cxx_std_20)
 
+message(STATUS "The cecxx library is going to be compiled with the following additional flags: ${COMPILE_FLAGS}")
+
 configure_file(defaults.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/include/cecxx/benchmark/defaults.hpp) 
 generate_export_header(cecxx)
 
@@ -74,5 +76,9 @@ if (WITH_BENCHMARKS)
 endif()
 
 if (WITH_TESTS)
-  add_subdirectory(test)
+  if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    add_subdirectory(test)
+  else()
+    message(WARNING "To build tests, use clang compiler. Current CXX compiler: ${CMAKE_CXX_COMPILER}")
+  endif()
 endif(WITH_TESTS)

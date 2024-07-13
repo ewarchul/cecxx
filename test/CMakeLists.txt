@@ -1,3 +1,5 @@
+set(FUZZTEST_FUZZING_MODE ON)
+
 include(FetchContent)
 FetchContent_Declare(
   fuzztest

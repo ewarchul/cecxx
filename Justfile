@@ -17,7 +17,7 @@ ncores := `nproc`
 
 init_build: clean
   mkdir -p {{build_dir}}
-  cd {{build_dir}} && CC={{c_compiler}} CXX={{cxx_compiler}} cmake -DFUZZTEST_FUZZING_MODE=on -DWITH_TESTS=on -DWITH_EXAMPLES=on .. 
+  cd {{build_dir}} && CC={{c_compiler}} CXX={{cxx_compiler}} cmake -DWITH_TESTS=on -DWITH_EXAMPLES=on .. 
   ln -fs {{build_dir}}/compile_commands.json compile_commands.json
 
 build: 
