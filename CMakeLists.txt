@@ -49,7 +49,7 @@ add_library(cecxx)
 target_sources(cecxx PRIVATE ${SOURCES})
 target_sources(cecxx PUBLIC FILE_SET HEADERS BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/include" FILES ${HEADERS})
 target_compile_options(cecxx PRIVATE ${COMPILE_FLAGS})
-target_compile_features(cecxx PRIVATE cxx_std_20)
+target_compile_features(cecxx PRIVATE cxx_std_23)
 
 message(STATUS "The cecxx library is going to be compiled with the following additional flags: ${COMPILE_FLAGS}")
 

@@ -15,16 +15,19 @@ ncores := `nproc`
 
 # cd {{build_dir}} && CC={{c_compiler}} CXX={{cxx_compiler}} cmake -DWITH_TESTS=off .. 
 
+default:
+  @just --list
+
 init_build: clean
   mkdir -p {{build_dir}}
-  cd {{build_dir}} && CC={{c_compiler}} CXX={{cxx_compiler}} cmake -DWITH_TESTS=on -DWITH_EXAMPLES=on .. 
+  cd {{build_dir}} && CC={{c_compiler}} CXX={{cxx_compiler}} cmake -DWITH_TESTS=off -DWITH_EXAMPLES=on .. 
   ln -fs {{build_dir}}/compile_commands.json compile_commands.json
 
 build: 
   cd {{build_dir}} && make -j {{ncores}}
 
 exe:
-  ./{{build_dir}}/main
+  ./{{build_dir}}/example/main
 
 fuzz_duration := "30s"
 test: 
@@ -44,7 +47,3 @@ clean:
 fmt: 
   find src -iname '*.hpp' -o -iname '*.cpp' | xargs clang-format -i
   find include -iname '*.hpp' -o -iname '*.cpp' | xargs clang-format -i
-
-
-default:
-  @just --list

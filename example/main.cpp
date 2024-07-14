@@ -6,52 +6,93 @@
 #include <range/v3/all.hpp>
 #include <range/v3/range/conversion.hpp>
 #include <range/v3/view/cartesian_product.hpp>
+#include <thread>
 #include <vector>
 
 #include "cecxx/benchmark/evaluator.hpp"
+#include "cecxx/benchmark/runner.hpp"
 
 namespace rv = ranges::views;
+using namespace std::chrono_literals;
 using namespace cecxx;
+
+auto call_all_functions() {
+  const auto dimensions = std::vector{10ul, 30ul, 50ul, 100ul};
+
+  // Create an evaluator object for the CEC2017 benchmark
+  auto cec2017_eval = benchmark::evaluator(
+      cecxx::benchmark::cec_edition_t::cec2017, dimensions, DATA_STORAGE_PATH);
+
+  // create problem grid [problem_number X dimension]
+  const auto problem_grid =
+      rv::cartesian_product(dimensions, rv::closed_iota(1, 30));
+
+  // Evaluate given input on each optimization problem from CEC2017/D{10, 30,
+  // 50, 100}
+  const auto start = std::chrono::system_clock::now();
+  for (const auto &[dim, fn] : problem_grid) {
+    // Prepare input which resembles multidimensional array
+    const auto input = std::vector<std::vector<f64>>{
+        rv::repeat(0.0) | rv::take(dim) | ranges::to_vector};
+    auto output = cec2017_eval(fn, input);
+    fmt::println("dim = {}, fn = {}, output = {:}", dim, fn, output);
+  }
+
+  fmt::println("Elapsed time: {}",
+               std::chrono::duration_cast<std::chrono::microseconds>(
+                   std::chrono::system_clock::now() - start));
+
+  // Create a closure for 1st optimizaiton problem from CEC2017/D50
+  const auto input = std::vector<std::vector<f64>>{
+      rv::repeat(0.0) | rv::take(50) | ranges::to_vector};
+
+  const auto first_problem = [eval = cec2017_eval](const auto &xs) {
+    return eval(11, xs);
+  };
+
+  auto output = first_problem(input);
+  fmt::println("fn = 11, output = {}", output);
+}
+
+auto sphere_problem(std::span<double>) -> double { return 1.0; }
+
+struct dummy_optimizer {
+  auto name() -> std::string { return "dummy_optimizer"; }
+
+  auto optimize(benchmark::benchmark_problem, std::vector<double>)
+      -> benchmark::optim_result {
+    fmt::print("Optimizing some problem...");
+    std::this_thread::sleep_for(15s);
+    return {.best_values = std::vector{1.0, 5.0, 6.0}, .function_eval_num = 50};
+  }
+};
+
+auto run_benchmark() {
+  auto optim = dummy_optimizer{};
+  auto exec = benchmark::benchmark_executor{std::move(optim), 20};
+
+  auto bp = std::vector{
+      benchmark::benchmark_task{10, 1, 6, sphere_problem, {1, 2, 3}},
+      benchmark::benchmark_task{10, 2, 6, sphere_problem, {1, 2, 3}},
+      benchmark::benchmark_task{10, 3, 6, sphere_problem, {1, 2, 3}},
+      benchmark::benchmark_task{10, 4, 6, sphere_problem, {1, 2, 3}},
+      benchmark::benchmark_task{10, 5, 6, sphere_problem, {1, 2, 3}},
+      benchmark::benchmark_task{10, 6, 6, sphere_problem, {1, 2, 3}},
+      benchmark::benchmark_task{10, 7, 6, sphere_problem, {1, 2, 3}},
+      benchmark::benchmark_task{10, 8, 6, sphere_problem, {1, 2, 3}},
+      benchmark::benchmark_task{10, 9, 6, sphere_problem, {1, 2, 3}},
+      benchmark::benchmark_task{10, 10, 6, sphere_problem, {1, 2, 3}},
+
+  };
+  exec.execute_tasks(bp);
+  fmt::println("xD\n");
+  // exec.start();
+  // exec.wait_for_tasks();
+}
 
 auto main() -> int {
   try {
-    const auto dimensions = std::vector{10ul, 30ul, 50ul, 100ul};
-
-    // Create an evaluator object for the CEC2017 benchmark
-    auto cec2017_eval =
-        benchmark::evaluator(cecxx::benchmark::cec_edition_t::cec2017,
-                             dimensions, DATA_STORAGE_PATH);
-
-    // create problem grid [problem_number X dimension]
-    const auto problem_grid =
-        rv::cartesian_product(dimensions, rv::closed_iota(1, 30));
-
-    // Evaluate given input on each optimization problem from CEC2017/D{10, 30,
-    // 50, 100}
-    const auto start = std::chrono::system_clock::now();
-    for (const auto &[dim, fn] : problem_grid) {
-      // Prepare input which resembles multidimensional array
-      const auto input = std::vector<std::vector<f64>>{
-          rv::repeat(0.0) | rv::take(dim) | ranges::to_vector};
-      auto output = cec2017_eval(fn, input);
-      fmt::println("dim = {}, fn = {}, output = {:}", dim, fn, output);
-    }
-
-    fmt::println("Elapsed time: {}",
-                 std::chrono::duration_cast<std::chrono::microseconds>(
-                     std::chrono::system_clock::now() - start));
-
-    // Create a closure for 1st optimizaiton problem from CEC2017/D50
-    const auto input = std::vector<std::vector<f64>>{
-        rv::repeat(0.0) | rv::take(50) | ranges::to_vector};
-
-    const auto first_problem = [eval = cec2017_eval](const auto &xs) {
-      return eval(11, xs);
-    };
-
-    auto output = first_problem(input);
-    fmt::println("fn = 11, output = {}", output);
-
+    run_benchmark();
   } catch (std::exception &e) {
     fmt::println("Error: {}", e.what());
   }
