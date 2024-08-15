@@ -57,37 +57,40 @@ auto call_all_functions() {
 auto sphere_problem(std::span<double>) -> double { return 1.0; }
 
 struct dummy_optimizer {
-  auto name() -> std::string { return "dummy_optimizer"; }
+  std::string name_{};
+  dummy_optimizer(std::string name) : name_{name} {}
 
-  auto optimize(benchmark::benchmark_problem, std::vector<double>)
-      -> benchmark::optim_result {
-    fmt::print("Optimizing some problem...");
-    std::this_thread::sleep_for(15s);
+  auto name() -> std::string { return name_; }
+
+  auto operator()(benchmark::benchmark_problem, std::vector<double>)
+      -> benchmark::optimizer_output {
+//    std::this_thread::sleep_for(1s);
     return {.best_values = std::vector{1.0, 5.0, 6.0}, .function_eval_num = 50};
   }
 };
 
 auto run_benchmark() {
-  auto optim = dummy_optimizer{};
-  auto exec = benchmark::benchmark_executor{std::move(optim), 20};
-
-  auto bp = std::vector{
-      benchmark::benchmark_task{10, 1, 6, sphere_problem, {1, 2, 3}},
-      benchmark::benchmark_task{10, 2, 6, sphere_problem, {1, 2, 3}},
-      benchmark::benchmark_task{10, 3, 6, sphere_problem, {1, 2, 3}},
-      benchmark::benchmark_task{10, 4, 6, sphere_problem, {1, 2, 3}},
-      benchmark::benchmark_task{10, 5, 6, sphere_problem, {1, 2, 3}},
-      benchmark::benchmark_task{10, 6, 6, sphere_problem, {1, 2, 3}},
-      benchmark::benchmark_task{10, 7, 6, sphere_problem, {1, 2, 3}},
-      benchmark::benchmark_task{10, 8, 6, sphere_problem, {1, 2, 3}},
-      benchmark::benchmark_task{10, 9, 6, sphere_problem, {1, 2, 3}},
-      benchmark::benchmark_task{10, 10, 6, sphere_problem, {1, 2, 3}},
-
+  using namespace cecxx::benchmark::literals;
+  auto problem_bulk = std::vector{
+      benchmark::benchmark_task{
+          10_dim, 1_fn, 1_trial_num, sphere_problem, {1, 2, 3}},
+      // benchmark::benchmark_task{
+      //     10_dim, 2_fn, 6_trial_num, sphere_problem, {1, 2, 3}},
   };
-  exec.execute_tasks(bp);
-  fmt::println("xD\n");
-  // exec.start();
-  // exec.wait_for_tasks();
+
+  auto spec = benchmark::benchmark_specification{
+      .edition = cecxx::benchmark::cec_edition_t::cec2017,
+      .max_trials_num = 2,
+      .dimension = 10,
+      .max_function_evals = 50,
+      .max_concurrency_level = 10};
+
+  auto runner = cecxx::benchmark::runner(spec);
+  auto optimizer = dummy_optimizer{"A"};
+  runner.run(optimizer, problem_bulk).get();
+  std::cout << "started 1\n";
+  // runner.run(dummy_optimizer{"Optim B"}, problem_bulk);
+  // std::cout << "started 2\n";
 }
 
 auto main() -> int {
@@ -96,6 +99,5 @@ auto main() -> int {
   } catch (std::exception &e) {
     fmt::println("Error: {}", e.what());
   }
-
   return EXIT_SUCCESS;
 }

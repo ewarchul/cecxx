@@ -15,6 +15,7 @@ include(ProjectConfig)
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 include(GenerateExportHeader)
+include(FetchContent)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -44,10 +45,17 @@ if (BUILD_SHARED_LIBS)
   set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif()
 
+FetchContent_Declare(concurrencpp 
+  GIT_REPOSITORY https://github.com/David-Haim/concurrencpp.git
+  GIT_TAG        7a88f5401e15e1b64acae70077e40df1a5a9f6bf # release: 0.1.7
+)
+FetchContent_MakeAvailable(concurrencpp)
+
 
 add_library(cecxx)
 target_sources(cecxx PRIVATE ${SOURCES})
 target_sources(cecxx PUBLIC FILE_SET HEADERS BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/include" FILES ${HEADERS})
+target_link_libraries(cecxx PRIVATE concurrencpp::concurrencpp)
 target_compile_options(cecxx PRIVATE ${COMPILE_FLAGS})
 target_compile_features(cecxx PRIVATE cxx_std_23)
 
