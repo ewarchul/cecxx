@@ -20,4 +20,4 @@ constexpr auto ackley(std::span<const f64> input) -> f64 {
   sum2 /= static_cast<f64>(nrow);
   return E - 20.0 * std::exp(sum1) - std::exp(sum2) + 20.0;
 }
-} // namespace cecxx::functions::multimodal
+}  // namespace cecxx::functions::multimodal

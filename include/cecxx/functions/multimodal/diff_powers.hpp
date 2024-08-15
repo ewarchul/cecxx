@@ -13,4 +13,4 @@ constexpr auto diff_powers(std::span<const f64> input) -> f64 {
   }
   return std::pow(output, 0.5);
 }
-} // namespace cecxx::functions::multimodal
+}  // namespace cecxx::functions::multimodal

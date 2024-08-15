@@ -5,7 +5,8 @@
 
 namespace cecxx::benchmark::detail {
 
-template <typename EvaluationFunction> struct basic_problem {
+template <typename EvaluationFunction>
+struct basic_problem {
   constexpr basic_problem(EvaluationFunction fn, double scale = 1.0)
       : scale_mul{scale}, fn{std::move(fn)} {}
 
@@ -17,11 +18,9 @@ template <typename EvaluationFunction> struct basic_problem {
     if constexpr (std::is_same_v<EvaluationFunction, stateless_eval_func>) {
       auto [_, z] = apply_geom_transformations(input, ctx, mask, scale_mul);
       return fn(z);
-    } else if constexpr (std::is_same_v<EvaluationFunction,
-                                        local_statefull_eval_func>) {
+    } else if constexpr (std::is_same_v<EvaluationFunction, local_statefull_eval_func>) {
       return fn(input, ctx, mask);
-    } else if constexpr (std::is_same_v<EvaluationFunction,
-                                        nonlocal_statefull_eval_func>) {
+    } else if constexpr (std::is_same_v<EvaluationFunction, nonlocal_statefull_eval_func>) {
       return fn(input, ctx, mask, acc);
     }
 
@@ -32,4 +31,4 @@ template <typename EvaluationFunction> struct basic_problem {
   std::decay_t<EvaluationFunction> fn{};
 };
 
-} // namespace cecxx::benchmark::detail
+}  // namespace cecxx::benchmark::detail

@@ -19,8 +19,7 @@ constexpr auto weierstrass(std::span<const f64> input) -> f64 {
     sum = 0.0;
     sum2 = 0.0;
     for (auto j = 0u; j <= k_max; j++) {
-      sum += std::pow(a, j) *
-             std::cos(2.0 * M_PI * std::pow(b, j) * (input[i] + 0.5));
+      sum += std::pow(a, j) * std::cos(2.0 * M_PI * std::pow(b, j) * (input[i] + 0.5));
       sum2 += std::pow(a, j) * std::cos(2.0 * M_PI * std::pow(b, j) * 0.5);
     }
     output += sum;
@@ -28,4 +27,4 @@ constexpr auto weierstrass(std::span<const f64> input) -> f64 {
 
   return output - static_cast<f64>(nrow) * sum2;
 }
-} // namespace cecxx::functions::multimodal
+}  // namespace cecxx::functions::multimodal

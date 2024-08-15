@@ -1,10 +1,11 @@
 #pragma once
 
-#include "edition.hpp"
 #include <functional>
 #include <span>
 #include <string>
 #include <vector>
+
+#include "edition.hpp"
 
 namespace cecxx::benchmark {
 
@@ -38,4 +39,4 @@ struct benchmark_specification {
   double tol_fun{1e-8};
   int max_concurrency_level{10};
 };
-} // namespace cecxx::benchmark
+}  // namespace cecxx::benchmark

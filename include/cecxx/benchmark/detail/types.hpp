@@ -14,7 +14,8 @@ constexpr auto to_underlying(Enum e) noexcept -> std::underlying_type_t<Enum> {
 
 using fn_num = usize;
 
-template <typename T> using table_data = std::vector<T>;
+template <typename T>
+using table_data = std::vector<T>;
 
 enum class table_type_t { rotate, shift, shuffle };
 
@@ -27,4 +28,4 @@ struct affine_mask_t {
   f64 rate{1.0};
 };
 
-} // namespace cecxx::benchmark::detail
+}  // namespace cecxx::benchmark::detail

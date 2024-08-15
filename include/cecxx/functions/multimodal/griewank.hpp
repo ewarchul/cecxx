@@ -15,4 +15,4 @@ constexpr auto griewank(std::span<const f64> input) -> f64 {
   }
   return 1.0 + sum / 4000.0 - tmp;
 }
-} // namespace cecxx::functions::multimodal
+}  // namespace cecxx::functions::multimodal

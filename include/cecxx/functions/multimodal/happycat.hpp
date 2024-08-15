@@ -17,4 +17,4 @@ constexpr auto happycat(std::span<const f64> input) -> f64 {
   return std::pow(std::fabs(r2 - static_cast<f64>(nrow)), 2 * alpha) +
          (0.5 * r2 + sum_z) / static_cast<f64>(nrow) + 0.5;
 }
-} // namespace cecxx::functions::multimodal
+}  // namespace cecxx::functions::multimodal

@@ -8,8 +8,7 @@
 
 namespace cecxx::functions::multimodal::legacy {
 
-inline auto bi_rastrigin(std::span<const f64> input,
-                         benchmark::detail::problem_context_view ctx,
+inline auto bi_rastrigin(std::span<const f64> input, benchmark::detail::problem_context_view ctx,
                          benchmark::detail::affine_mask_t mask) -> f64 {
   using namespace cecxx::benchmark;
   const auto nrow = input.size();
@@ -35,8 +34,7 @@ inline auto bi_rastrigin(std::span<const f64> input,
 
   for (auto i = 0u; i < nrow; i++) {
     tmpx[i] = 2 * y[i];
-    if (ctx.shift[i] < 0.0)
-      tmpx[i] *= -1.;
+    if (ctx.shift[i] < 0.0) tmpx[i] *= -1.;
   }
   for (auto i = 0u; i < nrow; i++) {
     z[i] = tmpx[i];
@@ -47,8 +45,7 @@ inline auto bi_rastrigin(std::span<const f64> input,
   f64 tmp1{};
   f64 tmp2{};
   constexpr auto d = 1.0;
-  auto s =
-      1.0 - 1.0 / (2.0 * std::pow(static_cast<f64>(nrow) + 20.0, 0.5) - 8.2);
+  auto s = 1.0 - 1.0 / (2.0 * std::pow(static_cast<f64>(nrow) + 20.0, 0.5) - 8.2);
   auto mu1 = -std::pow((mu0 * mu0 - d) / s, 0.5);
   for (auto i = 0u; i < nrow; i++) {
     tmp = tmpx[i] - mu0;
@@ -87,4 +84,4 @@ inline auto bi_rastrigin(std::span<const f64> input,
   return output;
 }
 
-} // namespace cecxx::functions::multimodal::legacy
+}  // namespace cecxx::functions::multimodal::legacy

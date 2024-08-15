@@ -15,4 +15,4 @@ constexpr auto zakharov(std::span<const f64> input) -> f64 {
   }
   return sum1 + std::pow(sum2, 2) + std::pow(sum2, 4);
 }
-} // namespace cecxx::functions::multimodal
+}  // namespace cecxx::functions::multimodal

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sys/types.h>
+
 #include <vector>
 
 #include "detail/runner/coro.hpp"
@@ -26,12 +27,11 @@ struct runner {
     auto trial_results = std::vector<result<trial_result>>{};
     const auto tasks = create_benchmark_tasks(spec_);
     for (const auto &task : tasks) {
-      trial_results.emplace_back(tpe_->submit(
-          run_problem_trials, std::forward<optimizer_type>(optimizer), task));
+      trial_results.emplace_back(
+          tpe_->submit(run_problem_trials, std::forward<optimizer_type>(optimizer), task));
     }
 
-    co_await invoke_when_any<trial_result>(tpe_, std::move(trial_results),
-                                           save_trial_results);
+    co_await invoke_when_any<trial_result>(tpe_, std::move(trial_results), save_trial_results);
   }
 
   benchmark_specification spec_{};
@@ -39,4 +39,4 @@ struct runner {
   std::shared_ptr<concurrencpp::thread_pool_executor> tpe_{};
 };
 
-} // namespace cecxx::benchmark
+}  // namespace cecxx::benchmark

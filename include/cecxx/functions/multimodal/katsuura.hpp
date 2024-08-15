@@ -24,4 +24,4 @@ constexpr auto katsuura(std::span<const f64> input) -> f64 {
 
   return output * tmp1 - tmp1;
 }
-} // namespace cecxx::functions::multimodal
+}  // namespace cecxx::functions::multimodal

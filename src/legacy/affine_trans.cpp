@@ -14,8 +14,7 @@ void shufflefunc(std::span<const f64> input, std::span<f64> output,
   }
 }
 
-void shiftfunc(std::span<const f64> input, std::span<f64> output,
-               std::span<const f64> shift_vec) {
+void shiftfunc(std::span<const f64> input, std::span<f64> output, std::span<const f64> shift_vec) {
   for (auto i = 0u; i < output.size(); i++) {
     output[i] = input[i] - shift_vec[i];
   }
@@ -32,9 +31,8 @@ void rotatefunc(std::span<const f64> input, std::span<f64> output,
   }
 }
 
-void sr_func(std::span<const f64> input, std::span<f64> sr_x,
-             std::span<const f64> shit_vec, std::span<const f64> rot_mat,
-             const f64 sh_rate, const do_affine_trans shift,
+void sr_func(std::span<const f64> input, std::span<f64> sr_x, std::span<const f64> shit_vec,
+             std::span<const f64> rot_mat, const f64 sh_rate, const do_affine_trans shift,
              const do_affine_trans rotate, std::span<f64> output) {
   const auto nrow = input.size();
   if (to_underlying(shift) == 1) {
@@ -63,9 +61,9 @@ void sr_func(std::span<const f64> input, std::span<f64> sr_x,
   }
 }
 
-void cf_cal(std::span<const f64> input, std::span<f64> output,
-            std::span<const f64> shift_vec, std::span<const f64> delta,
-            std::span<const f64> bias, std::span<f64> fit, usize cf_num) {
+void cf_cal(std::span<const f64> input, std::span<f64> output, std::span<const f64> shift_vec,
+            std::span<const f64> delta, std::span<const f64> bias, std::span<f64> fit,
+            usize cf_num) {
   const auto nrow = input.size();
   auto w = std::vector<f64>(cf_num);
   f64 w_max = 0, w_sum = 0;
@@ -76,8 +74,7 @@ void cf_cal(std::span<const f64> input, std::span<f64> output,
       w[i] += pow(input[j] - shift_vec[i * nrow + j], 2.0);
     }
     if (w[i] != 0) {
-      w[i] = pow(1.0 / w[i], 0.5) *
-             exp(-w[i] / 2.0 / static_cast<f64>(nrow) / pow(delta[i], 2.0));
+      w[i] = pow(1.0 / w[i], 0.5) * exp(-w[i] / 2.0 / static_cast<f64>(nrow) / pow(delta[i], 2.0));
     } else {
       w[i] = INF;
     }
@@ -100,4 +97,4 @@ void cf_cal(std::span<const f64> input, std::span<f64> output,
     output[0] = output[0] + w[i] / w_sum * fit[i];
   }
 }
-} // namespace cecxx::benchmark::detail
+}  // namespace cecxx::benchmark::detail
