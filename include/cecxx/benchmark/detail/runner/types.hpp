@@ -13,7 +13,6 @@ struct benchmark_task {
   int dimension{};
   int problem_num{};
   int trials_num{};
-  std::function<double(std::span<double>)> evaluation_function{};
   std::vector<double> budget_steps{};
 };
 

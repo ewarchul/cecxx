@@ -3,6 +3,7 @@
 #include <functional>
 #include <span>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 #include "edition.hpp"
@@ -12,7 +13,6 @@ namespace cecxx::benchmark {
 struct optimizer_output {
   double best_value{};
   std::vector<double> best_values{};
-  int function_eval_num{};
 };
 
 // clang-format off
@@ -29,11 +29,11 @@ enum class budget_sample_policy {
   post_cec_2022,
 };
 
-struct benchmark_specification {
+struct benchmark_options {
   cec_edition_t edition{};
   int max_trials_num{};
-  int dimension{};
-  std::vector<int> excluded_problems{};
+  std::vector<std::size_t> dimensions{};
+  std::unordered_set<int> excluded_problems{};
   budget_sample_policy sample_policy{budget_sample_policy::post_cec_2022};
   int max_function_evals{};
   double tol_fun{1e-8};

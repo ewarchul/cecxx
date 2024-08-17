@@ -1,2 +1,2 @@
 add_subdirectory(runner)
-add_subdirectory(evaluator)
+#add_subdirectory(evaluator)
