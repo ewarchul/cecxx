@@ -37,7 +37,8 @@ struct runner {
     const auto tasks = create_benchmark_tasks(options_);
     auto trial_results = std::vector<result<trial_result>>{};
     spdlog::info(
-        "Running benchmark with the following settings: edition [{}], thread pool size [{}], dimensions {}, trial number per "
+        "Running benchmark with the following settings: edition [{}], thread pool size [{}], "
+        "dimensions {}, trial number per "
         "problem [{}].",
         to_string(options_.edition), tpe_->max_concurrency_level(), options_.dimensions,
         options_.max_trials_num);

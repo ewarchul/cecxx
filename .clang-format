@@ -1,7 +1,4 @@
-Language: Cpp
-ColumnLimit: 80
-BasedOnStyle: LLVM
-IndentPPDirectives: AfterHash
-IndentCaseLabels: false
-AlwaysBreakTemplateDeclarations: false
-DerivePointerAlignment: false
+Language:               Cpp
+Standard:               Cpp11
+BasedOnStyle:           Google
+ColumnLimit:            100
