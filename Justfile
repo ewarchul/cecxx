@@ -13,8 +13,6 @@ build_dir := "build-" + cxx_compiler
 ncores := `nproc`
 
 
-# cd {{build_dir}} && CC={{c_compiler}} CXX={{cxx_compiler}} cmake -DWITH_TESTS=off .. 
-
 default:
   @just --list
 
@@ -29,13 +27,17 @@ build:
 exe:
   ./{{build_dir}}/example/main
 
-fuzz_duration := "30s"
-test: 
+
+test $fuzz_duration: 
   #!/usr/bin/env bash
-  set -euxo pipefail
+  set -euo pipefail
   dimensions=(10 30 50 100)
+  GREEN='\033[0;32m'
+  NO_COLOR='\033[0m'
   for dim in ${dimensions[@]}; do
-    ./{{build_dir}}/test/cecxx-fuzz --fuzz="Cec2017ConformanceTest.Cec2017D${dim}ImplsAreEquiv" --fuzz_for={{fuzz_duration}} || true
+    echo -e "${GREEN} Running compliance tests for dimension ${dim}. Duration: ${fuzz_duration} ${NO_COLOR}"
+    unzip -o "${PWD}/data/cec2017.zip" -d "${PWD}/data"
+    ASAN_OPTIONS=detect_leaks=0 ./{{build_dir}}/test/cecxx-fuzz --fuzz="Cec2017ComplianceTest.Cec2017D${dim}ImplsAreEquiv" --fuzz_for={{fuzz_duration}} || true
   done
 
 package:
