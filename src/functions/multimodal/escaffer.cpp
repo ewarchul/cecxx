@@ -1,10 +1,10 @@
-#pragma once
+#include "cecxx/functions/multimodal/escaffer.hpp"
 
 #include <cmath>
 #include <span>
 
 namespace cecxx::functions::multimodal {
-constexpr auto escaffer(std::span<const double> input) -> double {
+auto escaffer(std::span<const double> input) -> double {
     const auto nrow = input.size();
     auto output{0.0};
     double temp1{}, temp2{};

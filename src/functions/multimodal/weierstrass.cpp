@@ -1,10 +1,10 @@
-#pragma once
+#include "cecxx/functions/multimodal/weierstrass.hpp"
 
 #include <cmath>
 #include <span>
 
 namespace cecxx::functions::multimodal {
-constexpr auto weierstrass(std::span<const double> input) -> double {
+auto weierstrass(std::span<const double> input) -> double {
     const auto nrow = input.size();
     constexpr auto a{0.5};
     constexpr auto b{3.0};

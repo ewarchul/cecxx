@@ -1,10 +1,10 @@
-#pragma once
+#include "cecxx/functions/multimodal/katsuura.hpp"
 
 #include <cmath>
 #include <span>
 
 namespace cecxx::functions::multimodal {
-constexpr auto katsuura(std::span<const double> input) -> double {
+auto katsuura(std::span<const double> input) -> double {
     const auto nrow = input.size();
     auto output{1.0};
     double temp{}, tmp1{}, tmp2{}, tmp3{};

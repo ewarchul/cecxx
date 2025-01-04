@@ -4,5 +4,5 @@
 #include <span>
 
 namespace cecxx::functions::multimodal {
-constexpr auto grie_rosen(std::span<const double> input) -> double;
+auto grie_rosen(std::span<const double> input) -> double;
 } // namespace cecxx::functions::multimodal

@@ -4,27 +4,25 @@
 #include <span>
 #include <unordered_map>
 
-#include "cecxx/benchmark/detail/types.hpp"
 #include "cecxx/benchmark/types.hpp"
 
 namespace cecxx::benchmark::detail {
 struct problem_context_view {
     std::span<const double> shift{};
     std::span<const double> rotate{};
-    std::span<const int> shuffle{};
+    std::span<const unsigned int> shuffle{};
 };
 
-class context_t {
+class benchmark_context_t {
 public:
-    context_t(const cec_edition_t edition, const std::filesystem::path &storage, std::span<const dimension_t> dims);
+    benchmark_context_t(const cec_edition_t edition, const std::filesystem::path &storage,
+                        std::span<const dimension_t> dims);
 
-    auto shift(const problem_number_t fn, const dimension_t dim) const;
+    auto shift(const problem_number_t fn, const dimension_t dim) const -> table_data<double>;
+    auto rotate(const problem_number_t fn, const dimension_t dim) const -> table_data<double>;
+    auto shuffle(const problem_number_t fn, const dimension_t dim) const -> table_data<unsigned int>;
 
-    auto rotate(const problem_number_t fn, const dimension_t dim) const;
-
-    auto shuffle(const problem_number_t fn, const dimension_t dim) const;
-
-    auto problem_context(const problem_number_t fn, const dimension_t dim) const;
+    auto problem_context(const problem_number_t fn, const dimension_t dim) const -> problem_context_view;
 
 private:
     template <typename Number>
@@ -34,7 +32,7 @@ private:
     using geom_transform_dim_fn_grid = std::unordered_map<dimension_t, geom_transfrom_fn_grid<Number>>;
 
     geom_transform_dim_fn_grid<double> rotate_{};
-    geom_transform_dim_fn_grid<int> shuffle_{};
+    geom_transform_dim_fn_grid<unsigned int> shuffle_{};
     geom_transform_dim_fn_grid<double> shift_{};
 };
 

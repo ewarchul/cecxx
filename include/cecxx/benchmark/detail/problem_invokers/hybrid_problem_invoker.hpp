@@ -26,9 +26,9 @@ auto calc_hybrid_chunks(std::ranges::range auto &&mix_ratios, const std::integra
 }
 
 template <typename... F>
-class hybrid_problem {
+class hybrid_problem_invoker {
 public:
-    hybrid_problem(std::tuple<F...> compounds, std::vector<double> compound_ratios)
+    hybrid_problem_invoker(std::tuple<F...> compounds, std::vector<double> compound_ratios)
         : compounds{compounds}, compound_ratios{std::move(compound_ratios)} {}
 
     auto operator()(std::span<const double> input, problem_context_view ctx,

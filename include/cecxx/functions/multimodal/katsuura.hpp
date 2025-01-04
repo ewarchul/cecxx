@@ -4,5 +4,5 @@
 #include <span>
 
 namespace cecxx::functions::multimodal {
-constexpr auto katsuura(std::span<const double> input) -> double;
+auto katsuura(std::span<const double> input) -> double;
 } // namespace cecxx::functions::multimodal

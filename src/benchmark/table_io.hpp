@@ -2,14 +2,25 @@
 
 #include <cstdio>
 #include <filesystem>
+#include <print>
+#include <utility>
 #include <vector>
 
 #include "cecxx/benchmark/concepts.hpp"
-#include "cecxx/benchmark/detail/types.hpp"
 #include "cecxx/benchmark/types.hpp"
-#include "util.hpp"
 
 namespace cecxx::benchmark::detail {
+
+template <typename T>
+constexpr auto number_formatter() -> std::string_view {
+    if (std::same_as<T, double>) {
+        return "%lf";
+    } else if (std::same_as<T, unsigned int>) {
+        return "%d";
+    }
+
+    std::unreachable();
+}
 
 struct FILE_deleter_t {
     auto operator()(std::FILE *ptr) {
@@ -18,7 +29,7 @@ struct FILE_deleter_t {
 };
 
 struct table_size_t {
-    uint size{};
+    std::size_t size{};
     int scaler{};
     bool scaler_applied{false};
 };
@@ -68,7 +79,7 @@ auto scan_table(auto *fs, const dimension_t dim, const problem_number_t fn) -> s
     auto table = std::vector<T>(sz_info.size);
 
     const auto scan_scaled_shift_table = [&]() {
-        for (auto i = 0u; i < sz_info.scaler - 1; ++i) {
+        for (auto i = 0; i < sz_info.scaler - 1; ++i) {
             for (auto j = 0u; j < dim; ++j) {
                 if (std::fscanf(fs, number_formatter<T>().data(), &table[i * dim + j]) == -1) {
                     throw std::runtime_error{"Failed to parse table data from file."};

@@ -4,5 +4,5 @@
 #include <span>
 
 namespace cecxx::functions::multimodal {
-constexpr auto schwefel(std::span<const double> input) -> double;
+auto schwefel(std::span<const double> input) -> double;
 } // namespace cecxx::functions::multimodal

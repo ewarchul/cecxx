@@ -25,7 +25,7 @@ build:
   cd {{build_dir}} && make -j {{ncores}}
 
 exe:
-  ./{{build_dir}}/example/main
+  ./{{build_dir}}/example/evaluator/evaluator_example
 
 
 test $fuzz_duration: 

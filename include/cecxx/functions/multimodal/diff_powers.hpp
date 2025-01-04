@@ -4,5 +4,5 @@
 #include <span>
 
 namespace cecxx::functions::multimodal {
-constexpr auto diff_powers(std::span<const double> input) -> double;
+auto diff_powers(std::span<const double> input) -> double;
 } // namespace cecxx::functions::multimodal

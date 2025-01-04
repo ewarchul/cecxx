@@ -1,4 +1,4 @@
-#pragma once
+#include "cecxx/functions/multimodal/ackley.hpp"
 
 #include <cmath>
 #include <span>
@@ -6,7 +6,7 @@
 inline constexpr auto E{2.7182818284590452353602874713526625};
 
 namespace cecxx::functions::multimodal {
-constexpr auto ackley(std::span<const double> input) -> double {
+auto ackley(std::span<const double> input) -> double {
     const auto nrow = input.size();
     double sum1{};
     double sum2{};

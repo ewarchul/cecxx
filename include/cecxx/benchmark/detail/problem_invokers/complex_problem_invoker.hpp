@@ -12,9 +12,9 @@ struct complex_problem_params {
 };
 
 template <typename... F>
-class complex_problem {
+class complex_problem_invoker {
 public:
-    complex_problem(std::tuple<F...> compounds, complex_problem_params parameters)
+    complex_problem_invoker(std::tuple<F...> compounds, complex_problem_params parameters)
         : compounds{compounds}, params{std::move(parameters)} {}
 
     auto operator()(std::span<const double> input, problem_context_view ctx,

@@ -1,10 +1,10 @@
-#pragma once
+#include "cecxx/functions/multimodal/griewank.hpp"
 
 #include <cmath>
 #include <span>
 
 namespace cecxx::functions::multimodal {
-constexpr auto griewank(std::span<const double> input) -> double {
+auto griewank(std::span<const double> input) -> double {
     auto sum = 0.0;
     auto tmp = 1.0;
     for (auto i = 0u; i < input.size(); i++) {

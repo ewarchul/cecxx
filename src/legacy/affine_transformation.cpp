@@ -2,13 +2,13 @@
 #include <vector>
 
 #include "cecxx/benchmark/detail/legacy/affine_transformation.hpp"
-#include "cecxx/benchmark/detail/util.hpp"
+#include "cecxx/enum.hpp"
 #include "consts.h"
 
 namespace cecxx::benchmark::detail {
-void shufflefunc(std::span<const double> input, std::span<double> output, std::span<const int> shuffle_vec) {
+void shufflefunc(std::span<const double> input, std::span<double> output, std::span<const unsigned int> shuffle_vec) {
     for (auto i = 0u; i < output.size(); i++) {
-        auto idx = static_cast<usize>(std::max(shuffle_vec[i] - 1, 0L));
+        auto idx = static_cast<unsigned int>(std::max(shuffle_vec[i] - 1, 0u));
         output[i] = input[idx];
     }
 }
@@ -60,7 +60,7 @@ void sr_func(std::span<const double> input, std::span<double> sr_x, std::span<co
 }
 
 void cf_cal(std::span<const double> input, std::span<double> output, std::span<const double> shift_vec,
-            std::span<const double> delta, std::span<const double> bias, std::span<double> fit, int cf_num) {
+            std::span<const double> delta, std::span<const double> bias, std::span<double> fit, unsigned int cf_num) {
     const auto nrow = input.size();
     auto w = std::vector<double>(cf_num);
     double w_max = 0, w_sum = 0;

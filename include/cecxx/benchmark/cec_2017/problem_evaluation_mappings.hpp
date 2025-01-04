@@ -1,15 +1,14 @@
 #pragma once
 
-#include "cecxx/benchmark/detail/cec2017/consts.hpp"
-#include "cecxx/benchmark/detail/cec2017/problems/basic.hpp"
-#include "cecxx/benchmark/detail/cec2017/problems/complex.hpp"
-#include "cecxx/benchmark/detail/cec2017/problems/hybrid.hpp"
+#include "cecxx/benchmark/cec_2017/basic_problems.hpp"
+#include "cecxx/benchmark/cec_2017/complex_problems.hpp"
+#include "cecxx/benchmark/cec_2017/hybrid_problems.hpp"
 #include "cecxx/benchmark/detail/context.hpp"
 #include "cecxx/benchmark/types.hpp"
 
-namespace cecxx::benchmark::detail::cec2017 {
+namespace cecxx::benchmark::cec_2017 {
 
-auto dispatch_problem(problem_context_view ctx, const problem_number_t fn, const auto &input) {
+auto evaluate(detail::problem_context_view ctx, const problem_number_t fn, const auto &input) {
     switch (fn) {
         case 1:
             return bent_cigar(input, ctx);
@@ -76,19 +75,4 @@ auto dispatch_problem(problem_context_view ctx, const problem_number_t fn, const
     throw std::runtime_error{"Unknown CEC problem"};
 }
 
-auto evaluate(problem_context_view ctx, const usize fn_num, const auto &input) {
-    const auto ncol = input.size();
-    const auto nrow = input.at(0).size();
-    if (not cec2017::VALID_DIMENSIONS.contains(nrow)) {
-        throw std::runtime_error{"Invalid problem dimension."};
-    }
-
-    auto output = std::vector<f64>(ncol);
-    for (auto col{0u}; col < output.size(); ++col) {
-        output[col] = dispatch_problem(ctx, fn_num, input.at(col)) + cec2017::CEC2017_OFFSET.at(fn_num);
-    }
-
-    return output;
-}
-
-} // namespace cecxx::benchmark::detail::cec2017
+} // namespace cecxx::benchmark::cec_2017

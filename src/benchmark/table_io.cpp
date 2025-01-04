@@ -1,9 +1,7 @@
 #include "table_io.hpp"
 
-#include <string>
-#include <utility>
-
 #include "cecxx/benchmark/types.hpp"
+#include <format>
 
 namespace cecxx::benchmark::detail {
 using namespace std::string_literals;
@@ -17,18 +15,18 @@ constexpr auto has_extended_size(const problem_number_t fn) -> bool {
 
 auto ROT_TABLE_FILENAME(const std::filesystem::path &datadir, const dimension_t dim, const problem_number_t fn)
     -> std::string {
-    return datadir / ("M_"s + std::to_string(fn) + "_D"s + std::to_string(dim) + ".txt");
+    return datadir / std::format("M_{}_D{}.txt", fn, dim);
 }
 
 auto SHUFFLE_TABLE_FILENAME(const std::filesystem::path &datadir, const dimension_t dim, const problem_number_t fn)
     -> std::string {
-    return datadir / ("shuffle_data_"s + std::to_string(fn) + "_D"s + std::to_string(dim) + ".txt");
+    return datadir / std::format("shuffle_data_{}_D{}.txt", fn, dim);
 }
 
 auto SHIFT_TABLE_FILENAME(const std::filesystem::path &datadir, const dimension_t dim, const problem_number_t fn)
     -> std::string {
     std::ignore = dim;
-    return datadir / ("shift_data_"s + std::to_string(fn) + ".txt");
+    return datadir / std::format("shift_data_{}.txt", fn);
 }
 
 auto ROT_TABLE_SIZE(const dimension_t dim, const problem_number_t fn) -> table_size_t {

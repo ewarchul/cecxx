@@ -1,10 +1,10 @@
-#pragma once
+#include "cecxx/functions/multimodal/grie_rosen.hpp"
 
 #include <cmath>
 #include <span>
 
 namespace cecxx::functions::multimodal {
-constexpr auto grie_rosen(std::span<const double> input) -> double {
+auto grie_rosen(std::span<const double> input) -> double {
     const auto nrow = input.size();
     double temp{}, tmp1{};
     auto output{0.0};

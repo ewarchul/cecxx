@@ -1,9 +1,9 @@
-#pragma once
+#include "cecxx/functions/multimodal/rosenbrock.hpp"
 
 #include <span>
 
 namespace cecxx::functions::multimodal {
-constexpr auto rosenbrock(std::span<const double> input) -> double {
+auto rosenbrock(std::span<const double> input) -> double {
     auto output{0.0};
     double tmp1{};
     for (auto i = 0u; i < input.size() - 1; ++i) {

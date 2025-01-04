@@ -4,5 +4,5 @@
 #include <span>
 
 namespace cecxx::functions::multimodal {
-constexpr auto weierstrass(std::span<const double> input) -> double;
+auto weierstrass(std::span<const double> input) -> double;
 } // namespace cecxx::functions::multimodal

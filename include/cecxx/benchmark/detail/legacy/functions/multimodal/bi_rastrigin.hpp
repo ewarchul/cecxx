@@ -5,11 +5,12 @@
 
 #include "cecxx/benchmark/detail/context.hpp"
 #include "cecxx/benchmark/detail/legacy/affine_transformation.hpp"
+#include "cecxx/enum.hpp"
 
 namespace cecxx::functions::multimodal::legacy {
 
 inline auto bi_rastrigin(std::span<const double> input, benchmark::detail::problem_context_view ctx,
-                         benchmark::detail::affine_mask_t mask) -> double {
+                         benchmark::affine_mask_t mask) -> double {
     using namespace cecxx::benchmark;
     const auto nrow = input.size();
     auto y = std::vector<double>(nrow);

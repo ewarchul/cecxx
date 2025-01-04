@@ -6,6 +6,7 @@
 #include "cecxx/benchmark/concepts.hpp"
 #include "cecxx/benchmark/defaults.hpp"
 #include "cecxx/benchmark/detail/context.hpp"
+#include "cecxx/benchmark/detail/evaluate.hpp"
 #include "cecxx/benchmark/types.hpp"
 
 namespace cecxx::benchmark {
@@ -17,11 +18,11 @@ public:
 
     auto operator()(const problem_number_t fn, const matrix<double> auto &input) const -> std::vector<double> {
         const auto nrow = input.at(0).size();
-        return detail::dispatch_cec(edition_, ctx_.problem_context(fn, nrow), fn, input);
+        return detail::evaluate(edition_, ctx_.problem_context(fn, nrow), fn, input);
     }
 
 private:
-    detail::context_t ctx_;
+    detail::benchmark_context_t ctx_;
     cec_edition_t edition_{};
 };
 

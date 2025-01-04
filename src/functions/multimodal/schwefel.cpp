@@ -1,10 +1,10 @@
-#pragma once
+#include "cecxx/functions/multimodal/schwefel.hpp"
 
 #include <cmath>
 #include <span>
 
 namespace cecxx::functions::multimodal {
-constexpr auto schwefel(std::span<const double> input) -> double {
+auto schwefel(std::span<const double> input) -> double {
     const auto nrow = input.size();
     auto tmp{0.0};
     auto output{0.0};

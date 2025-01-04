@@ -6,8 +6,8 @@
 namespace cecxx::benchmark::detail {
 
 template <typename EvaluationFunction>
-struct basic_problem {
-    constexpr basic_problem(EvaluationFunction fn, double scale = 1.0) : scale_mul{scale}, fn{std::move(fn)} {}
+struct basic_problem_invoker {
+    constexpr basic_problem_invoker(EvaluationFunction fn, double scale = 1.0) : scale_mul{scale}, fn{std::move(fn)} {}
 
     auto operator()(std::span<const double> input, problem_context_view ctx,
                     affine_mask_t mask = {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes, .rate = 1.0},

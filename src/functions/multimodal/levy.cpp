@@ -1,11 +1,11 @@
-#pragma once
+#include "cecxx/functions/multimodal/levy.hpp"
 
 #include <cmath>
 #include <span>
 #include <vector>
 
 namespace cecxx::functions::multimodal {
-constexpr auto levy(std::span<const double> input) -> double {
+auto levy(std::span<const double> input) -> double {
     const auto nrow = input.size();
     auto w = std::vector<double>(nrow);
     for (auto i = 0u; i < nrow; i++) {

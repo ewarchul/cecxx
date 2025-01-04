@@ -1,10 +1,10 @@
-#pragma once
+#include "cecxx/functions/multimodal/zakharov.hpp"
 
 #include <cmath>
 #include <span>
 
 namespace cecxx::functions::multimodal {
-constexpr auto zakharov(std::span<const double> input) -> double {
+auto zakharov(std::span<const double> input) -> double {
     auto sum1{0.0};
     auto sum2{0.0};
     for (auto i = 0u; i < input.size(); i++) {

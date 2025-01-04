@@ -4,5 +4,5 @@
 #include <span>
 
 namespace cecxx::functions::multimodal {
-constexpr auto rastrigin(std::span<const double> input) -> double;
+auto rastrigin(std::span<const double> input) -> double;
 } // namespace cecxx::functions::multimodal
