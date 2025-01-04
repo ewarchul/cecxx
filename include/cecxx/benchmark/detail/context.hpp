@@ -5,42 +5,37 @@
 #include <unordered_map>
 
 #include "cecxx/benchmark/detail/types.hpp"
-#include "cecxx/benchmark/edition.hpp"
-#include "cecxx/types.hpp"
+#include "cecxx/benchmark/types.hpp"
 
 namespace cecxx::benchmark::detail {
-using fn_num = usize;
-template <typename Number>
-using geom_transfrom_fn_grid = std::unordered_map<fn_num, table_data<Number>>;
-
-using dimension = usize;
-template <typename Number>
-using geom_transform_dim_fn_grid = std::unordered_map<dimension, geom_transfrom_fn_grid<Number>>;
-
 struct problem_context_view {
-  std::span<const f64> shift{};
-  std::span<const f64> rotate{};
-  std::span<const i64> shuffle{};
+    std::span<const double> shift{};
+    std::span<const double> rotate{};
+    std::span<const int> shuffle{};
 };
 
 class context_t {
- public:
-  context_t(const cec_edition_t edition, const std::filesystem::path &storage,
-            std::span<const usize> dims);
+public:
+    context_t(const cec_edition_t edition, const std::filesystem::path &storage, std::span<const dimension_t> dims);
 
-  auto shift(const usize fn, const usize dim) const { return shift_.at(dim).at(fn); }
-  auto rotate(const usize fn, const usize dim) const { return rotate_.at(dim).at(fn); }
-  auto shuffle(const usize fn, const usize dim) const { return shuffle_.at(dim).at(fn); }
-  auto problem_context(const usize fn, const usize dim) const {
-    return problem_context_view{.shift = shift_.at(dim).at(fn),
-                                .rotate = rotate_.at(dim).at(fn),
-                                .shuffle = shuffle_.at(dim).at(fn)};
-  }
+    auto shift(const problem_number_t fn, const dimension_t dim) const;
 
- private:
-  geom_transform_dim_fn_grid<f64> rotate_{};
-  geom_transform_dim_fn_grid<i64> shuffle_{};
-  geom_transform_dim_fn_grid<f64> shift_{};
+    auto rotate(const problem_number_t fn, const dimension_t dim) const;
+
+    auto shuffle(const problem_number_t fn, const dimension_t dim) const;
+
+    auto problem_context(const problem_number_t fn, const dimension_t dim) const;
+
+private:
+    template <typename Number>
+    using geom_transfrom_fn_grid = std::unordered_map<problem_number_t, table_data<Number>>;
+
+    template <typename Number>
+    using geom_transform_dim_fn_grid = std::unordered_map<dimension_t, geom_transfrom_fn_grid<Number>>;
+
+    geom_transform_dim_fn_grid<double> rotate_{};
+    geom_transform_dim_fn_grid<int> shuffle_{};
+    geom_transform_dim_fn_grid<double> shift_{};
 };
 
-}  // namespace cecxx::benchmark::detail
+} // namespace cecxx::benchmark::detail
