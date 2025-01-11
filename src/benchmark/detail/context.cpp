@@ -6,7 +6,7 @@
 
 #include "cecxx/benchmark/helpers.hpp"
 #include "cecxx/benchmark/types.hpp"
-#include "table_io.hpp"
+#include "../table_io.hpp"
 
 namespace cecxx::benchmark::detail {
 
@@ -20,6 +20,14 @@ inline auto to_str(const cec_edition_t edition) -> std::string_view {
     throw std::runtime_error{"Unknown CEC edition"};
 }
 } // namespace
+
+auto make_problem_context_view(const problem_context_t &p_ctx) -> problem_context_view_t {
+    return {
+        .shift = p_ctx.shift,
+        .rotate = p_ctx.rotate,
+        .shuffle = p_ctx.shuffle,
+    };
+}
 
 benchmark_context_t::benchmark_context_t(const cec_edition_t edition, const std::filesystem::path &storage,
                                          std::span<const dimension_t> dims) {
@@ -43,10 +51,15 @@ auto benchmark_context_t::rotate(const problem_number_t fn, const dimension_t di
 auto benchmark_context_t::shuffle(const problem_number_t fn, const dimension_t dim) const -> table_data<unsigned int> {
     return shuffle_.at(dim).at(fn);
 }
-auto benchmark_context_t::problem_context(const problem_number_t fn, const dimension_t dim) const
-    -> problem_context_view {
-    return problem_context_view{
-        .shift = shift_.at(dim).at(fn), .rotate = rotate_.at(dim).at(fn), .shuffle = shuffle_.at(dim).at(fn)};
+
+auto benchmark_context_t::problem_context_view(const problem_number_t fn, const dimension_t dim) const
+    -> problem_context_view_t {
+    return {.shift = shift_.at(dim).at(fn), .rotate = rotate_.at(dim).at(fn), .shuffle = shuffle_.at(dim).at(fn)};
+}
+
+auto benchmark_context_t::copy_problem_context(const problem_number_t fn, const dimension_t dim) const
+    -> problem_context_t {
+    return {.shift = shift_.at(dim).at(fn), .rotate = rotate_.at(dim).at(fn), .shuffle = shuffle_.at(dim).at(fn)};
 }
 
 } // namespace cecxx::benchmark::detail

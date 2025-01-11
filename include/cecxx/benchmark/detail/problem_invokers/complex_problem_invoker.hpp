@@ -17,7 +17,7 @@ public:
     complex_problem_invoker(std::tuple<F...> compounds, complex_problem_params parameters)
         : compounds{compounds}, params{std::move(parameters)} {}
 
-    auto operator()(std::span<const double> input, problem_context_view ctx,
+    auto operator()(std::span<const double> input, problem_context_view_t ctx,
                     affine_mask_t mask = {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}) const -> double {
         constexpr auto compounds_num{std::tuple_size_v<decltype(compounds)>};
         constexpr auto fn_indxs = std::make_index_sequence<std::tuple_size_v<decltype(compounds)>>();
@@ -30,15 +30,15 @@ public:
 
 private:
     template <std::size_t... CompoundIndex>
-    auto invoke_impl(std::span<const double> input, problem_context_view ctx, affine_mask_t mask,
+    auto invoke_impl(std::span<const double> input, problem_context_view_t ctx, affine_mask_t mask,
                      std::index_sequence<CompoundIndex...>) const {
         auto partial_eval = std::array<double, std::tuple_size_v<decltype(compounds)>>{};
         const auto nrow = input.size();
         (
             [&](auto) {
-                auto sub_ctx = problem_context_view{.shift = ctx.shift.subspan(nrow * CompoundIndex),
-                                                    .rotate = ctx.rotate.subspan(nrow * nrow * CompoundIndex),
-                                                    .shuffle = ctx.shuffle.subspan(nrow * CompoundIndex)};
+                auto sub_ctx = problem_context_view_t{.shift = ctx.shift.subspan(nrow * CompoundIndex),
+                                                      .rotate = ctx.rotate.subspan(nrow * nrow * CompoundIndex),
+                                                      .shuffle = ctx.shuffle.subspan(nrow * CompoundIndex)};
                 auto comp_fn = std::get<CompoundIndex>(compounds);
                 partial_eval[CompoundIndex] = params.scales.at(CompoundIndex) * comp_fn(input, sub_ctx, mask);
             }(CompoundIndex),

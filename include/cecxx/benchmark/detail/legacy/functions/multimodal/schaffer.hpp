@@ -7,7 +7,7 @@
 #include "cecxx/benchmark/detail/legacy/affine_transformation.hpp"
 
 namespace cecxx::functions::multimodal::legacy {
-inline auto schaffer(std::span<const double> input, benchmark::detail::problem_context_view ctx,
+inline auto schaffer(std::span<const double> input, benchmark::detail::problem_context_view_t ctx,
                      benchmark::affine_mask_t mask, std::vector<double> acc = {}) -> double {
     const auto nrow = input.size();
     std::vector<double> ys{};

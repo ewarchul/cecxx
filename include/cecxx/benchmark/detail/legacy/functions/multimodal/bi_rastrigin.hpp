@@ -9,7 +9,7 @@
 
 namespace cecxx::functions::multimodal::legacy {
 
-inline auto bi_rastrigin(std::span<const double> input, benchmark::detail::problem_context_view ctx,
+inline auto bi_rastrigin(std::span<const double> input, benchmark::detail::problem_context_view_t ctx,
                          benchmark::affine_mask_t mask) -> double {
     using namespace cecxx::benchmark;
     const auto nrow = input.size();

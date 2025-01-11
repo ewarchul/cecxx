@@ -31,7 +31,7 @@ public:
     hybrid_problem_invoker(std::tuple<F...> compounds, std::vector<double> compound_ratios)
         : compounds{compounds}, compound_ratios{std::move(compound_ratios)} {}
 
-    auto operator()(std::span<const double> input, problem_context_view ctx,
+    auto operator()(std::span<const double> input, problem_context_view_t ctx,
                     affine_mask_t mask = {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}) const -> double {
         constexpr auto fn_indxs = std::make_index_sequence<std::tuple_size_v<decltype(compounds)>>();
         const auto partial_eval = invoke_impl(input, ctx, mask, fn_indxs);
@@ -40,7 +40,7 @@ public:
 
 private:
     template <std::size_t... CompoundIndices>
-    auto invoke_impl(std::span<const double> input, problem_context_view ctx, affine_mask_t mask,
+    auto invoke_impl(std::span<const double> input, problem_context_view_t ctx, affine_mask_t mask,
                      std::index_sequence<CompoundIndices...>) const {
         const auto [sizes, offsets] = calc_hybrid_chunks(compound_ratios, input.size());
         auto [y, z] = apply_geom_transformations(input, ctx, mask);
@@ -50,7 +50,8 @@ private:
         (
             [&](auto) {
                 auto comp_fn = std::get<CompoundIndices>(compounds);
-                const auto partial_input = std::span{y}.subspan(offsets[CompoundIndices], sizes[CompoundIndices]);
+                const auto partial_input = std::span{y}.subspan(static_cast<unsigned int>(offsets[CompoundIndices]),
+                                                                static_cast<unsigned int>(sizes[CompoundIndices]));
                 partial_eval[CompoundIndices]
                     = comp_fn(partial_input, ctx, {.rot = do_affine_trans::no, .shift = do_affine_trans::no}, y);
             }(CompoundIndices),

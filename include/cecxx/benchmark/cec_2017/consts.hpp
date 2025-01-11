@@ -12,6 +12,6 @@ const auto OFFSETS = std::unordered_map<problem_number_t, double>{
     {25, 2500.0}, {26, 2600.0}, {27, 2700.0}, {28, 2800.0}, {29, 2900.0}, {30, 3000.0},
 };
 
-const auto VALID_DIMENSIONS = std::set{10, 30, 50, 100};
+const auto VALID_DIMENSIONS = std::set<dimension_t>{10, 30, 50, 100};
 
 } // namespace cecxx::benchmark::cec_2017

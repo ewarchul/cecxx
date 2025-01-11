@@ -8,7 +8,7 @@
 
 namespace cecxx::benchmark::detail {
 
-inline auto apply_geom_transformations(std::span<const double> input, problem_context_view ctx, affine_mask_t mask,
+inline auto apply_geom_transformations(std::span<const double> input, problem_context_view_t ctx, affine_mask_t mask,
                                        double scale_mul = 1.0) {
     const auto nrow = input.size();
     auto y_out = std::vector<double>(nrow);

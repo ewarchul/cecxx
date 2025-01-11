@@ -1,10 +1,10 @@
 #include "cecxx/benchmark/helpers.hpp"
 #include "cecxx/benchmark/cec_2017/consts.hpp"
-#include <stdexcept>
+#include "cecxx/benchmark/types.hpp"
 #include <utility>
 
 namespace cecxx::benchmark {
-auto is_valid_dimension(const cec_edition_t cec, const int &nrow) -> bool {
+auto is_valid_dimension(const cec_edition_t cec, const dimension_t nrow) -> bool {
     using enum cec_edition_t;
     switch (cec) {
         case cec2017:

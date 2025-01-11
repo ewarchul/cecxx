@@ -9,7 +9,7 @@ template <typename EvaluationFunction>
 struct basic_problem_invoker {
     constexpr basic_problem_invoker(EvaluationFunction fn, double scale = 1.0) : scale_mul{scale}, fn{std::move(fn)} {}
 
-    auto operator()(std::span<const double> input, problem_context_view ctx,
+    auto operator()(std::span<const double> input, problem_context_view_t ctx,
                     affine_mask_t mask = {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes, .rate = 1.0},
                     const std::vector<double> &acc = {}) const -> double {
         if constexpr (std::is_same_v<EvaluationFunction, stateless_eval_func>) {

@@ -26,5 +26,6 @@ struct affine_mask_t {
 
 using dimension_t = unsigned int;
 using problem_number_t = unsigned int;
+using matrix_t = std::vector<std::vector<double>>;
 
 } // namespace cecxx::benchmark

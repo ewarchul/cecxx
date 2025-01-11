@@ -1,6 +1,8 @@
 #pragma once
 
 #include <filesystem>
+#include <functional>
+#include <print>
 #include <vector>
 
 #include "cecxx/benchmark/concepts.hpp"
@@ -18,7 +20,15 @@ public:
 
     auto operator()(const problem_number_t fn, const matrix<double> auto &input) const -> std::vector<double> {
         const auto nrow = input.at(0).size();
-        return detail::evaluate(edition_, ctx_.problem_context(fn, nrow), fn, input);
+        return detail::evaluate(edition_, ctx_.problem_context_view(fn, nrow), fn, input);
+    }
+
+    auto extract_problem(const problem_number_t fn, const dimension_t dim)
+        -> std::function<std::vector<double>(matrix_t)> {
+        auto problem_ctx = ctx_.copy_problem_context(fn, dim);
+        return [f = fn, e = edition_, p_ctx = std::move(problem_ctx)](const matrix_t &input) -> std::vector<double> {
+            return detail::evaluate(e, std::move(p_ctx), f, input);
+        };
     }
 
 private:
