@@ -49,13 +49,13 @@ auto main() -> int {
             std::println("dim = {}, fn = {}, output = {}", dim, fn, output[0]);
         }
 
-        auto input = matrix_t{rv::repeat(0.0) | rv::take(10) | rn::to<matrix_t::value_type>()};
-        auto fn_3 = cec_2017.extract_problem(3, 10);
-        const auto output = fn_3(input);
-        std::println("dim = {}, fn = {}, output = {}", 10, 3, output[0]);
-        auto worker = std::jthread{optimizer, std::move(input), fn_3};
-        worker.detach();
-        std::println("bye bye from this scope");
+        // auto input = matrix_t{rv::repeat(0.0) | rv::take(10) | rn::to<matrix_t::value_type>()};
+        // auto fn_3 = cec_2017.extract_problem(3, 10);
+        // const auto output = fn_3(input);
+        // std::println("dim = {}, fn = {}, output = {}", 10, 3, output[0]);
+        // auto worker = std::jthread{optimizer, std::move(input), fn_3};
+        // worker.detach();
+        // std::println("bye bye from this scope");
 
     } catch (std::exception &e) {
         std::println("Failed: {}", e.what());

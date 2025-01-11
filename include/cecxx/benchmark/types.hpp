@@ -1,5 +1,7 @@
 #pragma once
 
+#include "cecxx/mdspan.hpp"
+#include <span>
 #include <vector>
 namespace cecxx::benchmark {
 
@@ -27,5 +29,7 @@ struct affine_mask_t {
 using dimension_t = unsigned int;
 using problem_number_t = unsigned int;
 using matrix_t = std::vector<std::vector<double>>;
+
+using mat_2 = mdspan<double, extents<std::size_t, std::dynamic_extent, std::dynamic_extent>>;
 
 } // namespace cecxx::benchmark

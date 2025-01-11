@@ -6,6 +6,8 @@
 #include "cecxx/benchmark/types.hpp"
 
 #include "cecxx/benchmark/cec_2017/problem_evaluation_mappings.hpp"
+#include "cecxx/detail/mdspan/__p0009_bits/full_extent_t.hpp"
+#include "cecxx/detail/mdspan/mdspan"
 #include <concepts>
 #include <type_traits>
 #include <utility>
@@ -23,23 +25,25 @@ auto evaluate_selected_problem(cec_edition_t cec, problem_context_view_t ctx, co
     std::unreachable();
 }
 
-auto evaluate(cec_edition_t cec, problem_context auto &&ctx, const problem_number_t fn, const auto &input) {
-    const auto ncol = input.size();
-    const auto nrow = static_cast<dimension_t>(input.at(0).size());
+auto evaluate(cec_edition_t cec, problem_context auto &&, const problem_number_t fn, mat_2 input) {
+    const auto nrow = input.extent(0);
+    const auto ncol = input.extent(1);
 
-    if (not is_valid_dimension(cec, nrow)) {
+    if (not is_valid_dimension(cec, static_cast<unsigned int>(nrow))) {
         throw std::runtime_error{std::format("Invalid problem dimension. Given: {}", nrow)};
     }
 
     auto output = std::vector<double>(ncol);
-    const auto problem_offset = get_cec_offset(cec, fn);
+  std::ignore = get_cec_offset(cec, fn);
     for (auto col{0u}; col < output.size(); ++col) {
-        if constexpr (std::same_as<std::decay_t<decltype(ctx)>, problem_context_view_t>) {
-            output[col] = evaluate_selected_problem(cec, ctx, fn, input.at(col)) + problem_offset;
-        } else {
-            output[col]
-                = evaluate_selected_problem(cec, make_problem_context_view(ctx), fn, input.at(col)) + problem_offset;
-        }
+        auto sub = std::experimental::submdspan(input, 0, std::experimental::full_extent);
+        
+        // if constexpr (std::same_as<std::decay_t<decltype(ctx)>, problem_context_view_t>) {
+        //     output[col] = evaluate_selected_problem(cec, ctx, fn, sub[col]) + problem_offset;
+        // } else {
+        //     output[col]
+        //         = evaluate_selected_problem(cec, make_problem_context_view(ctx), fn, sub[col]) + problem_offset;
+        // }
     }
 
     return output;
