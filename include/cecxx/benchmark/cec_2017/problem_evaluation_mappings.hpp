@@ -8,7 +8,7 @@
 
 namespace cecxx::benchmark::cec_2017 {
 
-auto evaluate(detail::problem_context_view_t ctx, const problem_number_t fn, const auto &input) {
+inline auto evaluate(detail::problem_context_view_t ctx, const problem_number_t fn, std::span<const double> input) {
     switch (fn) {
         case 1:
             return bent_cigar(input, ctx);

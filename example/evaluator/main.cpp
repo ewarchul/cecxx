@@ -1,3 +1,4 @@
+#include "cecxx/mdspan.hpp"
 #include <chrono>
 #include <cstdlib>
 #include <functional>
@@ -13,9 +14,8 @@ namespace rv = std::ranges::views;
 using namespace cecxx::benchmark;
 
 // poor man's mdspan
-using matrix_t = std::vector<std::vector<double>>;
 
-void optimizer(matrix_t &&x0, std::function<std::vector<double>(matrix_t)> fn) {
+void optimizer(cecxx::benchmark::matrix_t x0, std::function<std::vector<double>(matrix_t)> fn) {
     std::println("Calculating CEC functions in different thread...");
     std::this_thread::sleep_for(std::chrono::seconds(2));
     auto v = fn(x0);
@@ -31,7 +31,7 @@ void optimizer(matrix_t &&x0, std::function<std::vector<double>(matrix_t)> fn) {
 
 auto main() -> int {
     try {
-        const auto dimensions = std::vector{10u, 30u, 50u, 100u};
+        const auto dimensions = std::vector{10u};
 
         // Create an evaluator object for the CEC2017 benchmark
         auto cec_2017 = evaluator(cecxx::benchmark::cec_edition_t::cec2017, dimensions, DATA_STORAGE_PATH);
@@ -43,10 +43,11 @@ auto main() -> int {
         for (const auto &[dim, fn] : problem_grid) {
             // @TODO replace with mdspan
             // Prepare input which resembles multidimensional array
-            const auto input = matrix_t{rv::repeat(0.0) | rv::take(dim) | rn::to<matrix_t::value_type>()};
+            const auto input = rv::repeat(0.0) | rv::take(2 * dim) | rn::to<std::vector<double>>();
+            const auto mat = cecxx::mdspan{input.data(), dim, 2};
 
-            const auto output = cec_2017(fn, input);
-            std::println("dim = {}, fn = {}, output = {}", dim, fn, output[0]);
+            const auto output = cec_2017(fn, mat);
+            std::println("dim = {}, fn = {}, output[0] = {}, output[1] = {}", dim, fn, output[0], output[1]);
         }
 
         // auto input = matrix_t{rv::repeat(0.0) | rv::take(10) | rn::to<matrix_t::value_type>()};
@@ -61,6 +62,5 @@ auto main() -> int {
         std::println("Failed: {}", e.what());
         return EXIT_FAILURE;
     }
-    std::this_thread::sleep_for(std::chrono::seconds(4));
     return EXIT_SUCCESS;
 }

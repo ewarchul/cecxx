@@ -28,7 +28,4 @@ using mdspan = std::experimental::mdspan<T, Extents, LayoutPolicy, AccessorPolic
 template <typename IndexType, std::size_t... Extents>
 using extents = std::experimental::extents<IndexType, Extents...>;
 
-template <typename IndexType, std::size_t Rank>
-using dextents = std::experimental::dextents<IndexType, Rank>;
-
 } // namespace cecxx

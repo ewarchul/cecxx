@@ -9,13 +9,14 @@
 #include "cecxx/detail/mdspan/__p0009_bits/full_extent_t.hpp"
 #include "cecxx/detail/mdspan/mdspan"
 #include <concepts>
+#include <print>
 #include <type_traits>
 #include <utility>
 
 namespace cecxx::benchmark::detail {
 
-auto evaluate_selected_problem(cec_edition_t cec, problem_context_view_t ctx, const problem_number_t fn,
-                               const auto &input) -> double {
+inline auto evaluate_selected_problem(cec_edition_t cec, problem_context_view_t ctx, const problem_number_t fn,
+                                      std::span<const double> input) -> double {
     using enum cec_edition_t;
     switch (cec) {
         case cec2017:
@@ -25,7 +26,7 @@ auto evaluate_selected_problem(cec_edition_t cec, problem_context_view_t ctx, co
     std::unreachable();
 }
 
-auto evaluate(cec_edition_t cec, problem_context auto &&, const problem_number_t fn, mat_2 input) {
+auto evaluate(cec_edition_t cec, problem_context auto &&ctx, const problem_number_t fn, matrix_t input) {
     const auto nrow = input.extent(0);
     const auto ncol = input.extent(1);
 
@@ -34,16 +35,15 @@ auto evaluate(cec_edition_t cec, problem_context auto &&, const problem_number_t
     }
 
     auto output = std::vector<double>(ncol);
-  std::ignore = get_cec_offset(cec, fn);
-    for (auto col{0u}; col < output.size(); ++col) {
-        auto sub = std::experimental::submdspan(input, 0, std::experimental::full_extent);
-        
-        // if constexpr (std::same_as<std::decay_t<decltype(ctx)>, problem_context_view_t>) {
-        //     output[col] = evaluate_selected_problem(cec, ctx, fn, sub[col]) + problem_offset;
-        // } else {
-        //     output[col]
-        //         = evaluate_selected_problem(cec, make_problem_context_view(ctx), fn, sub[col]) + problem_offset;
-        // }
+    const auto problem_offset = get_cec_offset(cec, fn);
+    for (auto c : std::ranges::views::iota(0uz, ncol)) {
+        auto col = std::experimental::submdspan(input, std::experimental::full_extent, c);
+        auto col_view = std::span{col.data_handle(), col.size()};
+        if constexpr (std::same_as<std::decay_t<decltype(ctx)>, problem_context_view_t>) {
+            output[c] = evaluate_selected_problem(cec, ctx, fn, col_view) + problem_offset;
+        } else {
+            output[c] = evaluate_selected_problem(cec, make_problem_context_view(ctx), fn, col_view) + problem_offset;
+        }
     }
 
     return output;
