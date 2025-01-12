@@ -9,7 +9,7 @@ evaluator::evaluator(const cec_edition_t edition, std::span<const dimension_t> d
 
 auto evaluator::operator()(const problem_number_t fn, matrix_t input) const -> std::vector<double> {
     const auto nrow = input.extent(0);
-    return detail::evaluate(edition_, ctx_.problem_context_view(fn, static_cast<unsigned int>(nrow)), fn, input);
+    return detail::evaluate(edition_, ctx_.problem_context_view(fn, nrow), fn, input);
 }
 
 auto evaluator::extract_problem(const problem_number_t fn, const dimension_t dim)

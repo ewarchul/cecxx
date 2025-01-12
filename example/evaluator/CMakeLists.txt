@@ -2,8 +2,14 @@ find_package(fmt REQUIRED)
 
 add_compile_definitions(DATA_STORAGE_PATH="${CMAKE_SOURCE_DIR}/data")
 
-add_executable(evaluator_example main.cpp)
-target_link_libraries(evaluator_example PRIVATE cecxx)
-set_target_properties(evaluator_example PROPERTIES CXX_STANDARD 23)
-target_compile_options(evaluator_example PRIVATE -Wall -Wextra -Wpedantic -O3)
+add_executable(evaluate_each_problem evaluate_each_problem.cpp)
+target_link_libraries(evaluate_each_problem PRIVATE cecxx)
+set_target_properties(evaluate_each_problem PROPERTIES CXX_STANDARD 23)
+target_compile_options(evaluate_each_problem PRIVATE -Wall -Wextra -Wpedantic -O3)
+
+
+add_executable(evaluator_separate_problem evaluate_separate_problem.cpp)
+target_link_libraries(evaluator_separate_problem PRIVATE cecxx)
+set_target_properties(evaluator_separate_problem PROPERTIES CXX_STANDARD 23)
+target_compile_options(evaluator_separate_problem PRIVATE -Wall -Wextra -Wpedantic -O3)
 

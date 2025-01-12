@@ -3,7 +3,7 @@ set(PROJECT_VER 0.2.1)
 
 project(cecxx
   VERSION ${PROJECT_VER}
-  DESCRIPTION "An implementation of CECs benchmarks in C++20"
+  DESCRIPTION "An implementation of CECs benchmarks in C++23"
   LANGUAGES CXX
 )
 
@@ -78,6 +78,6 @@ if (WITH_TESTS)
   if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_subdirectory(test)
   else()
-    message(WARNING "To build tests, use clang compiler. Current CXX compiler: ${CMAKE_CXX_COMPILER}")
+    message(WARNING "To build tests, use clang (version: >=18) compiler. Current CXX compiler: ${CMAKE_CXX_COMPILER}")
   endif()
 endif(WITH_TESTS)

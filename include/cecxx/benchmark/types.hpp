@@ -26,7 +26,7 @@ struct affine_mask_t {
     double rate{1.0};
 };
 
-using dimension_t = unsigned int;
+using dimension_t = std::size_t;
 using problem_number_t = unsigned int;
 
 using matrix_t = mdspan<const double, extents<std::size_t, std::dynamic_extent, std::dynamic_extent>>;
