@@ -1,3 +1,8 @@
+/* 
+*  Besides C++ features like automatic type deduction and span usage instead of C arrays, 
+*  the core of this code is taken from the legacy implementation and shall be rewritten. 
+*/
+
 #include <cmath>
 #include <vector>
 

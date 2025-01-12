@@ -1,3 +1,8 @@
+/*
+ *  Besides C++ features like automatic type deduction and span usage instead of C arrays,
+ *  the core of this code is taken from the legacy implementation and shall be rewritten.
+ */
+
 #include <cecxx/benchmark/detail/legacy/affine_transformation.hpp>
 #include <cecxx/benchmark/detail/legacy/functions/multimodal/bi_rastrigin.hpp>
 
