@@ -8,8 +8,8 @@ set_target_properties(evaluate_each_problem PROPERTIES CXX_STANDARD 23)
 target_compile_options(evaluate_each_problem PRIVATE -Wall -Wextra -Wpedantic -O3)
 
 
-add_executable(evaluator_separate_problem evaluate_separate_problem.cpp)
-target_link_libraries(evaluator_separate_problem PRIVATE cecxx)
-set_target_properties(evaluator_separate_problem PROPERTIES CXX_STANDARD 23)
-target_compile_options(evaluator_separate_problem PRIVATE -Wall -Wextra -Wpedantic -O3)
+add_executable(evaluate_separate_problem evaluate_separate_problem.cpp)
+target_link_libraries(evaluate_separate_problem PRIVATE cecxx)
+set_target_properties(evaluate_separate_problem PROPERTIES CXX_STANDARD 23)
+target_compile_options(evaluate_separate_problem PRIVATE -Wall -Wextra -Wpedantic -O3)
 

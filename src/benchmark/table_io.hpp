@@ -30,7 +30,7 @@ struct FILE_deleter_t {
 
 struct table_size_t {
     std::size_t size{};
-    int scaler{};
+    std::size_t scaler{};
     bool scaler_applied{false};
 };
 
@@ -56,7 +56,7 @@ constexpr auto get_table_name(const std::filesystem::path &datapath, Args... arg
             return SHIFT_TABLE_FILENAME(datapath, args...);
     }
 
-    throw std::runtime_error("Unknown table type.");
+    std::unreachable();
 }
 
 template <table_type_t Table, typename ValueType>
@@ -69,8 +69,7 @@ constexpr auto get_table_size(const dimension_t dim, const problem_number_t fn) 
         case table_type_t::shuffle:
             return SHUFFLE_TABLE_SIZE(dim, fn);
     }
-
-    throw std::runtime_error("Unknown table type.");
+    std::unreachable();
 }
 
 template <table_type_t Table, numeric T>
@@ -79,7 +78,7 @@ auto scan_table(auto *fs, const dimension_t dim, const problem_number_t fn) -> s
     auto table = std::vector<T>(sz_info.size);
 
     const auto scan_scaled_shift_table = [&]() {
-        for (auto i = 0; i < sz_info.scaler - 1; ++i) {
+        for (auto i = 0uz; i < sz_info.scaler - 1; ++i) {
             for (auto j = 0u; j < dim; ++j) {
                 if (std::fscanf(fs, number_formatter<T>().data(), &table[i * dim + j]) == -1) {
                     throw std::runtime_error{"Failed to parse table data from file."};
