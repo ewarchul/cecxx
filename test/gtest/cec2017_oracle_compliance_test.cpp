@@ -1,11 +1,11 @@
 // clang-format off
 #include "gtest/gtest.h"
+#include "cecxx/mdspan.hpp"
 #include "fuzztest/fuzztest.h"
 #include "fuzztest/googletest_fixture_adapter.h"
 #include "fuzztest/domain.h"
 // clang-format on
 
-#include <range/v3/all.hpp>
 
 #include "cecxx/benchmark/evaluator.hpp"
 
@@ -45,8 +45,9 @@ public:
 private:
   void Cec2017ImplsAreEquivImpl(std::vector<double> input, int problem_num) {
     const auto oracle_output = calculate_oracle_output(input, problem_num);
+
     const auto cecxx_output =
-        cec_evaluator(problem_num, std::vector<std::vector<double>>{input});
+        cec_evaluator(problem_num, cecxx::mdspan{input.data(), input.size(), 1});
     EXPECT_NEAR(oracle_output, cecxx_output[0], MAX_ABS_ERROR);
   }
 };

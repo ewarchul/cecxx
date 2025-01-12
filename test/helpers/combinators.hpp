@@ -2,19 +2,19 @@
 
 #include <vector>
 
-#include "cecxx/benchmark/edition.hpp"
+#include "cecxx/benchmark/types.hpp"
 #include "fuzztest/domain.h"
 
-template <typename T> auto PositiveVectorOf(auto &&Rng) {
-  return fuzztest::ContainerOf<std::vector>(std::forward<decltype(Rng)>(Rng));
+template <typename T>
+auto PositiveVectorOf(auto &&Rng) {
+    return fuzztest::ContainerOf<std::vector>(std::forward<decltype(Rng)>(Rng));
 }
 
-auto InCecProblemRange(cecxx::benchmark::cec_edition_t edition) {
-  using namespace cecxx::benchmark;
-  switch (edition) {
-  case cec_edition_t::cec2017: {
-    return fuzztest::Filter([](int x) { return x != 2; },
-                            fuzztest::InRange(1, 30));
-  }
-  }
+inline auto InCecProblemRange(cecxx::benchmark::cec_edition_t edition) {
+    using namespace cecxx::benchmark;
+    switch (edition) {
+        case cec_edition_t::cec2017: {
+            return fuzztest::Filter([](int x) { return x != 2; }, fuzztest::InRange(1, 30));
+        }
+    }
 }
