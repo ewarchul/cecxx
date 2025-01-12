@@ -1,0 +1,7 @@
+build/*
+dist/*
+build-*/*
+.cache/*
+legacy/*
+include/cecxx/benchmark/defaults.hpp
+data/*

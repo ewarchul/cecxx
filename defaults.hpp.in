@@ -1,0 +1,5 @@
+#pragma once
+
+namespace cecxx::benchmark::detail {
+constexpr auto default_benchmark_datadir() { return "@BENCHMARK_DATA_STORAGE@"; }
+}  // namespace cecxx::benchmark::detail
