@@ -1,6 +1,6 @@
 #pragma once
 
-#include "cecxx/mdspan.hpp"
+#include <cecxx/mdspan.hpp>
 #include <span>
 #include <vector>
 namespace cecxx::benchmark {

@@ -1,4 +1,4 @@
-#include "cecxx/functions/multimodal/discus.hpp"
+#include <cecxx/functions/multimodal/discus.hpp>
 
 #include <cmath>
 #include <span>

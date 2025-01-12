@@ -1,6 +1,6 @@
 #pragma once
 
-#include "cecxx/benchmark/types.hpp"
+#include <cecxx/benchmark/types.hpp>
 #include <span>
 
 namespace cecxx::benchmark::detail {

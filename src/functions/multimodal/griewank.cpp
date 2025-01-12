@@ -1,4 +1,4 @@
-#include "cecxx/functions/multimodal/griewank.hpp"
+#include <cecxx/functions/multimodal/griewank.hpp>
 
 #include <cmath>
 #include <span>

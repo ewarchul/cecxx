@@ -1,6 +1,6 @@
 #include "table_io.hpp"
 
-#include "cecxx/benchmark/types.hpp"
+#include <cecxx/benchmark/types.hpp>
 #include <format>
 
 namespace cecxx::benchmark::detail {

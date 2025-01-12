@@ -3,8 +3,8 @@
 #include <cmath>
 #include <numeric>
 
-#include "cecxx/benchmark/detail/context.hpp"
-#include "cecxx/benchmark/detail/geom.hpp"
+#include <cecxx/benchmark/detail/context.hpp>
+#include <cecxx/benchmark/detail/geom.hpp>
 
 namespace cecxx::benchmark::detail {
 

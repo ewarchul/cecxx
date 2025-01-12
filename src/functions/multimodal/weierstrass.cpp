@@ -1,4 +1,4 @@
-#include "cecxx/functions/multimodal/weierstrass.hpp"
+#include <cecxx/functions/multimodal/weierstrass.hpp>
 
 #include <cmath>
 #include <span>

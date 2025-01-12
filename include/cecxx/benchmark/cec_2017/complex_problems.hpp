@@ -1,8 +1,8 @@
 #pragma once
 
-#include "cecxx/benchmark/cec_2017/basic_problems.hpp"
-#include "cecxx/benchmark/cec_2017/hybrid_problems.hpp"
-#include "cecxx/benchmark/detail/problem_invokers/complex_problem_invoker.hpp"
+#include <cecxx/benchmark/cec_2017/basic_problems.hpp>
+#include <cecxx/benchmark/cec_2017/hybrid_problems.hpp>
+#include <cecxx/benchmark/detail/problem_invokers/complex_problem_invoker.hpp>
 
 namespace cecxx::benchmark::cec_2017 {
 

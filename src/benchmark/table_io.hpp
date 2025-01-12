@@ -6,8 +6,8 @@
 #include <utility>
 #include <vector>
 
-#include "cecxx/benchmark/concepts.hpp"
-#include "cecxx/benchmark/types.hpp"
+#include <cecxx/benchmark/concepts.hpp>
+#include <cecxx/benchmark/types.hpp>
 
 namespace cecxx::benchmark::detail {
 

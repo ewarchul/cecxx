@@ -1,7 +1,7 @@
 #pragma once
 
-#include "cecxx/benchmark/detail/func_types.hpp"
-#include "cecxx/benchmark/detail/geom.hpp"
+#include <cecxx/benchmark/detail/func_types.hpp>
+#include <cecxx/benchmark/detail/geom.hpp>
 
 namespace cecxx::benchmark::detail {
 

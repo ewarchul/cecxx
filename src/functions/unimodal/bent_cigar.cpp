@@ -1,4 +1,4 @@
-#include "cecxx/functions/unimodal/bent_cigar.hpp"
+#include <cecxx/functions/unimodal/bent_cigar.hpp>
 
 #include <cmath>
 #include <span>

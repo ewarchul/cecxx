@@ -1,4 +1,4 @@
-#include "cecxx/functions/multimodal/rastrigin.hpp"
+#include <cecxx/functions/multimodal/rastrigin.hpp>
 
 #include <cmath>
 #include <span>

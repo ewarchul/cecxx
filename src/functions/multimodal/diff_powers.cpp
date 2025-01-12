@@ -1,4 +1,4 @@
-#include "cecxx/functions/multimodal/diff_powers.hpp"
+#include <cecxx/functions/multimodal/diff_powers.hpp>
 
 #include <cmath>
 #include <span>

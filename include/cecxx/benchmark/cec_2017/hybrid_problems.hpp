@@ -1,7 +1,7 @@
 #pragma once
 
-#include "cecxx/benchmark/cec_2017/basic_problems.hpp"
-#include "cecxx/benchmark/detail/problem_invokers/hybrid_problem_invoker.hpp"
+#include <cecxx/benchmark/cec_2017/basic_problems.hpp>
+#include <cecxx/benchmark/detail/problem_invokers/hybrid_problem_invoker.hpp>
 
 namespace cecxx::benchmark::cec_2017 {
 const auto hybrid_1 = detail::hybrid_problem_invoker{std::tuple{zakharov, rosenbrock, rastrigin}, {0.2, 0.4, 0.4}};

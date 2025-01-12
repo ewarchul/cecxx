@@ -4,7 +4,7 @@
 #include <span>
 #include <unordered_map>
 
-#include "cecxx/benchmark/types.hpp"
+#include <cecxx/benchmark/types.hpp>
 
 namespace cecxx::benchmark::detail {
 struct problem_context_t {

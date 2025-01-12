@@ -1,4 +1,4 @@
-#include "cecxx/functions/multimodal/happycat.hpp"
+#include <cecxx/functions/multimodal/happycat.hpp>
 
 #include <cmath>
 #include <span>

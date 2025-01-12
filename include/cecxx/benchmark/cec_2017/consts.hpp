@@ -1,6 +1,6 @@
 #pragma once
 
-#include "cecxx/benchmark/types.hpp"
+#include <cecxx/benchmark/types.hpp>
 #include <set>
 #include <unordered_map>
 

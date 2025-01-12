@@ -1,4 +1,4 @@
-#include "cecxx/functions/multimodal/grie_rosen.hpp"
+#include <cecxx/functions/multimodal/grie_rosen.hpp>
 
 #include <cmath>
 #include <span>

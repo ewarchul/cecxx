@@ -4,9 +4,9 @@
 #include <print>
 #include <ranges>
 
+#include "../table_io.hpp"
 #include "cecxx/benchmark/helpers.hpp"
 #include "cecxx/benchmark/types.hpp"
-#include "../table_io.hpp"
 
 namespace cecxx::benchmark::detail {
 

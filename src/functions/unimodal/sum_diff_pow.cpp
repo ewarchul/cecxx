@@ -1,4 +1,4 @@
-#include "cecxx/functions/unimodal/sum_diff_pow.hpp"
+#include <cecxx/functions/unimodal/sum_diff_pow.hpp>
 
 #include <cmath>
 #include <span>

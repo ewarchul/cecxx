@@ -1,4 +1,4 @@
-#include "cecxx/functions/multimodal/rosenbrock.hpp"
+#include <cecxx/functions/multimodal/rosenbrock.hpp>
 
 #include <span>
 

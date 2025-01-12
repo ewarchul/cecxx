@@ -3,7 +3,7 @@
 #include <span>
 #include <vector>
 
-#include "cecxx/benchmark/detail/context.hpp"
+#include <cecxx/benchmark/detail/context.hpp>
 
 namespace cecxx::benchmark::detail {
 

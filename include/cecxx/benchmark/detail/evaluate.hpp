@@ -1,30 +1,20 @@
 #pragma once
 
-#include "cecxx/benchmark/concepts.hpp"
-#include "cecxx/benchmark/detail/context.hpp"
-#include "cecxx/benchmark/helpers.hpp"
-#include "cecxx/benchmark/types.hpp"
+#include <cecxx/benchmark/concepts.hpp>
+#include <cecxx/benchmark/detail/context.hpp>
+#include <cecxx/benchmark/helpers.hpp>
+#include <cecxx/benchmark/types.hpp>
 
-#include "cecxx/benchmark/cec_2017/problem_evaluation_mappings.hpp"
-#include "cecxx/detail/mdspan/__p0009_bits/full_extent_t.hpp"
-#include "cecxx/detail/mdspan/mdspan"
+#include <cecxx/detail/mdspan/__p0009_bits/full_extent_t.hpp>
+#include <cecxx/detail/mdspan/mdspan>
 #include <concepts>
 #include <print>
 #include <type_traits>
-#include <utility>
 
 namespace cecxx::benchmark::detail {
 
-inline auto evaluate_selected_problem(cec_edition_t cec, problem_context_view_t ctx, const problem_number_t fn,
-                                      std::span<const double> input) -> double {
-    using enum cec_edition_t;
-    switch (cec) {
-        case cec2017:
-            return cec_2017::evaluate(ctx, fn, input);
-    }
-
-    std::unreachable();
-}
+auto evaluate_selected_problem(cec_edition_t cec, problem_context_view_t ctx, const problem_number_t fn,
+                               std::span<const double> input) -> double;
 
 auto evaluate(cec_edition_t cec, problem_context auto &&ctx, const problem_number_t fn, matrix_t input) {
     const auto nrow = input.extent(0);

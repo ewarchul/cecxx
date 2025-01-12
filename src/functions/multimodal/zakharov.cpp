@@ -1,4 +1,4 @@
-#include "cecxx/functions/multimodal/zakharov.hpp"
+#include <cecxx/functions/multimodal/zakharov.hpp>
 
 #include <cmath>
 #include <span>

@@ -1,8 +1,8 @@
 #include <cmath>
 #include <vector>
 
-#include "cecxx/benchmark/detail/legacy/affine_transformation.hpp"
-#include "cecxx/enum.hpp"
+#include <cecxx/benchmark/detail/legacy/affine_transformation.hpp>
+
 #include "consts.h"
 
 namespace cecxx::benchmark::detail {
@@ -33,8 +33,8 @@ void sr_func(std::span<const double> input, std::span<double> sr_x, std::span<co
              std::span<const double> rot_mat, const double sh_rate, const do_affine_trans shift,
              const do_affine_trans rotate, std::span<double> output) {
     const auto nrow = input.size();
-    if (to_underlying(shift) == 1) {
-        if (to_underlying(rotate) == 1) {
+    if (std::to_underlying(shift) == 1) {
+        if (std::to_underlying(rotate) == 1) {
             shiftfunc(input, output, shit_vec);
             for (auto i = 0u; i < nrow; i++) {
                 output[i] = output[i] * sh_rate;
@@ -47,7 +47,7 @@ void sr_func(std::span<const double> input, std::span<double> sr_x, std::span<co
             }
         }
     } else {
-        if (to_underlying(rotate) == 1) {
+        if (std::to_underlying(rotate) == 1) {
             for (auto i = 0u; i < nrow; i++) {
                 output[i] = input[i] * sh_rate;
             }
