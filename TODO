@@ -1,0 +1,25 @@
+# TODOs
+
+
+## 2025-04-05
+
+H[] provide some unit tests for evaluator
+H[] make fuzz-tests compiler-agnostic
+H[] prepare examples with optimizers like libcmaes and one more
+H[] write documentation (maybe with mkdocs?)
+H[] review code
+H[] do the release of version 0.2.0
+H[] add CEC 2013 ------
+M[] add CEC 2014       |
+M[] add CEC 2021       |
+M[] add CEC 2022       | --- by codegen via jinja template?
+M[] add CEC 2023       |
+M[] add CEC 2024       |
+M[] add CEC 2025 ------
+H[] add benchmark runner for C++ solver
+H[] provide bindings for python
+H[] provide bindings for R
+L[] provide bindings for Matlab
+L[] provide bindings for Julia
+L[] add results post-processing scripts
+
