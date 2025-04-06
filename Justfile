@@ -36,6 +36,7 @@ run_unit_tests:
   ctest --test-dir {{build_dir}}/test/unit
 
 run_compliance_tests: 
+  unzip data/cec2017.zip -d data
   ASAN_OPTIONS=detect_leaks=0 ./{{build_dir}}/test/compliance/cecxx-compliance-tests
 
 clean: 
