@@ -16,7 +16,7 @@ jobs:
               sudo add-apt-repository universe && sudo apt update && sudo apt install gcc-14 g++-14
           - cxx: clang++-19
             install:
-              wget -qO- https://apt.llvm.org/llvm.sh | bash -s -- 19
+              wget -qO- https://apt.llvm.org/llvm.sh | sudo bash -s -- 19
     steps:
     - uses: actions/checkout@master
     - uses: extractions/setup-just@v3
