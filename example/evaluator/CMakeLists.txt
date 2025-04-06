@@ -1,5 +1,3 @@
-find_package(fmt REQUIRED)
-
 add_compile_definitions(DATA_STORAGE_PATH="${CMAKE_SOURCE_DIR}/data")
 
 add_executable(evaluate_each_problem evaluate_each_problem.cpp)

@@ -1,47 +1,42 @@
 set dotenv-load
 
-alias i := init_build
+alias i := init
 alias b := build
-alias p := package
-alias e := exe
-alias t := test
+alias tu := run_unit_tests
+alias tc := run_compliance_tests
 alias c := clean
 
 cxx_compiler := "${CXX}"
 c_compiler := "${CC}"
+cmake_build_type := "${BUILD_TYPE}"
+cmake_generator := "${GENERATOR}"
 build_dir := "build-" + cxx_compiler
 ncores := `nproc`
-
 
 default:
   @just --list
 
-init_build: clean
+init:
+  git submodule update --init
   mkdir -p {{build_dir}}
-  cd {{build_dir}} && CC={{c_compiler}} CXX={{cxx_compiler}} cmake -DWITH_TESTS=on -DWITH_EXAMPLES=on .. 
+  CXX={{cxx_compiler}} cmake \
+    -B {{build_dir}} \
+    -S . \
+    -G "{{cmake_generator}}" \
+    -DCMAKE_BUILD_TYPE={{cmake_build_type}} \
+    -DWITH_UNIT_TESTS=on \
+    -DWITH_COMPLIANCE_TESTS=on \
+    -DWITH_EXAMPLES=on
   ln -fs {{build_dir}}/compile_commands.json compile_commands.json
 
 build: 
-  cd {{build_dir}} && make -j {{ncores}}
+  cmake --build {{build_dir}} --parallel {{ncores}}
 
-exe:
-  ./{{build_dir}}/example/evaluator/evaluator_example
+run_unit_tests:
+  ctest --test-dir {{build_dir}}/test/unit
 
-
-test $fuzz_duration: 
-  #!/usr/bin/env bash
-  set -euo pipefail
-  dimensions=(10 30 50 100)
-  GREEN='\033[0;32m'
-  NO_COLOR='\033[0m'
-  for dim in ${dimensions[@]}; do
-    echo -e "${GREEN} Running compliance tests for dimension ${dim}. Duration: ${fuzz_duration} ${NO_COLOR}"
-    unzip -o "${PWD}/data/cec2017.zip" -d "${PWD}/data"
-    ASAN_OPTIONS=detect_leaks=0 ./{{build_dir}}/test/cecxx-fuzz --fuzz="Cec2017ComplianceTest.Cec2017D${dim}ImplsAreEquiv" --fuzz_for={{fuzz_duration}} || true
-  done
-
-package:
-  cd {{build_dir}} && cpack 
+run_compliance_tests: 
+  ASAN_OPTIONS=detect_leaks=0 ./{{build_dir}}/test/compliance/cecxx-compliance-tests
 
 clean: 
   rm -rf {{build_dir}}

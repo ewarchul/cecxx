@@ -1,0 +1,40 @@
+name: "llvm"
+on:
+  pull_request:
+  push:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        cxx: [clang++-19]
+        build_type: [Release]
+        generator: [Ninja]
+        include:
+          - cxx: clang++-19
+            install:
+              wget -qO- https://apt.llvm.org/llvm.sh | sudo bash -s -- 19
+    steps:
+    - uses: actions/checkout@master
+    - uses: extractions/setup-just@v3
+    - name: Prepare build environment
+      run: |
+          sudo apt update
+          ${{matrix.install}}
+          sudo apt install -y cmake ninja-build libgtest-dev
+    - name: Prepare build directory
+      env: 
+        CXX: ${{matrix.cxx}}
+        BUILD_TYPE: ${{matrix.build_type}}
+        GENERATOR: ${{matrix.generator}}
+      run: |
+          just init
+    - name: Build project
+      run: |
+         CXX=${{matrix.cxx}} just build
+    - name: Run unit tests
+      run: |
+         CXX=${{matrix.cxx}} just run_unit_tests
+    - name: Run compliance tests
+      run: |
+         CXX=${{matrix.cxx}} just run_compliance_tests
