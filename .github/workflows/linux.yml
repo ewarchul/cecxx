@@ -9,6 +9,7 @@ jobs:
       matrix:
         cxx: [gcc, clang]
         build_type: [Release]
+        generator: [Ninja]
     steps:
     - uses: actions/checkout@master
     - uses: extractions/setup-just@v3
@@ -20,6 +21,7 @@ jobs:
       env: 
         CXX: ${{matrix.cxx}}
         BUILD_TYPE: ${{matrix.build_type}}
+        GENERATOR: ${{matrix.generator}}
       run: |
           just init
     - name: Build project
