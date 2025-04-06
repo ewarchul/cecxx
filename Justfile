@@ -6,8 +6,6 @@ alias tu := run_unit_tests
 alias tc := run_compliance_tests
 alias c := clean
 
-set dotenv-load := true
-
 cxx_compiler := "${CXX}"
 c_compiler := "${CC}"
 cmake_build_type := "${BUILD_TYPE}"
@@ -24,7 +22,7 @@ init:
   CC={{c_compiler}} CXX={{cxx_compiler}} cmake \
     -B {{build_dir}} \
     -S . \
-    -G Ninja \
+    -G "{{cmake_generator}}" \
     -DCMAKE_BUILD_TYPE={{cmake_build_type}} \
     -DWITH_UNIT_TESTS=on \
     -DWITH_COMPLIANCE_TESTS=on \

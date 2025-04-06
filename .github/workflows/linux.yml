@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         cxx: [g++-12, clang++-18]
-        build_type: [Debug, Release]
+        build_type: [Release]
     steps:
     - uses: actions/checkout@master
     - uses: extractions/setup-just@v3

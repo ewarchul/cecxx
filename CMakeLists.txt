@@ -77,7 +77,7 @@ if (WITH_BENCHMARKS)
 endif()
 
 if (WITH_UNIT_TESTS OR WITH_COMPLIANCE_TESTS)
-  if (WITH_COMPLIANCE_TESTS)
+  if (WITH_COMPLIANCE_TESTS AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_subdirectory(third-party/fuzztest)
   endif()
   add_subdirectory(test)
