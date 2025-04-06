@@ -15,7 +15,7 @@ jobs:
     - name: Prepare build environment
       run: |
           sudo apt update
-          sudo apt install -y cmake just ninja-build ${{matrix.cxx}}
+          sudo apt install -y cmake ninja-build ${{matrix.cxx}}
     - name: Prepare build directory
       env: 
         CXX: ${{matrix.cxx}}
