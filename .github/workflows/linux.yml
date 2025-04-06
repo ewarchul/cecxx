@@ -1,0 +1,34 @@
+name: "linux"
+on:
+  pull_request:
+  push:
+jobs:
+  build_clang:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        cxx: [g++-12, clang++-18]
+        build_type: [Debug, Release]
+    steps:
+    - uses: actions/checkout@master
+    - uses: extractions/setup-just@v3
+    - name: Prepare build environment
+      run: |
+          sudo apt update
+          sudo apt install -y cmake just ninja-build ${{matrix.cxx}}
+    - name: Prepare build directory
+      env: 
+        CXX: ${{matrix.cxx}}
+        BUILD_TYPE: ${{matrix.build_type}}
+      run: |
+          just init
+    - name: Build project
+      run: |
+          just build
+    - name: Run unit tests
+      run: |
+          just run_unit_tests
+    - name: Run compliance tests
+      if: ${{ matrix.cxx == 'clang++-18' }}
+      run: |
+          just run_compliance_tests

@@ -1,10 +1,14 @@
 # TODOs
 
 
+## 2025-04-06
+
+H[] setup CI
+
 ## 2025-04-05
 
-H[] provide some unit tests for evaluator
-H[] make fuzz-tests compiler-agnostic
+H[x] provide some unit tests for evaluator
+H[] ~~make fuzz-tests compiler-agnostic~~ not possible
 H[] prepare examples with optimizers like libcmaes and one more
 H[] write documentation (maybe with mkdocs?)
 H[] review code
