@@ -1,5 +1,8 @@
 # cecxx
 
+[![Build GNU](https://github.com/ewarchul/cecxx/actions/workflows/gnu.yml/badge.svg)](https://github.com/ewarchul/cecxx/actions/workflows/gnu.yml)
+[![Build LLVM](https://github.com/ewarchul/cecxx/actions/workflows/llvm.yml/badge.svg)](https://github.com/ewarchul/cecxx/actions/workflows/llvm.yml)
+
 > [!WARNING]  
 > This library is under active development. Currently, only the CEC-2017 edition is complete.
 > If you want to use slightly better (i.e., without memory leaks) implementations of other editions
