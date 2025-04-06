@@ -6,7 +6,6 @@ set(TEST_SOURCES
 set(FUZZTEST_FUZZING_MODE ON)
 
 enable_testing()
-add_subdirectory(fuzztest)
 fuzztest_setup_fuzzing_flags()
 
 add_executable(${TEST_TARGET} ${TEST_SOURCES})

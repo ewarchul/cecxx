@@ -68,12 +68,6 @@ write_basic_package_version_file(
   COMPATIBILITY AnyNewerVersion
 )
 
-# include(CPack)
-#
-# install(TARGETS cecxx EXPORT cecxxTargets FILE_SET HEADERS)
-# install(EXPORT cecxxTargets NAMESPACE cecxx:: DESTINATION lib/cmake/cecxx)
-# install(DIRECTORY ${PROJECT_SOURCE_DIR}/data/ DESTINATION "${BENCHMARK_DATA_STORAGE}")
-
 if (WITH_EXAMPLES)
   add_subdirectory(example)
 endif()
@@ -83,5 +77,8 @@ if (WITH_BENCHMARKS)
 endif()
 
 if (WITH_UNIT_TESTS OR WITH_COMPLIANCE_TESTS)
+  if (WITH_COMPLIANCE_TESTS)
+    add_subdirectory(third-party/fuzztest)
+  endif()
   add_subdirectory(test)
 endif()
