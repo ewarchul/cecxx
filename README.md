@@ -1,7 +1,7 @@
 # cecxx
 
-[![Build GNU](https://github.com/ewarchul/cecxx/actions/workflows/gnu.yml/badge.svg)](https://github.com/ewarchul/cecxx/actions/workflows/gnu.yml)
-[![Build LLVM](https://github.com/ewarchul/cecxx/actions/workflows/llvm.yml/badge.svg)](https://github.com/ewarchul/cecxx/actions/workflows/llvm.yml)
+[![gnu](https://github.com/ewarchul/cecxx/actions/workflows/gnu.yml/badge.svg?branch=dev)](https://github.com/ewarchul/cecxx/actions/workflows/gnu.yml)
+[![llvm](https://github.com/ewarchul/cecxx/actions/workflows/llvm.yml/badge.svg?branch=dev)](https://github.com/ewarchul/cecxx/actions/workflows/llvm.yml)
 
 > [!WARNING]  
 > This library is under active development. Currently, only the CEC-2017 edition is complete.
