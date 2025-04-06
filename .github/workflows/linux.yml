@@ -13,9 +13,7 @@ jobs:
         include:
           - cxx: g++14
             install:
-              sudo add-apt-repository universe 
-              sudo apt update 
-              sudo apt install gcc-14 g++-14
+              sudo add-apt-repository universe && sudo apt update && sudo apt install gcc-14 g++-14
     steps:
     - uses: actions/checkout@master
     - uses: extractions/setup-just@v3
