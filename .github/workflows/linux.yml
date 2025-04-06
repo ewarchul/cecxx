@@ -26,11 +26,11 @@ jobs:
           just init
     - name: Build project
       run: |
-          just build
+         CXX=${{matrix.cxx}} just build
     - name: Run unit tests
       run: |
-          just run_unit_tests
+         CXX=${{matrix.cxx}} just run_unit_tests
     - name: Run compliance tests
       if: ${{ matrix.cxx == 'clang++-18' }}
       run: |
-          just run_compliance_tests
+         CXX=${{matrix.cxx}} just run_compliance_tests
