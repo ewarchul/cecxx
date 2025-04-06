@@ -16,7 +16,7 @@ C++23.
 
 [About](#about)
 
-[Installation and usage](#installation-and-usage)
+[Build and installation](#build-and-installation)
 
 [Usage](#usage)
 
@@ -42,7 +42,7 @@ Solving the above problems results in reliable and fast implementation that is r
 [^1]: Bound-constrained single objective problem.
 
 
-## Installation and usage
+## Build and installation
 
 ### Requirements
 
@@ -65,7 +65,7 @@ Note that only LLVM's compiler can be used to build compliance tests.
 
 [^2]: Only LLVM and GNU toolchain are supported. The Apple Clang won't be supported.
 
-### Build and installation
+### Build
 
 To build the `{cecxx}` library, run the following commands:
 
@@ -85,7 +85,7 @@ just init build
 
 See [Justfile](https://github.com/ewarchul/cecxx/blob/main/Justfile) recipes for details.
 
-### Running tests
+### Tests
 
 To build unit or compliance tests, run `cmake` with `-DWITH_UNIT_TESTS` and `-DWITH_COMPLIANCE_TESTS` options.
 
