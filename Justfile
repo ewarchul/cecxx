@@ -1,3 +1,5 @@
+set dotenv-load
+
 alias i := init
 alias b := build
 alias tu := run_unit_tests
@@ -5,6 +7,7 @@ alias tc := run_compliance_tests
 alias c := clean
 
 cxx_compiler := "${CXX}"
+c_compiler := "${CC}"
 cmake_build_type := "${BUILD_TYPE}"
 cmake_generator := "${GENERATOR}"
 build_dir := "build-" + cxx_compiler

@@ -7,16 +7,23 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        cxx: [clang]
+        cxx: [g++14]
         build_type: [Release]
         generator: [Ninja]
+        include:
+          - cxx: g++14
+            install:
+              sudo add-apt-repository universe 
+              sudo apt update 
+              sudo apt install gcc-14 g++-14
     steps:
     - uses: actions/checkout@master
     - uses: extractions/setup-just@v3
     - name: Prepare build environment
       run: |
           sudo apt update
-          sudo apt install -y cmake ninja-build libgtest-dev ${{matrix.cxx}}
+          ${{matrix.install}}
+          sudo apt install -y cmake ninja-build libgtest-dev
     - name: Prepare build directory
       env: 
         CXX: ${{matrix.cxx}}
@@ -30,7 +37,3 @@ jobs:
     - name: Run unit tests
       run: |
          CXX=${{matrix.cxx}} just run_unit_tests
-    - name: Run compliance tests
-      if: ${{ matrix.cxx == 'clang++-18' }}
-      run: |
-         CXX=${{matrix.cxx}} just run_compliance_tests
