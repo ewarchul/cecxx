@@ -36,7 +36,7 @@ run_unit_tests:
   ctest --test-dir {{build_dir}}/test/unit
 
 run_compliance_tests: 
-  ASAN_OPTIONS=detect_leaks=0 ctest --test-dir {{build_dir}}/test/compliance --tests-regex "Cec*"
+  ASAN_OPTIONS=detect_leaks=0 ./{{build_dir}}/test/compliance/cecxx-compliance-tests
 
 clean: 
   rm -rf {{build_dir}}
