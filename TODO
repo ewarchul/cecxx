@@ -10,7 +10,7 @@ H[x] setup CI
 H[x] provide some unit tests for evaluator
 H[] ~~make fuzz-tests compiler-agnostic~~ not possible
 H[] prepare examples with optimizers like libcmaes and one more
-H[] write documentation (maybe with mkdocs?)
+H[x] write documentation (maybe with mkdocs?)
 H[] review code
 H[] do the release of version 0.2.0
 H[] add CEC 2013 ------
