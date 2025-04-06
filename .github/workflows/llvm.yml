@@ -35,3 +35,6 @@ jobs:
     - name: Run unit tests
       run: |
          CXX=${{matrix.cxx}} just run_unit_tests
+    - name: Run compliance tests
+      run: |
+         CXX=${{matrix.cxx}} just run_compliance_tests
