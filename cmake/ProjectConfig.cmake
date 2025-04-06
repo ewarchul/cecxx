@@ -1,4 +1,6 @@
-option(WITH_TESTS "Build tests" OFF)
+option(WITH_COMPLIANCE_TESTS "Build compliance tests" OFF)
+option(WITH_UNIT_TESTS "Build unit tests" OFF)
+
 option(WITH_EXAMPLES "Build examples" OFF)
 option(WITH_BENCHMARKS "Build benchmarks" OFF)
 

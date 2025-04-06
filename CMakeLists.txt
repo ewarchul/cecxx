@@ -46,16 +46,24 @@ endif()
 
 add_library(cecxx)
 target_sources(cecxx PRIVATE ${SOURCES})
-target_sources(cecxx PUBLIC FILE_SET HEADERS BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/include" FILES ${HEADERS})
+target_sources(cecxx PUBLIC
+  FILE_SET HEADERS
+  BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/include"
+  FILES ${HEADERS}
+)
 target_compile_options(cecxx PRIVATE ${COMPILE_FLAGS})
 target_compile_features(cecxx PRIVATE cxx_std_23)
 
-message(STATUS "The cecxx library is going to be compiled with the following additional flags: ${COMPILE_FLAGS}")
+message(STATUS
+  "The cecxx library is going to be compiled with the following additional flags: ${COMPILE_FLAGS}"
+)
 
-configure_file(defaults.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/include/cecxx/benchmark/defaults.hpp) 
+configure_file(defaults.hpp.in
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/cecxx/benchmark/defaults.hpp)
 generate_export_header(cecxx)
 
-write_basic_package_version_file("${PROJECT_BINARY_DIR}/cecxxConfigVersion.cmake"
+write_basic_package_version_file(
+  "${PROJECT_BINARY_DIR}/cecxxConfigVersion.cmake"
   VERSION ${PROJECT_VER}
   COMPATIBILITY AnyNewerVersion
 )
@@ -74,10 +82,6 @@ if (WITH_BENCHMARKS)
   add_subdirectory(benchmark)
 endif()
 
-if (WITH_TESTS)
-  if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    add_subdirectory(test)
-  else()
-    message(WARNING "To build tests, use clang (>=19) compiler. Current CXX compiler: ${CMAKE_CXX_COMPILER}")
-  endif()
-endif(WITH_TESTS)
+if (WITH_UNIT_TESTS OR WITH_COMPLIANCE_TESTS)
+  add_subdirectory(test)
+endif()

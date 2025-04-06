@@ -1,25 +1,21 @@
-set(FUZZTEST_FUZZING_MODE ON)
-
-include(FetchContent)
-FetchContent_Declare(
-  fuzztest
-  GIT_REPOSITORY https://github.com/google/fuzztest.git
-  GIT_TAG "main"
-)
-FetchContent_MakeAvailable(fuzztest)
-
-enable_testing()
+find_package(GTest REQUIRED)
 include(GoogleTest)
-
-fuzztest_setup_fuzzing_flags()
 
 add_compile_definitions(DATA_STORAGE_PATH="${CMAKE_SOURCE_DIR}/data")
 
-add_executable(cecxx-fuzz gtest/cec2017_oracle_compliance_test.cpp oracle/cec2017.cpp)
-target_include_directories(cecxx-fuzz PUBLIC .)
-target_link_libraries(cecxx-fuzz PRIVATE cecxx)
+if(WITH_COMPLIANCE_TESTS)
+  if (NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    message(WARNING
+      "To build compliance tests, clang compiler is required.\
+      Current compiler: ${CMAKE_CXX_COMPILER_ID}. Skipping building compliance tests..."
+    )
+  else()
+    add_subdirectory(compliance)
+  endif()
+endif(WITH_COMPLIANCE_TESTS)
 
-set_target_properties(cecxx-fuzz PROPERTIES LINKER_LANGUAGE CXX CXX_STANDARD 20)
+if (WITH_UNIT_TESTS)
+  add_subdirectory(unit)
+endif(WITH_UNIT_TESTS)
 
-link_fuzztest(cecxx-fuzz)
-gtest_discover_tests(cecxx-fuzz)
+
