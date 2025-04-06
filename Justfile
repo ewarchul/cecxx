@@ -16,7 +16,7 @@ default:
 init:
   git submodule update --init
   mkdir -p {{build_dir}}
-    CXX={{cxx_compiler}} cmake \
+  CXX={{cxx_compiler}} cmake \
     -B {{build_dir}} \
     -S . \
     -G "{{cmake_generator}}" \
