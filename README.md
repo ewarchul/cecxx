@@ -1,59 +1,102 @@
 # cecxx
 
-[![gnu](https://github.com/ewarchul/cecxx/actions/workflows/gnu.yml/badge.svg?branch=dev)](https://github.com/ewarchul/cecxx/actions/workflows/gnu.yml)
-[![llvm](https://github.com/ewarchul/cecxx/actions/workflows/llvm.yml/badge.svg?branch=dev)](https://github.com/ewarchul/cecxx/actions/workflows/llvm.yml)
+An implementation of IEEE Congress of Evolutionary (CEC) Bound Constrained Single Objective Numerical Optimization benchmarks in
+C++23.
 
-> [!WARNING]  
-> This library is under active development. Currently, only the CEC-2017 edition is complete.
-> If you want to use slightly better (i.e., without memory leaks) implementations of other editions
-> than those proposed by the competition organizers, go to branch [legacy-c](https://github.com/ewarchul/cecxx/tree/legacy-c). 
+[![gnu](https://github.com/ewarchul/cecxx/actions/workflows/gnu.yml/badge.svg?branch=main)](https://github.com/ewarchul/cecxx/actions/workflows/gnu.yml)
+[![llvm](https://github.com/ewarchul/cecxx/actions/workflows/llvm.yml/badge.svg?branch=main)](https://github.com/ewarchul/cecxx/actions/workflows/llvm.yml)
 
-**cecxx** is an implementation of IEEE Congress on Evolutionary Computation (CEC) benchmarks in C++23. 
 
-## Quick example
+[About](#about)
 
-```cpp
-#include <cstdlib>
-#include <print>
-#include <ranges>
-#include <vector>
+[Benchmarks](#benchmarks)
 
-#include <cecxx/benchmark/evaluator.hpp>
-#include <cecxx/mdspan.hpp>
+[Installation and usage](#installation-and-usage)
 
-namespace rn = std::ranges;
-namespace rv = std::ranges::views;
-using namespace cecxx::benchmark;
+[Examples](#examples)
 
-auto main() -> int {
-    try {
-        const auto dimensions = std::vector{10uz, 30uz, 50uz, 100uz};
+[Supported benchmarks](#supported-benchmarks)
 
-        // Create an evaluator object for the CEC2017 benchmark
-        auto cec_2017 = evaluator(cec_edition_t::cec2017, dimensions);
+## About
 
-        // Create problem grid [problem_number X dimension]
-        const auto problem_grid = rv::cartesian_product(dimensions, rv::iota(1, 30));
+TODO
 
-        // Evaluate given input on each optimization problem from CEC2017/D{10, 30, 50, 100}
-        for (const auto &[dim, fn] : problem_grid) {
-            // Prepare input i.e. rank-2 matrix with size [dim x 2] (row-major)
-            const auto input = rv::repeat(0.0) | rv::take(2 * dim) | rn::to<std::vector<double>>();
-            const auto mat = cecxx::mdspan{input.data(), dim, 2};
+## Benchmarks
 
-            const auto output = cec_2017(fn, mat);
-            std::println("dim = {}, fn = {}, output[0] = {}, output[1] = {}", dim, fn, output[0], output[1]);
-        }
-    } catch (std::exception &e) {
-        std::println("Failed: {}", e.what());
-        return EXIT_FAILURE;
-    }
-    return EXIT_SUCCESS;
-}
+TODO
+
+## Installation and usage
+
+### Requirements
+
+To build and install the `{cecxx}` library, following programs are required:
+
+* LLVM clang++-19 or GNU gcc-14
+* cmake (at least 3.19)
+
+To build and run compliance tests, only LLVM's compiler can be used. 
+
+#### Supported platforms
+
+| Operating system | Status |
+|:----------------:|:------:|
+| Linux | :heavy_check_mark: |
+| macOS | :soon: |
+| Windows | :soon: |
+
+
+### Build and installation
+
+To build and install the `{cecxx}` library, run the following commands:
+
+```sh
+mkdir build 
+cmake -B build -S . 
+cmake --build build
+cmake --install build
 ```
 
-## Documentation
+#### Justfile
 
-> [!NOTE]
-> The full documentation is under development.
+or if you are using `Justfile` simply type:
+
+```sh
+just init build install
+```
+
+### Running tests
+
+TODO
+
+#### Justfile
+
+TODO
+
+### Usage
+
+TODO
+
+### Examples
+
+TODO
+
+All examples can be found in [example](https://github.com/ewarchul/cecxx/tree/main/example) directory. 
+
+## Supported benchmarks
+
+TODO
+
+
+| CEC editiion | Status |
+|:-------------|:------:|
+| 2013 | :soon: |  
+| 2014 | :soon: |  
+| 2015 | :soon: |  
+| 2017 | :heavy_check_mark: |  
+| 2019 | :soon: |  
+| 2021 | :soon: |  
+| 2022 | :soon: |  
+| 2023 | :soon: |  
+| 2024 | :soon: |  
+| 2025 | :soon: |  
 
