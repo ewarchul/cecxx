@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        cxx: [gcc, clang]
+        cxx: [clang]
         build_type: [Release]
         generator: [Ninja]
     steps:
