@@ -7,11 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        cxx: [g++14]
+        cxx: [g++-14]
         build_type: [Release]
         generator: [Ninja]
         include:
-          - cxx: g++14
+          - cxx: g++-14
             install:
               sudo add-apt-repository universe && sudo apt update && sudo apt install gcc-14 g++-14
     steps:
