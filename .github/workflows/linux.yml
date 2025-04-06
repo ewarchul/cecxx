@@ -3,11 +3,11 @@ on:
   pull_request:
   push:
 jobs:
-  build_clang:
+  build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        cxx: [g++-12, clang++-18]
+        cxx: [g++, clang++]
         build_type: [Release]
     steps:
     - uses: actions/checkout@master
