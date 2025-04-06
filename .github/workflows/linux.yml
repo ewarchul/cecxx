@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        cxx: [g++, clang++]
+        cxx: [gcc, clang]
         build_type: [Release]
     steps:
     - uses: actions/checkout@master
