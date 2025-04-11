@@ -33,6 +33,7 @@ build:
   cmake --build {{build_dir}} --parallel {{ncores}}
 
 run_unit_tests:
+  unzip data/cec2017.zip -d data
   ctest --test-dir {{build_dir}}/test/unit
 
 run_compliance_tests: 
