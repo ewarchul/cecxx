@@ -12,7 +12,7 @@ add_executable(${TEST_TARGET} ${TEST_SOURCES})
 target_include_directories(${TEST_TARGET} PUBLIC .)
 target_link_libraries(${TEST_TARGET} PRIVATE cecxx)
 set_target_properties(${TEST_TARGET}
-  PROPERTIES LINKER_LANGUAGE CXX CXX_STANDARD 20
+  PROPERTIES LINKER_LANGUAGE CXX CXX_STANDARD 23
 )
 link_fuzztest(${TEST_TARGET})
 gtest_discover_tests(${TEST_TARGET})

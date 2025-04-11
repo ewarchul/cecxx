@@ -24,13 +24,4 @@ auto get_cec_offset(const cec_edition_t cec, const problem_number_t fn) -> doubl
     std::unreachable();
 }
 
-auto total_problem_num(const cec_edition_t edition) -> int {
-    switch (edition) {
-        case cec_edition_t::cec2017:
-            return 30;
-    }
-
-    std::unreachable();
-}
-
 } // namespace cecxx::benchmark

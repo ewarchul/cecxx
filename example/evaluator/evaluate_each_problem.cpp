@@ -22,7 +22,7 @@ auto main() -> int {
 
         // Evaluate given input on each optimization problem from CEC2017/D{10, 30, 50, 100}
         for (const auto &[dim, fn] : problem_grid) {
-            // Prepare input which matrix [dim x 2]
+            // Prepare input matrix [dim x 2]
             const auto input = rv::repeat(0.0) | rv::take(2 * dim) | rn::to<std::vector<double>>();
             const auto mat = cecxx::mdspan{input.data(), dim, 2};
 
