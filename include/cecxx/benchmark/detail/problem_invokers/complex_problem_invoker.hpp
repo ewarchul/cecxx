@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ostream>
+#include <print>
 #include <vector>
 
 #include <cecxx/benchmark/detail/context.hpp>
@@ -19,8 +21,10 @@ public:
 
     auto operator()(std::span<const double> input, problem_context_view_t ctx,
                     affine_mask_t mask = {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}) const -> double {
+
         constexpr auto compounds_num{std::tuple_size_v<decltype(compounds)>};
         constexpr auto fn_indxs = std::make_index_sequence<std::tuple_size_v<decltype(compounds)>>();
+
         auto partial_eval = invoke_impl(input, ctx, mask, fn_indxs);
         auto output = std::array<double, 1>{};
         cf_cal(input, output, ctx.shift, params.deltas, params.biases, partial_eval, compounds_num);

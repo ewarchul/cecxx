@@ -23,27 +23,73 @@
 #include <cecxx/functions/unimodal/sum_diff_pow.hpp>
 
 namespace cecxx::benchmark::cec_2017 {
-static constexpr auto sum_diff_pow = detail::basic_problem_invoker{cecxx::functions::unimodal::sum_diff_pow};
-static constexpr auto bent_cigar = detail::basic_problem_invoker{cecxx::functions::unimodal::bent_cigar};
-static constexpr auto ellips = detail::basic_problem_invoker{cecxx::functions::unimodal::ellips};
-static constexpr auto discus = detail::basic_problem_invoker{cecxx::functions::multimodal::discus};
-static constexpr auto zakharov = detail::basic_problem_invoker{cecxx::functions::multimodal::zakharov};
-static constexpr auto rosenbrock
-    = detail::basic_problem_invoker{cecxx::functions::multimodal::rosenbrock, 2.048 / 100.0};
-static constexpr auto rastrigin = detail::basic_problem_invoker{cecxx::functions::multimodal::rastrigin, 5.12 / 100.0};
-static constexpr auto schaffer = detail::basic_problem_invoker{cecxx::functions::multimodal::legacy::schaffer};
-static constexpr auto bi_rastrigin = detail::basic_problem_invoker{cecxx::functions::multimodal::legacy::bi_rastrigin};
-static constexpr auto step_rastrigin
-    = detail::basic_problem_invoker{cecxx::functions::multimodal::step_rastrigin, 5.12 / 100.0};
-static constexpr auto levy = detail::basic_problem_invoker{cecxx::functions::multimodal::levy};
-static constexpr auto schwefel = detail::basic_problem_invoker{cecxx::functions::multimodal::schwefel, 10.0};
-static constexpr auto ackley = detail::basic_problem_invoker{cecxx::functions::multimodal::ackley};
-static constexpr auto hgbat = detail::basic_problem_invoker{cecxx::functions::multimodal::hgbat, 5.0 / 100.0};
-static constexpr auto happycat = detail::basic_problem_invoker{cecxx::functions::multimodal::happycat, 5.0 / 100.0};
-static constexpr auto escaffer = detail::basic_problem_invoker{cecxx::functions::multimodal::escaffer};
-static constexpr auto katsuura = detail::basic_problem_invoker{cecxx::functions::multimodal::katsuura, 5.0 / 100.0};
-static constexpr auto grie_rosen = detail::basic_problem_invoker{cecxx::functions::multimodal::grie_rosen, 5.0 / 100.0};
-static constexpr auto weierstrass
-    = detail::basic_problem_invoker{cecxx::functions::multimodal::weierstrass, 0.5 / 100.0};
-static constexpr auto griewank = detail::basic_problem_invoker{cecxx::functions::multimodal::griewank, 6.0};
+static constexpr auto basic_1 = detail::basic_problem_invoker{
+    cecxx::functions::unimodal::sum_diff_pow, 1.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+
+static constexpr auto basic_2 = detail::basic_problem_invoker{
+    cecxx::functions::unimodal::bent_cigar, 1.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+
+static constexpr auto basic_3 = detail::basic_problem_invoker{
+    cecxx::functions::unimodal::ellips, 1.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+
+static constexpr auto basic_4 = detail::basic_problem_invoker{
+    cecxx::functions::multimodal::discus, 1.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+
+static constexpr auto basic_5 = detail::basic_problem_invoker{
+    cecxx::functions::multimodal::zakharov, 1.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+
+static constexpr auto basic_6
+    = detail::basic_problem_invoker{cecxx::functions::multimodal::rosenbrock,
+                                    2.048 / 100.0,
+                                    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+
+static constexpr auto basic_7
+    = detail::basic_problem_invoker{cecxx::functions::multimodal::rastrigin,
+                                    5.12 / 100.0,
+                                    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+
+static constexpr auto basic_8 = detail::basic_problem_invoker{
+    cecxx::functions::multimodal::legacy::schaffer, 1.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+
+static constexpr auto basic_9
+    = detail::basic_problem_invoker{cecxx::functions::multimodal::legacy::bi_rastrigin,
+                                    1.0,
+                                    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+
+static constexpr auto basic_10
+    = detail::basic_problem_invoker{cecxx::functions::multimodal::step_rastrigin,
+                                    5.12 / 100.0,
+                                    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+
+static constexpr auto basic_11 = detail::basic_problem_invoker{
+    cecxx::functions::multimodal::levy, 1.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+static constexpr auto basic_12 = detail::basic_problem_invoker{
+    cecxx::functions::multimodal::schwefel, 10.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+
+static constexpr auto basic_13 = detail::basic_problem_invoker{
+    cecxx::functions::multimodal::ackley, 1.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+static constexpr auto basic_14 = detail::basic_problem_invoker{
+    cecxx::functions::multimodal::hgbat, 5.0 / 100.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+
+static constexpr auto basic_15 = detail::basic_problem_invoker{
+    cecxx::functions::multimodal::happycat, 5.0 / 100.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+
+static constexpr auto basic_16 = detail::basic_problem_invoker{
+    cecxx::functions::multimodal::escaffer, 1.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+static constexpr auto basic_17 = detail::basic_problem_invoker{
+    cecxx::functions::multimodal::katsuura, 5.0 / 100.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+
+static constexpr auto basic_18
+    = detail::basic_problem_invoker{cecxx::functions::multimodal::grie_rosen,
+                                    5.0 / 100.0,
+                                    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+
+static constexpr auto basic_19
+    = detail::basic_problem_invoker{cecxx::functions::multimodal::weierstrass,
+                                    0.5 / 100.0,
+                                    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+
+static constexpr auto basic_20 = detail::basic_problem_invoker{
+    cecxx::functions::multimodal::griewank, 6.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+
 } // namespace cecxx::benchmark::cec_2017

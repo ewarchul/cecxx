@@ -5,6 +5,7 @@
 
 #include <cecxx/benchmark/detail/context.hpp>
 #include <cecxx/benchmark/detail/geom.hpp>
+#include <print>
 
 namespace cecxx::benchmark::detail {
 
@@ -52,8 +53,8 @@ private:
                 auto comp_fn = std::get<CompoundIndices>(compounds);
                 const auto partial_input = std::span{y}.subspan(static_cast<unsigned int>(offsets[CompoundIndices]),
                                                                 static_cast<unsigned int>(sizes[CompoundIndices]));
-                partial_eval[CompoundIndices]
-                    = comp_fn(partial_input, ctx, {.rot = do_affine_trans::no, .shift = do_affine_trans::no}, y);
+                partial_eval[CompoundIndices] = comp_fn(
+                    partial_input, ctx, affine_mask_t{.rot = do_affine_trans::no, .shift = do_affine_trans::no}, y);
             }(CompoundIndices),
             ...);
 

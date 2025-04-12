@@ -2,7 +2,6 @@
 
 #include <cstdio>
 #include <filesystem>
-#include <print>
 #include <utility>
 #include <vector>
 
@@ -41,9 +40,9 @@ auto SHUFFLE_TABLE_FILENAME(const std::filesystem::path &datadir, const dimensio
 auto SHIFT_TABLE_FILENAME(const std::filesystem::path &datadir, const dimension_t, const problem_number_t fn)
     -> std::string;
 
-auto ROT_TABLE_SIZE(const dimension_t dim, const problem_number_t fn) -> table_size_t;
-auto SHIFT_TABLE_SIZE(const dimension_t dim, const problem_number_t fn) -> table_size_t;
-auto SHUFFLE_TABLE_SIZE(const dimension_t dim, const problem_number_t fn) -> table_size_t;
+auto ROT_TABLE_SIZE(const cec_edition_t edition, const dimension_t dim, const problem_number_t fn) -> table_size_t;
+auto SHIFT_TABLE_SIZE(const cec_edition_t edition, const dimension_t dim, const problem_number_t fn) -> table_size_t;
+auto SHUFFLE_TABLE_SIZE(const cec_edition_t edition, const dimension_t dim, const problem_number_t fn) -> table_size_t;
 
 template <table_type_t Table, typename... Args>
 constexpr auto get_table_name(const std::filesystem::path &datapath, Args... args) {
@@ -60,21 +59,22 @@ constexpr auto get_table_name(const std::filesystem::path &datapath, Args... arg
 }
 
 template <table_type_t Table, typename ValueType>
-constexpr auto get_table_size(const dimension_t dim, const problem_number_t fn) {
+constexpr auto get_table_size(const cec_edition_t edition, const dimension_t dim, const problem_number_t fn) {
     switch (Table) {
         case table_type_t::rotate:
-            return ROT_TABLE_SIZE(dim, fn);
+            return ROT_TABLE_SIZE(edition, dim, fn);
         case table_type_t::shift:
-            return SHIFT_TABLE_SIZE(dim, fn);
+            return SHIFT_TABLE_SIZE(edition, dim, fn);
         case table_type_t::shuffle:
-            return SHUFFLE_TABLE_SIZE(dim, fn);
+            return SHUFFLE_TABLE_SIZE(edition, dim, fn);
     }
     std::unreachable();
 }
 
 template <table_type_t Table, numeric T>
-auto scan_table(auto *fs, const dimension_t dim, const problem_number_t fn) -> std::vector<T> {
-    const auto sz_info = get_table_size<Table, T>(dim, fn);
+auto scan_table(const cec_edition_t edition, auto *fs, const dimension_t dim, const problem_number_t fn)
+    -> std::vector<T> {
+    const auto sz_info = get_table_size<Table, T>(edition, dim, fn);
     auto table = std::vector<T>(sz_info.size);
 
     const auto scan_scaled_shift_table = [&]() {
@@ -102,14 +102,15 @@ auto scan_table(auto *fs, const dimension_t dim, const problem_number_t fn) -> s
 }
 
 template <table_type_t Table, numeric T>
-auto load_table_data(const std::filesystem::path &datapath, const dimension_t dim, const problem_number_t fn) {
+auto load_table_data(const cec_edition_t edition, const std::filesystem::path &datapath, const dimension_t dim,
+                     const problem_number_t fn) {
     const auto filename = get_table_name<Table>(datapath, dim, fn);
     auto fs_ptr = std::unique_ptr<std::FILE, FILE_deleter_t>{std::fopen(filename.data(), "r")};
     if (not fs_ptr) {
         throw std::runtime_error{"Failed to open [" + filename + "]."};
     }
 
-    return scan_table<Table, T>(fs_ptr.get(), dim, fn);
+    return scan_table<Table, T>(edition, fs_ptr.get(), dim, fn);
 }
 
 } // namespace cecxx::benchmark::detail

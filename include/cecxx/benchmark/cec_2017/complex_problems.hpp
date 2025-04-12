@@ -6,7 +6,7 @@
 
 namespace cecxx::benchmark::cec_2017 {
 
-const auto complex_1 = detail::complex_problem_invoker{std::tuple{rosenbrock, ellips, rastrigin},
+const auto complex_1 = detail::complex_problem_invoker{std::tuple{basic_6, basic_3, basic_7},
                                                        {.deltas = {10.0, 20.0, 30.0},
                                                         .biases = {0.0, 100.0, 200.0},
                                                         .scales = {
@@ -15,7 +15,7 @@ const auto complex_1 = detail::complex_problem_invoker{std::tuple{rosenbrock, el
                                                             {2, 1},
                                                         }}};
 
-const auto complex_2 = detail::complex_problem_invoker{std::tuple{rastrigin, griewank, schwefel},
+const auto complex_2 = detail::complex_problem_invoker{std::tuple{basic_7, basic_20, basic_12},
                                                        {.deltas = {10.0, 20.0, 30.0},
                                                         .biases = {0.0, 100.0, 200.0},
                                                         .scales = {
@@ -24,7 +24,7 @@ const auto complex_2 = detail::complex_problem_invoker{std::tuple{rastrigin, gri
                                                             {2, 1.0},
                                                         }}};
 
-const auto complex_3 = detail::complex_problem_invoker{std::tuple{rosenbrock, ackley, schwefel, rastrigin},
+const auto complex_3 = detail::complex_problem_invoker{std::tuple{basic_6, basic_13, basic_12, basic_7},
                                                        {.deltas = {10.0, 20.0, 30.0, 40.0},
                                                         .biases = {0.0, 100.0, 200.0, 300.0},
                                                         .scales = {
@@ -34,7 +34,7 @@ const auto complex_3 = detail::complex_problem_invoker{std::tuple{rosenbrock, ac
                                                             {3, 1.0},
                                                         }}};
 
-const auto complex_4 = detail::complex_problem_invoker{std::tuple{ackley, ellips, griewank, rastrigin},
+const auto complex_4 = detail::complex_problem_invoker{std::tuple{basic_13, basic_3, basic_20, basic_7},
                                                        {.deltas = {10.0, 20.0, 30.0, 40.0},
                                                         .biases = {0.0, 100.0, 200.0, 300.0},
                                                         .scales = {
@@ -44,7 +44,7 @@ const auto complex_4 = detail::complex_problem_invoker{std::tuple{ackley, ellips
                                                             {3, 1.0},
                                                         }}};
 
-const auto complex_5 = detail::complex_problem_invoker{std::tuple{rastrigin, happycat, ackley, discus, rosenbrock},
+const auto complex_5 = detail::complex_problem_invoker{std::tuple{basic_7, basic_15, basic_13, basic_4, basic_6},
                                                        {.deltas = {10.0, 20.0, 30.0, 40.0, 50.0},
                                                         .biases = {0.0, 100.0, 200.0, 300.0, 400.0},
                                                         .scales = {
@@ -55,7 +55,7 @@ const auto complex_5 = detail::complex_problem_invoker{std::tuple{rastrigin, hap
                                                             {4, 1.0},
                                                         }}};
 
-const auto complex_6 = detail::complex_problem_invoker{std::tuple{escaffer, schwefel, griewank, rosenbrock, rastrigin},
+const auto complex_6 = detail::complex_problem_invoker{std::tuple{basic_16, basic_12, basic_20, basic_6, basic_7},
                                                        {.deltas = {10.0, 20.0, 20.0, 30.0, 40.0},
                                                         .biases = {0.0, 100.0, 200.0, 300.0, 400.0},
                                                         .scales = {
@@ -67,7 +67,7 @@ const auto complex_6 = detail::complex_problem_invoker{std::tuple{escaffer, schw
                                                         }}};
 
 const auto complex_7
-    = detail::complex_problem_invoker{std::tuple{hgbat, rastrigin, schwefel, bent_cigar, ellips, escaffer},
+    = detail::complex_problem_invoker{std::tuple{basic_14, basic_7, basic_12, basic_2, basic_3, basic_16},
                                       {.deltas = {10.0, 20.0, 30.0, 40.0, 50.0, 60.0},
                                        .biases = {0.0, 100.0, 200.0, 300.0, 400.0, 500.0},
                                        .scales = {
@@ -80,7 +80,7 @@ const auto complex_7
                                        }}};
 
 const auto complex_8
-    = detail::complex_problem_invoker{std::tuple{ackley, griewank, discus, rosenbrock, happycat, escaffer},
+    = detail::complex_problem_invoker{std::tuple{basic_13, basic_20, basic_4, basic_6, basic_15, basic_16},
                                       {.deltas = {10.0, 20.0, 30.0, 40.0, 50.0, 60.0},
                                        .biases = {0.0, 100.0, 200.0, 300.0, 400.0, 500.0},
                                        .scales = {

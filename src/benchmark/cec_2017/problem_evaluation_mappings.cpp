@@ -9,25 +9,25 @@ namespace cecxx::benchmark::cec_2017 {
 auto evaluate(detail::problem_context_view_t ctx, const problem_number_t fn, std::span<const double> input) -> double {
     switch (fn) {
         case 1:
-            return bent_cigar(input, ctx);
+            return basic_1(input, ctx);
         case 2:
-            return sum_diff_pow(input, ctx);
+            return basic_2(input, ctx);
         case 3:
-            return zakharov(input, ctx);
+            return basic_3(input, ctx);
         case 4:
-            return rosenbrock(input, ctx);
+            return basic_4(input, ctx);
         case 5:
-            return rastrigin(input, ctx);
+            return basic_5(input, ctx);
         case 6:
-            return schaffer(input, ctx);
+            return basic_6(input, ctx);
         case 7:
-            return bi_rastrigin(input, ctx);
+            return basic_7(input, ctx);
         case 8:
-            return step_rastrigin(input, ctx);
+            return basic_8(input, ctx);
         case 9:
-            return levy(input, ctx);
+            return basic_9(input, ctx);
         case 10:
-            return schwefel(input, ctx);
+            return basic_10(input, ctx);
         case 11:
             return hybrid_1(input, ctx);
         case 12:
