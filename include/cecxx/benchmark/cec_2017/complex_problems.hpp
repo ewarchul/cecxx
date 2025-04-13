@@ -67,7 +67,7 @@ const auto complex_6 = detail::complex_problem_invoker{std::tuple{basic_16, basi
                                                         }}};
 
 const auto complex_7
-    = detail::complex_problem_invoker{std::tuple{basic_14, basic_7, basic_12, basic_2, basic_3, basic_16},
+    = detail::complex_problem_invoker{std::tuple{basic_14, basic_7, basic_12, basic_1, basic_3, basic_16},
                                       {.deltas = {10.0, 20.0, 30.0, 40.0, 50.0, 60.0},
                                        .biases = {0.0, 100.0, 200.0, 300.0, 400.0, 500.0},
                                        .scales = {

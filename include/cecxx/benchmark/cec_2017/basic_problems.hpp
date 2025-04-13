@@ -24,10 +24,10 @@
 
 namespace cecxx::benchmark::cec_2017 {
 static constexpr auto basic_1 = detail::basic_problem_invoker{
-    cecxx::functions::unimodal::sum_diff_pow, 1.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+    cecxx::functions::unimodal::bent_cigar, 1.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
 
 static constexpr auto basic_2 = detail::basic_problem_invoker{
-    cecxx::functions::unimodal::bent_cigar, 1.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+    cecxx::functions::unimodal::sum_diff_pow, 1.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
 
 static constexpr auto basic_3 = detail::basic_problem_invoker{
     cecxx::functions::unimodal::ellips, 1.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};

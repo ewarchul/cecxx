@@ -13,21 +13,21 @@ auto evaluate(detail::problem_context_view_t ctx, const problem_number_t fn, std
         case 2:
             return basic_2(input, ctx);
         case 3:
-            return basic_3(input, ctx);
-        case 4:
-            return basic_4(input, ctx);
-        case 5:
             return basic_5(input, ctx);
-        case 6:
+        case 4:
             return basic_6(input, ctx);
-        case 7:
+        case 5:
             return basic_7(input, ctx);
-        case 8:
+        case 6:
             return basic_8(input, ctx);
-        case 9:
+        case 7:
             return basic_9(input, ctx);
-        case 10:
+        case 8:
             return basic_10(input, ctx);
+        case 9:
+            return basic_11(input, ctx);
+        case 10:
+            return basic_12(input, ctx);
         case 11:
             return hybrid_1(input, ctx);
         case 12:
