@@ -31,8 +31,7 @@ template <typename... F>
 class hybrid_problem_invoker {
 public:
     constexpr hybrid_problem_invoker(std::tuple<F...> compounds, std::vector<double> compound_ratios)
-        : compounds{compounds}, compound_ratios{std::move(compound_ratios)} {
-  }
+        : compounds{compounds}, compound_ratios{std::move(compound_ratios)} {}
 
     auto operator()(std::span<const double> input, problem_context_view_t ctx,
                     affine_mask_t mask = {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}) const -> double {

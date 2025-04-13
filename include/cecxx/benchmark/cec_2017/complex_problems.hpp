@@ -107,14 +107,14 @@ const auto complex_7
     = detail::complex_problem_invoker{std::tuple{basic_14, basic_7, basic_12, basic_1, basic_3, basic_16},
                                       {.deltas = {10.0, 20.0, 30.0, 40.0, 50.0, 60.0},
                                        .biases = {0.0, 100.0, 200.0, 300.0, 400.0, 500.0},
-                                                        .masks = {
-                                                          {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
-                                                          {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
-                                                          {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
-                                                          {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
-                                                          {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
-                                                          {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
-                                                        },
+                                       .masks = {
+                                         {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+                                         {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+                                         {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+                                         {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+                                         {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+                                         {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}
+                                       },
 
                                        .scales = {
                                            {0, 10},
@@ -129,15 +129,14 @@ const auto complex_8
     = detail::complex_problem_invoker{std::tuple{basic_13, basic_20, basic_4, basic_6, basic_15, basic_16},
                                       {.deltas = {10.0, 20.0, 30.0, 40.0, 50.0, 60.0},
                                        .biases = {0.0, 100.0, 200.0, 300.0, 400.0, 500.0},
-                                                        .masks = {
-                                                          {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
-                                                          {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
-                                                          {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
-                                                          {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
-                                                          {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
-                                                          {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
-                                                        },
-
+                                       .masks = {
+                                         {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+                                         {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+                                         {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+                                         {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+                                         {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+                                         {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}
+                                       },
                                        .scales = {
                                            {0, 10},
                                            {1, 10},
@@ -152,12 +151,11 @@ const auto complex_9 = detail::complex_problem_invoker{
     {
       .deltas = {10.0, 30.0, 50.0},
       .biases = {0.0, 100.0, 200.0},
-                                                        .masks = {
-                                                          {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
-                                                          {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
-                                                          {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
-                                                        },
-
+      .masks = {
+        {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+        {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+        {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}
+      },
       .scales = {{0, 1}, {1, 1}, {2, 1}}
     }};
 
@@ -166,12 +164,11 @@ const auto complex_10 = detail::complex_problem_invoker{
     {
       .deltas = {10.0, 30.0, 50.0},
       .biases = {0.0, 100.0, 200.0},
-                                                        .masks = {
-                                                          {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
-                                                          {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
-                                                          {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
-                                                        },
-
+      .masks = {
+        {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+        {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+        {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}
+      },
       .scales = {{0, 1}, {1, 1}, {2, 1}}
     }};
 } // namespace cecxx::benchmark::cec_2017
