@@ -11,13 +11,15 @@ namespace cecxx::benchmark::detail {
 
 namespace {
 inline auto to_str(const cec_edition_t edition) -> std::string_view {
+    using enum cec_edition_t;
     switch (edition) {
-        case cec_edition_t::cec2014:
+        case cec2013:
+            return "cec2013";
+        case cec2014:
             return "cec2014";
-        case cec_edition_t::cec2017:
+        case cec2017:
             return "cec2017";
     }
-
     throw std::runtime_error{"Unknown CEC edition"};
 }
 } // namespace
@@ -37,9 +39,9 @@ benchmark_context_t::benchmark_context_t(const cec_edition_t edition, const std:
         for (const auto &fn : std::views::iota(1, total_problem_num(edition) + 1)) {
             auto fn_idx = static_cast<problem_number_t>(fn);
             rotate_[dim].insert({fn_idx, load_table_data<table_type_t::rotate, double>(edition, datadir, dim, fn_idx)});
+            shift_[dim].insert({fn_idx, load_table_data<table_type_t::shift, double>(edition, datadir, dim, fn_idx)});
             shuffle_[dim].insert(
                 {fn_idx, load_table_data<table_type_t::shuffle, unsigned int>(edition, datadir, dim, fn_idx)});
-            shift_[dim].insert({fn_idx, load_table_data<table_type_t::shift, double>(edition, datadir, dim, fn_idx)});
         }
     });
 }

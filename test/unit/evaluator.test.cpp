@@ -24,7 +24,8 @@ protected:
     evaluator eval_;
 };
 
-using TestedCecEditions = testing::Types<enum_wrapper<cec_edition_t::cec2014>, enum_wrapper<cec_edition_t::cec2017>>;
+using TestedCecEditions = testing::Types<enum_wrapper<cec_edition_t::cec2013>, enum_wrapper<cec_edition_t::cec2014>,
+                                         enum_wrapper<cec_edition_t::cec2017>>;
 
 TYPED_TEST_SUITE(EvaluatorTest, TestedCecEditions);
 
@@ -48,7 +49,7 @@ TYPED_TEST(EvaluatorTest, EvaluatorShallEvaluateEachDProblemForGivenMatrix) {
 
 TYPED_TEST(EvaluatorTest, EvaluatorShallThrowForInvalidDimension) {
     constexpr auto ncol = 1;
-    constexpr auto invalid_dimensions = std::array{2, 33, 42, 101};
+    constexpr auto invalid_dimensions = std::array{3, 33, 42, 101};
     const auto problem_grid = rv::cartesian_product(invalid_dimensions, rv::iota(1, this->total_problem_num));
     for (auto &&[dimension, problem_num] : problem_grid) {
         const auto given_input = rv::repeat(10.0) | rv::take(dimension * ncol) | rn::to<std::vector<double>>();

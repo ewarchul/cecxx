@@ -4,10 +4,12 @@
  */
 
 #include <cmath>
+#include <utility>
 #include <vector>
 
 #include <cecxx/benchmark/detail/legacy/affine_transformation.hpp>
 
+#include "cecxx/benchmark/types.hpp"
 #include "consts.h"
 
 namespace cecxx::benchmark::detail {
@@ -35,14 +37,21 @@ void rotatefunc(std::span<const double> input, std::span<double> output, std::sp
 }
 
 void sr_func(std::span<const double> input, std::span<double> sr_x, std::span<const double> shit_vec,
-             std::span<const double> rot_mat, const double sh_rate, const do_affine_trans shift,
-             const do_affine_trans rotate, std::span<double> output) {
+             std::span<const double> rot_mat, const double sh_rate, const double asymm_trans_coeff,
+             const do_affine_trans shift, const do_affine_trans rotate, const do_affine_trans asymm_trans,
+             const do_affine_trans osymm_trans, std::span<double> output) {
     const auto nrow = input.size();
     if (std::to_underlying(shift) == 1) {
         if (std::to_underlying(rotate) == 1) {
             shiftfunc(input, output, shit_vec);
             for (auto i = 0u; i < nrow; i++) {
                 output[i] = output[i] * sh_rate;
+            }
+            if (std::to_underlying(osymm_trans)) {
+                oszfunc(output, sr_x);
+            }
+            if (std::to_underlying(asymm_trans)) {
+                asyfunc(output, sr_x, asymm_trans_coeff);
             }
             rotatefunc(output, sr_x, rot_mat);
         } else {
@@ -99,4 +108,45 @@ void cf_cal(std::span<const double> input, std::span<double> output, std::span<c
         output[0] = output[0] + w[i] / w_sum * fit[i];
     }
 }
+
+void oszfunc(std::span<const double> input, std::span<double> output) {
+    const auto nrow = input.size();
+    int sx{};
+    double c1{};
+    double c2{};
+    double xx{};
+    for (auto i{0u}; i < nrow; i++) {
+        if (i == 0 || i == nrow - 1) {
+            if (input[i] != 0) {
+                xx = log(fabs(input[i]));
+            }
+
+            if (input[i] > 0) {
+                c1 = 10;
+                c2 = 7.9;
+            } else {
+                c1 = 5.5;
+                c2 = 3.1;
+            }
+            if (input[i] > 0) {
+                sx = 1;
+            } else if (input[i] == 0) {
+                sx = 0;
+            } else {
+                sx = -1;
+            }
+            output[i] = sx * exp(xx + 0.049 * (sin(c1 * xx) + sin(c2 * xx)));
+        } else
+            output[i] = input[i];
+    }
+}
+void asyfunc(std::span<const double> input, std::span<double> output, double beta_coeff) {
+    for (auto i{0u}; i < input.size(); ++i) {
+        if (input[i] > 0) {
+            output[i] = std::pow(input[i],
+                                 1.0 + beta_coeff * i / (static_cast<double>(input.size()) - 1) * pow(input[i], 0.5));
+        }
+    }
+}
+
 } // namespace cecxx::benchmark::detail

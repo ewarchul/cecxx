@@ -12,6 +12,8 @@ namespace {
 constexpr auto has_extended_size(const cec_edition_t edition, const problem_number_t fn) -> bool {
     using enum cec_edition_t;
     switch (edition) {
+        case cec2013:
+            return true;
         case cec2014:
             return (fn - 1) >= 24;
         case cec2017:
@@ -23,6 +25,8 @@ constexpr auto has_extended_size(const cec_edition_t edition, const problem_numb
 auto get_func_treshold(const cec_edition_t edition) {
     using enum cec_edition_t;
     switch (edition) {
+        case cec2013:
+            return 1u;
         case cec2014:
             return 22u;
         case cec2017:
@@ -33,19 +37,26 @@ auto get_func_treshold(const cec_edition_t edition) {
 
 } // namespace
 
-auto ROT_TABLE_FILENAME(const std::filesystem::path &datadir, const dimension_t dim, const problem_number_t fn)
-    -> std::string {
+auto ROT_TABLE_FILENAME(const cec_edition_t edition, const std::filesystem::path &datadir, const dimension_t dim,
+                        const problem_number_t fn) -> std::string {
+    if (edition == cec_edition_t::cec2013) {
+        return datadir / std::format("M_D{}.txt", dim);
+    }
     return datadir / std::format("M_{}_D{}.txt", fn, dim);
 }
 
-auto SHUFFLE_TABLE_FILENAME(const std::filesystem::path &datadir, const dimension_t dim, const problem_number_t fn)
-    -> std::string {
+auto SHUFFLE_TABLE_FILENAME(const cec_edition_t edition, const std::filesystem::path &datadir, const dimension_t dim,
+                            const problem_number_t fn) -> std::string {
+    std::ignore = edition;
     return datadir / std::format("shuffle_data_{}_D{}.txt", fn, dim);
 }
 
-auto SHIFT_TABLE_FILENAME(const std::filesystem::path &datadir, const dimension_t dim, const problem_number_t fn)
-    -> std::string {
+auto SHIFT_TABLE_FILENAME(const cec_edition_t edition, const std::filesystem::path &datadir, const dimension_t dim,
+                          const problem_number_t fn) -> std::string {
     std::ignore = dim;
+    if (edition == cec_edition_t::cec2013) {
+        return datadir / "shift_data.txt";
+    }
     return datadir / std::format("shift_data_{}.txt", fn);
 }
 

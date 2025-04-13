@@ -19,7 +19,8 @@ auto schaffer(std::span<const double> input, benchmark::detail::problem_context_
     auto z = std::vector<double>(nrow);
 
     auto output{0.0};
-    benchmark::detail::sr_func(input, z, ctx.shift, ctx.rotate, 1.0, mask.shift, mask.rot, ys);
+    benchmark::detail::sr_func(input, z, ctx.shift, ctx.rotate, 1.0, 0.5, mask.shift, mask.rot, mask.asymmetric_trans,
+                               mask.orthosymmetric_trans, ys);
     double tmp{};
     for (auto i = 0u; i < nrow - 1; ++i) {
         z[i] = std::pow(ys[i] * ys[i] + ys[i + 1] * ys[i + 1], 0.5);

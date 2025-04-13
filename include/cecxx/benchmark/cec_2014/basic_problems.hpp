@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cecxx/benchmark/detail/legacy/functions/multimodal/bi_rastrigin.hpp>
 #include <cecxx/benchmark/detail/legacy/functions/multimodal/schaffer.hpp>
 #include <cecxx/benchmark/detail/problem_invokers/basic_problem_invoker.hpp>
 #include <cecxx/functions/multimodal/ackley.hpp>
