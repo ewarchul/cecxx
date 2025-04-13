@@ -8,7 +8,7 @@ C++23.
 
 
 > [!IMPORTANT]
-> This is pre-alpha stage software. Only CEC BC-SOP 2017 is supported. See [below table](#supported-benchmarks) for supported
+> This is pre-alpha stage software. Only CEC BC-SOP 2014 & CEC BC-SOP 2017 are supported. See [below table](#supported-benchmarks) for supported
 > benchmarks.
 
 
@@ -146,7 +146,7 @@ You can find other examples in [example](https://github.com/ewarchul/cecxx/tree/
 | CEC editiion | Status |
 |:-------------|:------:|
 | 2013 | :soon: |  
-| 2014 | :soon: |  
+| 2014 | :heavy_check_mark: |  
 | 2015 | :soon: |  
 | 2017 | :heavy_check_mark: |  
 | 2019 | :soon: |  
