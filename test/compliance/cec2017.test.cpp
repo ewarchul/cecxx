@@ -12,6 +12,7 @@
 #include "helpers/combinators.hpp"
 
 #include "helpers/cec_suite.hpp"
+#include "oracle/cec2017.h"
 #include "helpers/oracle.hpp"
 
 using namespace fuzztest;
@@ -44,7 +45,7 @@ public:
 
 private:
   void Cec2017ImplsAreEquivImpl(std::vector<double> input, int problem_num) {
-    const auto oracle_output = calculate_oracle_output(input, problem_num);
+    const auto oracle_output = calculate_oracle_output(oracle::cec2017::cec17_test_func, input, problem_num);
 
     const auto cecxx_output =
         cec_evaluator(problem_num, cecxx::mdspan{input.data(), input.size(), 1});

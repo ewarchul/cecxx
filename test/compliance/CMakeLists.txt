@@ -1,7 +1,9 @@
 set(TEST_TARGET "cecxx-compliance-tests")
 set(TEST_SOURCES
   cec2017.test.cpp
+  cec2014.test.cpp
   oracle/cec2017.cpp
+  oracle/cec2014.cpp
 )
 set(FUZZTEST_FUZZING_MODE ON)
 

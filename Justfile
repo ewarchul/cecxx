@@ -33,11 +33,13 @@ build:
   cmake --build {{build_dir}} --parallel {{ncores}}
 
 run_unit_tests:
-  unzip data/cec2017.zip -d data
+  unzip -f data/cec2017.zip -d data
+  unzip -f data/cec2014.zip -d data
   ctest --test-dir {{build_dir}}/test/unit
 
 run_compliance_tests: 
-  unzip data/cec2017.zip -d data
+  unzip -f data/cec2017.zip -d data
+  unzip -f data/cec2014.zip -d data
   ASAN_OPTIONS=detect_leaks=0 ./{{build_dir}}/test/compliance/cecxx-compliance-tests
 
 clean: 

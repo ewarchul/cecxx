@@ -6,6 +6,7 @@
 #include <cecxx/benchmark/detail/context.hpp>
 #include <cecxx/benchmark/detail/geom.hpp>
 #include <print>
+#include <tuple>
 
 namespace cecxx::benchmark::detail {
 
@@ -29,8 +30,9 @@ auto calc_hybrid_chunks(std::ranges::range auto &&mix_ratios, const std::integra
 template <typename... F>
 class hybrid_problem_invoker {
 public:
-    hybrid_problem_invoker(std::tuple<F...> compounds, std::vector<double> compound_ratios)
-        : compounds{compounds}, compound_ratios{std::move(compound_ratios)} {}
+    constexpr hybrid_problem_invoker(std::tuple<F...> compounds, std::vector<double> compound_ratios)
+        : compounds{compounds}, compound_ratios{std::move(compound_ratios)} {
+  }
 
     auto operator()(std::span<const double> input, problem_context_view_t ctx,
                     affine_mask_t mask = {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}) const -> double {
