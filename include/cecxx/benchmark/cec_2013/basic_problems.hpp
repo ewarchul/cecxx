@@ -2,10 +2,10 @@
 
 #include "cecxx/benchmark/types.hpp"
 #include "cecxx/functions/multimodal/diff_powers.hpp"
+#include "cecxx/functions/multimodal/schaffer.hpp"
 #include "cecxx/functions/multimodal/step_rastrigin.hpp"
 #include "cecxx/functions/unimodal/sphere.hpp"
 #include <cecxx/benchmark/detail/legacy/functions/multimodal/bi_rastrigin.hpp>
-#include <cecxx/benchmark/detail/legacy/functions/multimodal/schaffer.hpp>
 #include <cecxx/benchmark/detail/problem_invokers/basic_problem_invoker.hpp>
 #include <cecxx/functions/multimodal/ackley.hpp>
 #include <cecxx/functions/multimodal/discus.hpp>
@@ -27,91 +27,214 @@
 
 namespace cecxx::benchmark::cec_2013 {
 static constexpr auto basic_1 = detail::basic_problem_invoker{
-    cecxx::functions::unimodal::sphere, 1.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+    cecxx::functions::unimodal::sphere,
+    {.rot = do_affine_trans::no, .shift = do_affine_trans::yes},
+    std::tuple{cecxx::benchmark::detail::shift{}, cecxx::benchmark::detail::rotation{}}};
 
-static constexpr auto basic_2 = detail::basic_problem_invoker{
-    cecxx::functions::unimodal::ellips,
-    1.0,
-    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes, .orthosymmetric_trans = do_affine_trans::yes}};
+static constexpr auto basic_2
+    = detail::basic_problem_invoker{cecxx::functions::unimodal::ellips,
+                                    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+                                    std::tuple{
+                                        cecxx::benchmark::detail::shift{},
+                                        cecxx::benchmark::detail::rotation{},
+                                        cecxx::benchmark::detail::orthosymmetric_trans{},
+                                    }
 
-static constexpr auto basic_3 = detail::basic_problem_invoker{
-    cecxx::functions::unimodal::bent_cigar,
-    1.0,
-    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes, .asymmetric_trans = do_affine_trans::yes},
-    0.5};
-static constexpr auto basic_4 = detail::basic_problem_invoker{
-    cecxx::functions::multimodal::discus,
-    1.0,
-    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes, .orthosymmetric_trans = do_affine_trans::yes}};
-static constexpr auto basic_5 = detail::basic_problem_invoker{
-    cecxx::functions::multimodal::diff_powers, 1.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+    };
+
+static constexpr auto basic_3
+    = detail::basic_problem_invoker{cecxx::functions::unimodal::bent_cigar,
+                                    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+                                    std::tuple{
+                                        cecxx::benchmark::detail::shift{},
+                                        cecxx::benchmark::detail::rotation{},
+                                        cecxx::benchmark::detail::asymmetric_trans{0.5},
+                                        cecxx::benchmark::detail::rotation{true},
+                                    }
+
+    };
+
+static constexpr auto basic_4
+    = detail::basic_problem_invoker{cecxx::functions::multimodal::discus,
+                                    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+                                    std::tuple{
+                                        cecxx::benchmark::detail::shift{},
+                                        cecxx::benchmark::detail::rotation{},
+                                        cecxx::benchmark::detail::orthosymmetric_trans{},
+                                    }};
+
+static constexpr auto basic_5
+    = detail::basic_problem_invoker{cecxx::functions::multimodal::diff_powers,
+                                    {.rot = do_affine_trans::no, .shift = do_affine_trans::yes},
+                                    std::tuple{
+                                        cecxx::benchmark::detail::shift{},
+                                        cecxx::benchmark::detail::rotation{},
+                                    }};
 static constexpr auto basic_6
     = detail::basic_problem_invoker{cecxx::functions::multimodal::rosenbrock,
-                                    2.048 / 100.0,
-                                    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
-static constexpr auto basic_7 = detail::basic_problem_invoker{
-    cecxx::functions::multimodal::legacy::schaffer,
-    1.0,
-    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes, .asymmetric_trans = do_affine_trans::yes},
-    0.5};
-static constexpr auto basic_8 = detail::basic_problem_invoker{
-    cecxx::functions::multimodal::ackley,
-    1.0,
-    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes, .asymmetric_trans = do_affine_trans::yes},
-    0.5};
+                                    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+                                    std::tuple{
+                                        cecxx::benchmark::detail::shift{},
+                                        cecxx::benchmark::detail::scale{2.048 / 100},
+                                        cecxx::benchmark::detail::rotation{},
+                                        cecxx::benchmark::detail::shift_by_scalar{1},
+                                    }
+
+    };
+
+static constexpr auto basic_7
+    = detail::basic_problem_invoker{cecxx::functions::multimodal::schaffer,
+                                    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+                                    std::tuple{
+                                        cecxx::benchmark::detail::shift{},
+                                        cecxx::benchmark::detail::rotation{},
+                                        cecxx::benchmark::detail::asymmetric_trans{0.5},
+                                        cecxx::benchmark::detail::power_scale2{},
+                                        cecxx::benchmark::detail::rotation{.do_stride = true},
+                                        cecxx::benchmark::detail::power_scale{},
+                                    }};
+
+static constexpr auto basic_8
+    = detail::basic_problem_invoker{cecxx::functions::multimodal::ackley,
+                                    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+                                    std::tuple{
+                                        cecxx::benchmark::detail::shift{},
+                                        cecxx::benchmark::detail::rotation{},
+                                        cecxx::benchmark::detail::asymmetric_trans{0.5},
+                                        cecxx::benchmark::detail::power_scale2{},
+                                        cecxx::benchmark::detail::rotation{.do_stride = true},
+                                    }};
+
 static constexpr auto basic_9 = detail::basic_problem_invoker{
     cecxx::functions::multimodal::weierstrass,
-    0.5 / 100.0,
-    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes, .asymmetric_trans = do_affine_trans::yes},
-    0.5};
+    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+    std::tuple{cecxx::benchmark::detail::shift{}, cecxx::benchmark::detail::scale{0.005},
+               cecxx::benchmark::detail::rotation{},
+               cecxx::benchmark::detail::asymmetric_trans<cecxx::benchmark::detail::scale>{0.5},
+               cecxx::benchmark::detail::power_scale2{}, cecxx::benchmark::detail::rotation{.do_stride = true}}};
+
 static constexpr auto basic_10 = detail::basic_problem_invoker{
-    cecxx::functions::multimodal::griewank, 6.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
-static constexpr auto basic_11 = detail::basic_problem_invoker{cecxx::functions::multimodal::rastrigin,
-                                                               5.12 / 100.0,
-                                                               {.rot = do_affine_trans::yes,
-                                                                .shift = do_affine_trans::no,
-                                                                .asymmetric_trans = do_affine_trans::yes,
-                                                                .orthosymmetric_trans = do_affine_trans::yes},
-                                                               0.2};
-static constexpr auto basic_12 = detail::basic_problem_invoker{cecxx::functions::multimodal::rastrigin,
-                                                               5.12 / 100.0,
-                                                               {.rot = do_affine_trans::yes,
-                                                                .shift = do_affine_trans::yes,
-                                                                .asymmetric_trans = do_affine_trans::yes,
-                                                                .orthosymmetric_trans = do_affine_trans::yes},
-                                                               0.2};
-static constexpr auto basic_13 = detail::basic_problem_invoker{cecxx::functions::multimodal::step_rastrigin,
-                                                               5.12 / 100.0,
-                                                               {.rot = do_affine_trans::yes,
-                                                                .shift = do_affine_trans::yes,
-                                                                .asymmetric_trans = do_affine_trans::yes,
-                                                                .orthosymmetric_trans = do_affine_trans::yes},
-                                                               0.2};
+    cecxx::functions::multimodal::griewank,
+    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+    std::tuple{cecxx::benchmark::detail::shift{}, cecxx::benchmark::detail::scale{6.0},
+               cecxx::benchmark::detail::rotation{}, cecxx::benchmark::detail::power_scale2{10.0}},
+};
+
+static constexpr auto basic_11 = detail::basic_problem_invoker{
+    cecxx::functions::multimodal::rastrigin,
+    {
+        .rot = do_affine_trans::no,
+        .shift = do_affine_trans::yes,
+    },
+    std::tuple{
+        cecxx::benchmark::detail::shift{},
+        cecxx::benchmark::detail::scale{5.12 / 100.0},
+        cecxx::benchmark::detail::rotation{},
+        cecxx::benchmark::detail::orthosymmetric_trans{},
+        cecxx::benchmark::detail::asymmetric_trans<cecxx::benchmark::detail::scale>{0.2},
+        cecxx::benchmark::detail::rotation{.do_stride = true},
+        cecxx::benchmark::detail::power_scale2{},
+        cecxx::benchmark::detail::rotation{},
+    }};
+
+static constexpr auto basic_12 = detail::basic_problem_invoker{
+    cecxx::functions::multimodal::rastrigin,
+    {
+        .rot = do_affine_trans::yes,
+        .shift = do_affine_trans::yes,
+    },
+    std::tuple{
+        cecxx::benchmark::detail::shift{},
+        cecxx::benchmark::detail::scale{5.12 / 100.0},
+        cecxx::benchmark::detail::rotation{},
+        cecxx::benchmark::detail::orthosymmetric_trans{},
+        cecxx::benchmark::detail::asymmetric_trans<cecxx::benchmark::detail::rotation>{0.2},
+        cecxx::benchmark::detail::rotation{.do_stride = true},
+        cecxx::benchmark::detail::power_scale2{},
+        cecxx::benchmark::detail::rotation{},
+    }};
+
+static constexpr auto basic_13 = detail::basic_problem_invoker{
+    cecxx::functions::multimodal::step_rastrigin,
+    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+    std::tuple{
+        cecxx::benchmark::detail::shift{},
+        cecxx::benchmark::detail::scale{5.12 / 100},
+        cecxx::benchmark::detail::rotation{},
+        cecxx::benchmark::detail::power_scale3{},
+        cecxx::benchmark::detail::orthosymmetric_trans{},
+        cecxx::benchmark::detail::asymmetric_trans<cecxx::benchmark::detail::power_scale3>{0.2},
+        cecxx::benchmark::detail::rotation{.do_stride = true},
+        cecxx::benchmark::detail::power_scale2{},
+        cecxx::benchmark::detail::rotation{},
+    }};
+
 static constexpr auto basic_14 = detail::basic_problem_invoker{
-    cecxx::functions::multimodal::schwefel, 10.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::no}};
+    cecxx::functions::multimodal::schwefel,
+    {.rot = do_affine_trans::no, .shift = do_affine_trans::yes},
+    std::tuple{cecxx::benchmark::detail::shift{}, cecxx::benchmark::detail::scale{10},
+               cecxx::benchmark::detail::rotation{}, cecxx::benchmark::detail::power_scale2{},
+               cecxx::benchmark::detail::shift_by_scalar{4.209687462275036e+002}},
+
+};
+
 static constexpr auto basic_15 = detail::basic_problem_invoker{
-    cecxx::functions::multimodal::schwefel, 10.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
+    cecxx::functions::multimodal::schwefel,
+    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+    std::tuple{cecxx::benchmark::detail::shift{}, cecxx::benchmark::detail::scale{10},
+               cecxx::benchmark::detail::rotation{}, cecxx::benchmark::detail::power_scale2{},
+               cecxx::benchmark::detail::shift_by_scalar{4.209687462275036e+002}},
+
+};
+
 static constexpr auto basic_16 = detail::basic_problem_invoker{
-    cecxx::functions::multimodal::katsuura, 5.0 / 100.0, {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
-static constexpr auto basic_17
-    = detail::basic_problem_invoker{cecxx::functions::multimodal::legacy::bi_rastrigin,
-                                    1.0,
-                                    {.rot = do_affine_trans::yes, .shift = do_affine_trans::no}};
-static constexpr auto basic_18
-    = detail::basic_problem_invoker{cecxx::functions::multimodal::legacy::bi_rastrigin,
-                                    1.0,
-                                    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
-static constexpr auto basic_19
-    = detail::basic_problem_invoker{cecxx::functions::multimodal::grie_rosen,
-                                    5.0 / 100.0,
-                                    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes}};
-static constexpr auto basic_20 = detail::basic_problem_invoker{cecxx::functions::multimodal::escaffer,
-                                                               1.0,
-                                                               {
-                                                                   .rot = do_affine_trans::yes,
-                                                                   .shift = do_affine_trans::yes,
-                                                                   .asymmetric_trans = do_affine_trans::yes,
-                                                               },
-                                                               0.5};
+    cecxx::functions::multimodal::katsuura,
+    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+    std::tuple{
+        cecxx::benchmark::detail::shift{},
+        cecxx::benchmark::detail::scale{0.05},
+        cecxx::benchmark::detail::rotation{},
+        cecxx::benchmark::detail::power_scale2{10.0},
+        cecxx::benchmark::detail::rotation{.do_stride = true},
+    },
+
+};
+
+static constexpr auto basic_17 = detail::basic_problem_invoker{
+    cecxx::functions::multimodal::legacy::bi_rastrigin,
+    {.rot = do_affine_trans::no, .shift = do_affine_trans::yes},
+    std::tuple{},
+};
+
+static constexpr auto basic_18 = detail::basic_problem_invoker{
+    cecxx::functions::multimodal::legacy::bi_rastrigin,
+    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+    std::tuple{},
+};
+
+static constexpr auto basic_19 = detail::basic_problem_invoker{
+    cecxx::functions::multimodal::grie_rosen,
+    {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
+    std::tuple{
+        cecxx::benchmark::detail::shift{},
+        cecxx::benchmark::detail::scale{0.05},
+        cecxx::benchmark::detail::rotation{},
+        cecxx::benchmark::detail::shift_by_scalar<cecxx::benchmark::detail::scale>{1},
+    },
+};
+
+static constexpr auto basic_20 = detail::basic_problem_invoker{
+    cecxx::functions::multimodal::escaffer,
+    {
+        .rot = do_affine_trans::yes,
+        .shift = do_affine_trans::yes,
+    },
+    std::tuple{
+        cecxx::benchmark::detail::shift{},
+        cecxx::benchmark::detail::rotation{},
+        cecxx::benchmark::detail::asymmetric_trans{0.5},
+        cecxx::benchmark::detail::rotation{.do_stride = true},
+    },
+};
 
 } // namespace cecxx::benchmark::cec_2013

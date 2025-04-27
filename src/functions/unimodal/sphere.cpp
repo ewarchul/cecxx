@@ -6,7 +6,7 @@ namespace cecxx::functions::unimodal {
 
 auto sphere(std::span<const double> input) -> double {
     auto output{0.0};
-    for (const auto &x : input) {
+    for (const double &x : input) {
         output += x * x;
     }
 

@@ -2,36 +2,248 @@
 
 #include "cecxx/benchmark/types.hpp"
 #include <cecxx/benchmark/detail/func_types.hpp>
-#include <cecxx/benchmark/detail/geom.hpp>
+#include <cmath>
+#include <cstring>
+#include <iterator>
+#include <print>
+// #include <cecxx/benchmark/detail/geom.hpp>
+#include <concepts>
 #include <optional>
+#include <ranges>
+#include <utility>
 
 namespace cecxx::benchmark::detail {
+auto print_vec(auto &&xs) {
+    for (auto &&[i, x] : xs | std::ranges::views::enumerate) {
+        std::print("({}) {}, ", i, x);
+    }
+    std::println("");
+}
 
-template <typename EvaluationFunction>
+using partial_result_t = std::unordered_map<std::string, std::vector<double>>;
+
+struct rotation {
+    bool do_stride{false};
+    static constexpr auto name{"rotation"};
+    auto operator()(std::span<double> input, problem_context_view_t ctx, affine_mask_t mask, partial_result_t partial)
+        -> void {
+        std::ignore = partial;
+        if (not std::to_underlying(mask.rot)) {
+            return;
+        }
+        auto output = std::vector<double>(input.size());
+        const auto nrow = input.size();
+        auto stride_ = do_stride ? nrow * nrow : 0;
+        for (auto i = 0u; i < nrow; i++) {
+            output[i] = 0;
+            for (auto j = 0u; j < nrow; j++) {
+                output[i] += input[j] * ctx.rotate[stride_ + i * nrow + j];
+            }
+        }
+        for (auto i{0u}; i < nrow; ++i) {
+            input[i] = output[i];
+        }
+    }
+};
+
+struct shift {
+    static constexpr auto name{"shift"};
+    static auto operator()(std::span<double> input, problem_context_view_t ctx, affine_mask_t mask,
+                           partial_result_t partial) -> void {
+        std::ignore = partial;
+        if (not std::to_underlying(mask.shift)) {
+            return;
+        }
+        for (auto i = 0u; i < input.size(); i++) {
+            input[i] = input[i] - ctx.shift[i];
+        }
+    }
+};
+
+struct scale {
+    static constexpr auto name{"scale"};
+    constexpr scale(double coeff = 1.0) : coeff_{coeff} {}
+
+    auto operator()(std::span<double> input, problem_context_view_t ctx, affine_mask_t mask, partial_result_t partial)
+        -> void {
+        std::ignore = ctx;
+        std::ignore = partial;
+        std::ignore = mask;
+        for (auto i = 0u; i < input.size(); i++) {
+            input[i] = input[i] * coeff_;
+        }
+    }
+
+    double coeff_{};
+};
+
+struct orthosymmetric_trans {
+    static constexpr auto name{"orthosymmetric_trans"};
+    static auto operator()(std::span<double> input, problem_context_view_t ctx, affine_mask_t mask,
+                           partial_result_t partial) -> void {
+        std::ignore = ctx;
+        std::ignore = mask;
+        std::ignore = partial;
+        const auto nrow = input.size();
+        int sx{};
+        double c1{};
+        double c2{};
+        double xx{};
+        for (auto i{0u}; i < nrow; i++) {
+            if (i == 0 || i == nrow - 1) {
+                if (input[i] != 0) {
+                    xx = log(fabs(input[i]));
+                }
+
+                if (input[i] > 0) {
+                    c1 = 10;
+                    c2 = 7.9;
+                } else {
+                    c1 = 5.5;
+                    c2 = 3.1;
+                }
+                if (input[i] > 0) {
+                    sx = 1;
+                } else if (input[i] == 0) {
+                    sx = 0;
+                } else {
+                    sx = -1;
+                }
+                input[i] = sx * exp(xx + 0.049 * (sin(c1 * xx) + sin(c2 * xx)));
+            }
+        }
+    }
+};
+
+template <typename T = shift>
+struct asymmetric_trans {
+    static constexpr auto name{"asymmetric_trans"};
+    auto operator()(std::span<double> input, problem_context_view_t ctx, affine_mask_t mask, partial_result_t partial) {
+        std::ignore = ctx;
+        std::ignore = mask;
+        for (auto i{0u}; i < input.size(); ++i) {
+            if (input[i] > 0) {
+                input[i] = std::pow(input[i],
+                                    1.0 + coeff * i / (static_cast<double>(input.size()) - 1) * pow(input[i], 0.5));
+            } else {
+                input[i] = partial.at(last_transformation.name)[i];
+            }
+        }
+    }
+    double coeff{};
+    T last_transformation{};
+};
+
+template <typename T = std::monostate>
+struct shift_by_scalar {
+    static constexpr auto name{"shift_by_scalar"};
+
+    constexpr shift_by_scalar(double coeff) : coeff_{coeff} {}
+
+    auto operator()(std::span<double> input, problem_context_view_t, affine_mask_t, partial_result_t partial) -> void {
+        for (auto i{0u}; i < input.size(); ++i) {
+            if constexpr (std::same_as<T, std::monostate>) {
+                input[i] += coeff_;
+            } else {
+                input[i] = partial.at(last_transformation.name)[i] + coeff_;
+            }
+        }
+    }
+
+    double coeff_{0.0};
+    T last_transformation{};
+};
+
+struct power_scale {
+    static constexpr auto name{"power_scale"};
+    constexpr void operator()(std::span<double> input, problem_context_view_t, affine_mask_t, partial_result_t) {
+        auto output = std::vector<double>(input.size());
+        output.assign(input.begin(), input.end());
+        for (auto i{0u}; i < input.size() - 1; ++i) {
+            output[i] = pow(input[i] * input[i] + input[i + 1] * input[i + 1], 0.5);
+        }
+        for (auto i{0u}; i < input.size(); ++i) {
+            input[i] = output[i];
+        }
+    }
+};
+
+struct power_scale2 {
+    static constexpr auto name{"power_scale2"};
+    constexpr void operator()(std::span<double> input, problem_context_view_t, affine_mask_t, partial_result_t) {
+        auto output = std::vector<double>(input.size());
+        output.assign(input.begin(), input.end());
+        for (auto i{0u}; i < input.size(); ++i) {
+            output[i] = input[i] * pow(10.0 * coeff_, 1.0 * i / (static_cast<double>(input.size()) - 1) / 2.0);
+        }
+        for (auto i{0u}; i < input.size(); ++i) {
+            input[i] = output[i];
+        }
+    }
+
+    double coeff_{1.0};
+};
+
+struct power_scale3 {
+    static constexpr auto name{"power_scale3"};
+    constexpr void operator()(std::span<double> input, problem_context_view_t, affine_mask_t, partial_result_t) {
+        auto output = std::vector<double>(input.size());
+        output.assign(input.begin(), input.end());
+        for (auto i = 0u; i < input.size(); i++) {
+            if (fabs(input[i]) > 0.5)
+                output[i] = floor(2 * input[i] + 0.5) / 2;
+        }
+
+        for (auto i{0u}; i < input.size(); ++i) {
+            input[i] = output[i];
+        }
+    }
+};
+
+template <typename T, T... S, typename F>
+constexpr void for_sequence(std::integer_sequence<T, S...>, F &&f) {
+    (void(f(std::integral_constant<T, S>{})), ...);
+}
+
+template <typename... AffineTransformation>
+auto apply_geom_fns(std::span<const double> input, problem_context_view_t ctx, affine_mask_t mask,
+                    std::tuple<AffineTransformation...> affine_fns) -> std::vector<double> {
+    auto output = std::vector<double>(input.size());
+    output.assign(input.begin(), input.end());
+    auto partial = std::unordered_map<std::string, std::vector<double>>{};
+    // std::println("input");
+    // print_vec(input);
+    for_sequence(std::make_index_sequence<std::tuple_size_v<decltype(affine_fns)>>{}, [&](auto i) {
+        auto &&fn = std::get<i>(affine_fns);
+        fn(output, ctx, mask, partial);
+        partial[fn.name] = output;
+        // std::println("{}", fn.name);
+        // print_vec(output);
+    });
+    return output;
+}
+
+template <typename EvaluationFunction, typename... AffineTransformation>
 struct basic_problem_invoker {
-    constexpr basic_problem_invoker(EvaluationFunction fn, double scale, affine_mask_t mask,
-                                    double asymmetric_trans_coeff = 1.0)
-        : fn{std::move(fn)}, scale_mul{scale}, mask_{mask}, asymmetric_trans_coeff_{asymmetric_trans_coeff} {}
+    constexpr basic_problem_invoker(EvaluationFunction fn, affine_mask_t mask,
+                                    std::tuple<AffineTransformation...> affine_fns)
+        : fn{std::move(fn)}, mask_{mask}, trans_{affine_fns} {}
 
-    auto operator()(std::span<const double> input, problem_context_view_t ctx, std::optional<affine_mask_t> mask = {},
-                    const std::vector<double> &acc = {}) const -> double {
+    auto operator()(std::span<const double> input, problem_context_view_t ctx,
+                    std::optional<affine_mask_t> mask = {}) const -> double {
         const auto used_mask = mask.has_value() ? mask.value() : mask_;
-        if constexpr (std::is_same_v<EvaluationFunction, stateless_eval_func>) {
-            auto [_, z] = apply_geom_transformations(input, ctx, used_mask, scale_mul, asymmetric_trans_coeff_);
-            return fn(z);
-        } else if constexpr (std::is_same_v<EvaluationFunction, local_statefull_eval_func>) {
+        if constexpr (std::is_same_v<EvaluationFunction, contextless_eval_func>) {
+            return fn(apply_geom_fns(input, ctx, used_mask, trans_));
+        } else if constexpr (std::is_same_v<EvaluationFunction, contextful_eval_func>) {
             return fn(input, ctx, used_mask);
-        } else if constexpr (std::is_same_v<EvaluationFunction, nonlocal_statefull_eval_func>) {
-            return fn(input, ctx, used_mask, acc);
         }
 
         throw std::runtime_error{"Failed to identify type of function"};
     }
 
     std::decay_t<EvaluationFunction> fn{};
-    double scale_mul{};
     affine_mask_t mask_{};
-    double asymmetric_trans_coeff_{};
+    std::tuple<AffineTransformation...> trans_{};
 };
 
 } // namespace cecxx::benchmark::detail

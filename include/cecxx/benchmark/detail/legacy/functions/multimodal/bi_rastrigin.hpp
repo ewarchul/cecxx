@@ -5,8 +5,6 @@
 
 #pragma once
 
-#include <cmath>
-
 #include "cecxx/benchmark/detail/context.hpp"
 
 namespace cecxx::functions::multimodal::legacy {

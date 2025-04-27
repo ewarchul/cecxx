@@ -14,6 +14,8 @@ inline auto InCecProblemRange(cecxx::benchmark::cec_edition_t edition) {
     using namespace cecxx::benchmark;
     using enum cec_edition_t;
     switch (edition) {
+        case cec2013:
+            return fuzztest::Filter([](int x) { return x != 31; }, fuzztest::InRange(1, 28));
         case cec2014:
             return fuzztest::Filter([](int x) { return x != 31; }, fuzztest::InRange(1, 30));
         case cec2017: {

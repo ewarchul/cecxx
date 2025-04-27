@@ -5,6 +5,7 @@
 
 #include <cecxx/benchmark/detail/legacy/affine_transformation.hpp>
 #include <cecxx/benchmark/detail/legacy/functions/multimodal/bi_rastrigin.hpp>
+#include <cmath>
 
 namespace cecxx::functions::multimodal::legacy {
 
@@ -42,6 +43,24 @@ auto bi_rastrigin(std::span<const double> input, benchmark::detail::problem_cont
         tmpx[i] += mu0;
     }
 
+    if (std::to_underlying(mask.rot) == 1) {
+        detail::rotatefunc(z, y, ctx.rotate);
+    } else {
+        for (auto i = 0u; i < nrow; i++)
+            y[i] = z[i];
+    }
+
+    for (auto i = 0u; i < nrow; i++) {
+        y[i] *= pow(100.0, 1.0 * i / (static_cast<double>(nrow) - 1) / 2.0);
+    }
+
+    if (std::to_underlying(mask.rot) == 1) {
+        detail::rotatefunc(y, z, ctx.rotate.subspan(nrow * nrow));
+    } else {
+        for (auto i = 0u; i < nrow; i++)
+            z[i] = y[i];
+    }
+
     double tmp{};
     double tmp1{};
     double tmp2{};
@@ -57,32 +76,12 @@ auto bi_rastrigin(std::span<const double> input, benchmark::detail::problem_cont
     tmp2 *= s;
     tmp2 += d * static_cast<double>(nrow);
     tmp = 0.0;
-    auto output{0.0};
 
-    if (std::to_underlying(mask.rot) == 1) {
-        detail::rotatefunc(z, y, ctx.rotate);
-        for (auto i = 0u; i < nrow; i++) {
-            tmp += std::cos(2.0 * M_PI * y[i]);
-        }
-        if (tmp1 < tmp2) {
-            output = tmp1;
-        } else {
-            output = tmp2;
-        }
-        output += 10.0 * (static_cast<double>(nrow) - tmp);
-    } else {
-        for (auto i = 0u; i < nrow; i++) {
-            tmp += std::cos(2.0 * M_PI * z[i]);
-        }
-        if (tmp1 < tmp2) {
-            output = tmp1;
-        } else {
-            output = tmp2;
-        }
-        output += 10.0 * (static_cast<double>(nrow) - tmp);
+    for (auto i = 0u; i < nrow; i++) {
+        tmp += std::cos(2.0 * M_PI * z[i]);
     }
 
-    return output;
+    return std::min(tmp1, tmp2) + 10 * (static_cast<double>(nrow) - tmp);
 }
 
 } // namespace cecxx::functions::multimodal::legacy

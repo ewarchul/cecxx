@@ -2,6 +2,7 @@
 
 #include <cecxx/benchmark/types.hpp>
 #include <format>
+#include <print>
 #include <utility>
 
 namespace cecxx::benchmark::detail {
@@ -74,6 +75,9 @@ auto SHIFT_TABLE_SIZE(const cec_edition_t edition, const dimension_t dim, const 
     constexpr auto coeff = 10u;
     if (fn - 1 < funcTreshold) {
         return {.size = dim, .scaler = coeff, .scaler_applied = false};
+    }
+    if (edition == cec_edition_t::cec2013 and fn > 20) {
+        return {.size = dim * coeff, .scaler = coeff, .scaler_applied = false};
     }
     return {.size = dim * coeff, .scaler = coeff, .scaler_applied = true};
 }

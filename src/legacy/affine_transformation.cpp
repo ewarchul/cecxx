@@ -37,21 +37,14 @@ void rotatefunc(std::span<const double> input, std::span<double> output, std::sp
 }
 
 void sr_func(std::span<const double> input, std::span<double> sr_x, std::span<const double> shit_vec,
-             std::span<const double> rot_mat, const double sh_rate, const double asymm_trans_coeff,
-             const do_affine_trans shift, const do_affine_trans rotate, const do_affine_trans asymm_trans,
-             const do_affine_trans osymm_trans, std::span<double> output) {
+             std::span<const double> rot_mat, const double sh_rate, const do_affine_trans shift,
+             const do_affine_trans rotate, std::span<double> output) {
     const auto nrow = input.size();
     if (std::to_underlying(shift) == 1) {
         if (std::to_underlying(rotate) == 1) {
             shiftfunc(input, output, shit_vec);
             for (auto i = 0u; i < nrow; i++) {
                 output[i] = output[i] * sh_rate;
-            }
-            if (std::to_underlying(osymm_trans)) {
-                oszfunc(output, sr_x);
-            }
-            if (std::to_underlying(asymm_trans)) {
-                asyfunc(output, sr_x, asymm_trans_coeff);
             }
             rotatefunc(output, sr_x, rot_mat);
         } else {
@@ -77,7 +70,7 @@ void cf_cal(std::span<const double> input, std::span<double> output, std::span<c
             std::span<const double> delta, std::span<const double> bias, std::span<double> fit, unsigned int cf_num) {
     const auto nrow = input.size();
     auto w = std::vector<double>(cf_num);
-    double w_max = 0, w_sum = 0;
+    double w_max = 0.0, w_sum = 0.0;
     for (auto i = 0u; i < cf_num; i++) {
         fit[i] += bias[i];
         w[i] = 0;
@@ -85,7 +78,8 @@ void cf_cal(std::span<const double> input, std::span<double> output, std::span<c
             w[i] += pow(input[j] - shift_vec[i * nrow + j], 2.0);
         }
         if (w[i] != 0) {
-            w[i] = pow(1.0 / w[i], 0.5) * exp(-w[i] / 2.0 / static_cast<double>(nrow) / pow(delta[i], 2.0));
+            w[i] = std::pow(1.0 / w[i], 0.5)
+                   * std::exp(-w[i] / 2.0 / static_cast<double>(nrow) / std::pow(delta[i], 2.0));
         } else {
             w[i] = INF;
         }
@@ -101,7 +95,7 @@ void cf_cal(std::span<const double> input, std::span<double> output, std::span<c
         for (auto i = 0u; i < cf_num; i++) {
             w[i] = 1;
         }
-        w_sum = static_cast<double>(cf_num);
+        w_sum = cf_num;
     }
     output[0] = 0.0;
     for (auto i = 0u; i < cf_num; i++) {

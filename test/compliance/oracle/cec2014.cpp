@@ -10,6 +10,7 @@ auto STORAGE_PREFIX(const auto &format) -> std::string {
     using namespace std::string_literals;
     return std::string{DATA_STORAGE_PATH} + "/cec2014/"s + format;
 }
+
 void cec14_test_func(double *x, double *f, int nx, int mx, int func_num) {
     int cf_num = 10, i, j;
     if (ini_flag == 1) {

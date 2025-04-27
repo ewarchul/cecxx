@@ -1,5 +1,6 @@
 #pragma once
 
+#include "cecxx/benchmark/detail/legacy/affine_transformation.hpp"
 #include <vector>
 
 #include <cecxx/benchmark/detail/context.hpp>

@@ -1,15 +1,12 @@
 #pragma once
 
 #include <span>
-#include <vector>
 
 #include <cecxx/benchmark/detail/context.hpp>
 
 namespace cecxx::benchmark::detail {
 
-using stateless_eval_func = double (*)(std::span<const double>);
-using local_statefull_eval_func = double (*)(std::span<const double>, problem_context_view_t, affine_mask_t);
-using nonlocal_statefull_eval_func
-    = double (*)(std::span<const double>, problem_context_view_t, affine_mask_t, std::vector<double>);
+using contextless_eval_func = double (*)(std::span<const double>);
+using contextful_eval_func = double (*)(std::span<const double>, problem_context_view_t, affine_mask_t);
 
 } // namespace cecxx::benchmark::detail
