@@ -75,7 +75,7 @@ static constexpr auto basic_6
                                     {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
                                     std::tuple{
                                         cecxx::benchmark::detail::shift{},
-                                        cecxx::benchmark::detail::scale{2.048 / 100},
+                                        cecxx::benchmark::detail::scale{2.048, 100},
                                         cecxx::benchmark::detail::rotation{},
                                         cecxx::benchmark::detail::shift_by_scalar{1},
                                     }
@@ -128,7 +128,7 @@ static constexpr auto basic_11 = detail::basic_problem_invoker{
     },
     std::tuple{
         cecxx::benchmark::detail::shift{},
-        cecxx::benchmark::detail::scale{5.12 / 100.0},
+        cecxx::benchmark::detail::scale{5.12, 100.0},
         cecxx::benchmark::detail::rotation{},
         cecxx::benchmark::detail::orthosymmetric_trans{},
         cecxx::benchmark::detail::asymmetric_trans<cecxx::benchmark::detail::scale>{0.2},
@@ -145,7 +145,7 @@ static constexpr auto basic_12 = detail::basic_problem_invoker{
     },
     std::tuple{
         cecxx::benchmark::detail::shift{},
-        cecxx::benchmark::detail::scale{5.12 / 100.0},
+        cecxx::benchmark::detail::scale{5.12, 100.0},
         cecxx::benchmark::detail::rotation{},
         cecxx::benchmark::detail::orthosymmetric_trans{},
         cecxx::benchmark::detail::asymmetric_trans<cecxx::benchmark::detail::rotation>{0.2},
@@ -159,7 +159,7 @@ static constexpr auto basic_13 = detail::basic_problem_invoker{
     {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
     std::tuple{
         cecxx::benchmark::detail::shift{},
-        cecxx::benchmark::detail::scale{5.12 / 100},
+        cecxx::benchmark::detail::scale{5.12, 100},
         cecxx::benchmark::detail::rotation{},
         cecxx::benchmark::detail::power_scale3{},
         cecxx::benchmark::detail::orthosymmetric_trans{},
@@ -172,7 +172,7 @@ static constexpr auto basic_13 = detail::basic_problem_invoker{
 static constexpr auto basic_14 = detail::basic_problem_invoker{
     cecxx::functions::multimodal::schwefel,
     {.rot = do_affine_trans::no, .shift = do_affine_trans::yes},
-    std::tuple{cecxx::benchmark::detail::shift{}, cecxx::benchmark::detail::scale{10},
+    std::tuple{cecxx::benchmark::detail::shift{}, cecxx::benchmark::detail::scale{1000, 100},
                cecxx::benchmark::detail::rotation{}, cecxx::benchmark::detail::power_scale2{},
                cecxx::benchmark::detail::shift_by_scalar{4.209687462275036e+002}},
 
@@ -181,7 +181,7 @@ static constexpr auto basic_14 = detail::basic_problem_invoker{
 static constexpr auto basic_15 = detail::basic_problem_invoker{
     cecxx::functions::multimodal::schwefel,
     {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
-    std::tuple{cecxx::benchmark::detail::shift{}, cecxx::benchmark::detail::scale{10},
+    std::tuple{cecxx::benchmark::detail::shift{}, cecxx::benchmark::detail::scale{1000, 100},
                cecxx::benchmark::detail::rotation{}, cecxx::benchmark::detail::power_scale2{},
                cecxx::benchmark::detail::shift_by_scalar{4.209687462275036e+002}},
 
@@ -192,7 +192,7 @@ static constexpr auto basic_16 = detail::basic_problem_invoker{
     {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
     std::tuple{
         cecxx::benchmark::detail::shift{},
-        cecxx::benchmark::detail::scale{0.05},
+        cecxx::benchmark::detail::scale{5.0, 100.0},
         cecxx::benchmark::detail::rotation{},
         cecxx::benchmark::detail::power_scale2{10.0},
         cecxx::benchmark::detail::rotation{.do_stride = true},
@@ -217,7 +217,7 @@ static constexpr auto basic_19 = detail::basic_problem_invoker{
     {.rot = do_affine_trans::yes, .shift = do_affine_trans::yes},
     std::tuple{
         cecxx::benchmark::detail::shift{},
-        cecxx::benchmark::detail::scale{0.05},
+        cecxx::benchmark::detail::scale{5, 100},
         cecxx::benchmark::detail::rotation{},
         cecxx::benchmark::detail::shift_by_scalar<cecxx::benchmark::detail::scale>{1},
     },

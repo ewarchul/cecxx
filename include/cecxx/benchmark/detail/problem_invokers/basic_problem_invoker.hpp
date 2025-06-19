@@ -62,19 +62,16 @@ struct shift {
 
 struct scale {
     static constexpr auto name{"scale"};
-    constexpr scale(double coeff = 1.0) : coeff_{coeff} {}
+    constexpr scale(double numerator = 1.0, double denominator = 1.0) : num_{numerator}, denom_{denominator} {}
 
-    auto operator()(std::span<double> input, problem_context_view_t ctx, affine_mask_t mask, partial_result_t partial)
-        -> void {
-        std::ignore = ctx;
-        std::ignore = partial;
-        std::ignore = mask;
+    auto operator()(std::span<double> input, problem_context_view_t, affine_mask_t, partial_result_t) -> void {
         for (auto i = 0u; i < input.size(); i++) {
-            input[i] = input[i] * coeff_;
+            input[i] = input[i] * num_ / denom_;
         }
     }
 
-    double coeff_{};
+    double num_{};
+    double denom_{};
 };
 
 struct orthosymmetric_trans {
@@ -233,6 +230,7 @@ struct basic_problem_invoker {
                     std::optional<affine_mask_t> mask = {}) const -> double {
         const auto used_mask = mask.has_value() ? mask.value() : mask_;
         if constexpr (std::is_same_v<EvaluationFunction, contextless_eval_func>) {
+
             return fn(apply_geom_fns(input, ctx, used_mask, trans_));
         } else if constexpr (std::is_same_v<EvaluationFunction, contextful_eval_func>) {
             return fn(input, ctx, used_mask);

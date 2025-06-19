@@ -10,7 +10,7 @@ struct complex_problem_params {
     std::vector<double> deltas{};
     std::vector<double> biases{};
     std::vector<affine_mask_t> masks{};
-    std::unordered_map<std::size_t, double> scales{};
+    std::unordered_map<std::size_t, std::pair<double, double>> scales{};
 };
 
 template <typename... F>
@@ -44,7 +44,8 @@ private:
                                                       .shuffle = ctx.shuffle.subspan(nrow * CompoundIndex)};
                 const auto mask = masks[CompoundIndex];
                 auto comp_fn = std::get<CompoundIndex>(compounds);
-                partial_eval[CompoundIndex] = params.scales.at(CompoundIndex) * comp_fn(input, sub_ctx, mask);
+                const auto [num, denom] = params.scales.at(CompoundIndex);
+                partial_eval[CompoundIndex] = num * comp_fn(input, sub_ctx, mask) / denom;
             }(CompoundIndex),
             ...);
         return partial_eval;
