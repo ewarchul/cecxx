@@ -37,12 +37,12 @@ inline auto apply_geom_transformations(std::span<const double> input, problem_co
         }
     }
 
-    for (auto i = 0; i < nrow; ++i) {
-        std::println("y[{}] -> {}", i, y_out[i]);
-    }
-    for (auto i = 0; i < nrow; ++i) {
-        std::println("z[{}] -> {}", i, z_out[i]);
-    }
+    // for (auto i = 0; i < nrow; ++i) {
+    //     std::println("y[{}] -> {}", i, y_out[i]);
+    // }
+    // for (auto i = 0; i < nrow; ++i) {
+    //     std::println("z[{}] -> {}", i, z_out[i]);
+    // }
 
     return std::make_pair(y_out, z_out);
 }
