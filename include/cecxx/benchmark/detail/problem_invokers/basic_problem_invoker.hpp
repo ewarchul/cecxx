@@ -214,7 +214,7 @@ auto apply_geom_fns(std::span<const double> input, problem_context_view_t ctx, a
         auto &&fn = std::get<i>(affine_fns);
         fn(output, ctx, mask, partial);
         partial[fn.name] = output;
-        // std::println("{}", fn.name);
+        // std::println("output {}", fn.name);
         // print_vec(output);
     });
     return output;

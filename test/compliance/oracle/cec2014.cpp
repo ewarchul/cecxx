@@ -1,4 +1,5 @@
 #include "cec2014.h"
+#include <print>
 #include <string>
 
 namespace oracle::cec2014 {
@@ -267,6 +268,14 @@ void sphere_func(double *x, double *f, int nx, double *Os, double *Mr, int s_fla
     for (i = 0; i < nx; i++) {
         f[0] += z[i] * z[i];
     }
+}
+
+auto print_vec(auto *v, auto s, auto msg = "") {
+    std::print("[{}] [ ", msg);
+    for (auto i{0}; i < s; ++i) {
+        std::print("({}) {}, ", i, v[i]);
+    }
+    std::print("]\n");
 }
 
 void ellips_func(double *x, double *f, int nx, double *Os, double *Mr, int s_flag, int r_flag) /* Ellipsoidal */
@@ -550,6 +559,7 @@ void grie_rosen_func(double *x, double *f, int nx, double *Os, double *Mr, int s
     f[0] = 0.0;
 
     sr_func(x, z, nx, Os, Mr, 5.0 / 100.0, s_flag, r_flag); /* shift and rotate */
+
 
     z[0] += 1.0; // shift to orgin
     for (i = 0; i < nx - 1; i++) {

@@ -2,6 +2,7 @@
 #include <cecxx/benchmark/cec_2014/complex_problems.hpp>
 #include <cecxx/benchmark/cec_2014/hybrid_problems.hpp>
 #include <cecxx/benchmark/cec_2014/problem_evaluation_mappings.hpp>
+#include <print>
 #include <utility>
 
 namespace cecxx::benchmark::cec_2014 {
