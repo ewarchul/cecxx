@@ -439,6 +439,8 @@ void step_rastrigin_func(double *x, double *f, int nx, double *Os, double *Mr, i
 
 void schwefel_func(double *x, double *f, int nx, double *Os, double *Mr, int s_flag, int r_flag) /* Schwefel's  */
 {
+
+    
     int i;
     double tmp;
     f[0] = 0.0;
@@ -560,7 +562,6 @@ void grie_rosen_func(double *x, double *f, int nx, double *Os, double *Mr, int s
 
     sr_func(x, z, nx, Os, Mr, 5.0 / 100.0, s_flag, r_flag); /* shift and rotate */
 
-
     z[0] += 1.0; // shift to orgin
     for (i = 0; i < nx - 1; i++) {
         z[i + 1] += 1.0; // shift to orgin
@@ -656,9 +657,11 @@ void hf01(double *x, double *f, int nx, double *Os, double *Mr, int *S, int s_fl
 
     sr_func(x, z, nx, Os, Mr, 1.0, s_flag, r_flag); /* shift and rotate */
 
+
     for (i = 0; i < nx; i++) {
         y[i] = z[S[i] - 1];
     }
+
     i = 0;
     schwefel_func(&y[G[i]], &fit[i], G_nx[i], Os, Mr, 0, 0);
     i = 1;

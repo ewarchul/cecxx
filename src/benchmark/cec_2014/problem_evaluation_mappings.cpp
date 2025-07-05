@@ -2,7 +2,6 @@
 #include <cecxx/benchmark/cec_2014/complex_problems.hpp>
 #include <cecxx/benchmark/cec_2014/hybrid_problems.hpp>
 #include <cecxx/benchmark/cec_2014/problem_evaluation_mappings.hpp>
-#include <print>
 #include <utility>
 
 namespace cecxx::benchmark::cec_2014 {
@@ -41,18 +40,18 @@ auto evaluate(detail::problem_context_view_t ctx, const problem_number_t fn, std
             return basic_15(input, ctx);
         case 16:
             return basic_16(input, ctx);
-            // case 17:
-            //     return hybrid_1(input, ctx);
-            // case 18:
-            //     return hybrid_2(input, ctx);
-            // case 19:
-            //     return hybrid_3(input, ctx);
-            // case 20:
-            //     return hybrid_4(input, ctx);
-            // case 21:
-            //     return hybrid_5(input, ctx);
-            // case 22:
-            //     return hybrid_6(input, ctx);
+        case 17:
+            return hybrid_1(input, ctx);
+        case 18:
+            return hybrid_2(input, ctx);
+        case 19:
+            return hybrid_3(input, ctx);
+        case 20:
+            return hybrid_4(input, ctx);
+        case 21:
+            return hybrid_5(input, ctx);
+        case 22:
+            return hybrid_6(input, ctx);
             // case 23:
             //     return complex_1(input, ctx);
             // case 24:
