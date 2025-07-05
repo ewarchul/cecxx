@@ -45,7 +45,7 @@ def run_test(
 ) -> tuple[FuzzTest, ExitCode]:
     print(f"Running compliance test [{test}] for next {duration}s...")
     p = subprocess.run(
-        [f"{target}", "--gtest_filter", str(test), "--fuzz_for", f"{duration}s"],
+        [f"{target}","--gtest_filter", str(test), "--fuzz_for", f"{duration}s", "--gtest_brief", "1",],
         env=os.environ | _DISABLE_ASAN,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.STDOUT
