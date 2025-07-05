@@ -1,4 +1,4 @@
-
+from termcolor import colored
 from enum import StrEnum
 import sys
 import re
@@ -58,9 +58,8 @@ def parse_fuzztest_list(input: list[str]) -> list[FuzzTest]:
         index for index, entry in enumerate(input) if "ComplianceTest" in entry
     ]
     header_pos.append(len(input))
-    zipped = zip(header_pos, header_pos[1:])
     tests = []
-    for start, end in zipped:
+    for start, end in zip(header_pos, header_pos[1:]):
         grp = input[start].removesuffix(".")
         tests.append([FuzzTest(grp, input[i]) for i in open_range(start, end)])
     return [t for ts in tests for t in ts]
@@ -116,7 +115,8 @@ async def run_compliance_tests(args: list[str]) -> None:
             if t.cec_edition() in parsed.edition
         ]
         for test, excode in await asyncio.gather(*futures):
-            print(f"Test [{test}] finished with exit code [{excode}].")
+            color = 'green' if not excode else 'red'
+            print(colored(f"Test [{test}] finished with exit code [{excode}].", color))
 
 
 if __name__ == "__main__":

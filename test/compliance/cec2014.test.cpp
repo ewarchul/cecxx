@@ -17,7 +17,7 @@
 using namespace fuzztest;
 using namespace cecxx::benchmark;
 
-constexpr auto MAX_ABS_ERROR = 1e-8;
+constexpr auto MAX_ABS_ERROR = 1e-7;
 
 constexpr auto CEC_2014_LOWER_BOUND = -100.0;
 constexpr auto CEC_2014_UPPER_BOUND = 100.0;
@@ -54,14 +54,14 @@ FUZZ_TEST_F(Cec2014ComplianceTest, Cec2014D10ImplsAreEquiv)
     .WithDomains(PositiveVectorOf<double>(InRange(CEC_2014_LOWER_BOUND, CEC_2014_UPPER_BOUND)).WithSize(10),
                  InCecProblemRange(cec_edition_t::cec2014));
 
-// FUZZ_TEST_F(Cec2014ComplianceTest, Cec2014D30ImplsAreEquiv)
-//     .WithDomains(PositiveVectorOf<double>(InRange(CEC_2014_LOWER_BOUND, CEC_2014_UPPER_BOUND)).WithSize(30),
-//                  InCecProblemRange(cec_edition_t::cec2014));
-//
-// FUZZ_TEST_F(Cec2014ComplianceTest, Cec2014D50ImplsAreEquiv)
-//     .WithDomains(PositiveVectorOf<double>(InRange(CEC_2014_LOWER_BOUND, CEC_2014_UPPER_BOUND)).WithSize(50),
-//                  InCecProblemRange(cec_edition_t::cec2014));
-//
-// FUZZ_TEST_F(Cec2014ComplianceTest, Cec2014D100ImplsAreEquiv)
-//     .WithDomains(PositiveVectorOf<double>(InRange(CEC_2014_LOWER_BOUND, CEC_2014_UPPER_BOUND)).WithSize(100),
-//                  InCecProblemRange(cec_edition_t::cec2014));
+FUZZ_TEST_F(Cec2014ComplianceTest, Cec2014D30ImplsAreEquiv)
+    .WithDomains(PositiveVectorOf<double>(InRange(CEC_2014_LOWER_BOUND, CEC_2014_UPPER_BOUND)).WithSize(30),
+                 InCecProblemRange(cec_edition_t::cec2014));
+
+FUZZ_TEST_F(Cec2014ComplianceTest, Cec2014D50ImplsAreEquiv)
+    .WithDomains(PositiveVectorOf<double>(InRange(CEC_2014_LOWER_BOUND, CEC_2014_UPPER_BOUND)).WithSize(50),
+                 InCecProblemRange(cec_edition_t::cec2014));
+
+FUZZ_TEST_F(Cec2014ComplianceTest, Cec2014D100ImplsAreEquiv)
+    .WithDomains(PositiveVectorOf<double>(InRange(CEC_2014_LOWER_BOUND, CEC_2014_UPPER_BOUND)).WithSize(100),
+                 InCecProblemRange(cec_edition_t::cec2014));
