@@ -52,22 +52,22 @@ auto evaluate(detail::problem_context_view_t ctx, const problem_number_t fn, std
             return hybrid_5(input, ctx);
         case 22:
             return hybrid_6(input, ctx);
-            // case 23:
-            //     return complex_1(input, ctx);
-            // case 24:
-            //     return complex_2(input, ctx);
-            // case 25:
-            //     return complex_3(input, ctx);
-            // case 26:
-            //     return complex_4(input, ctx);
-            // case 27:
-            //     return complex_5(input, ctx);
-            // case 28:
-            //     return complex_6(input, ctx);
-            // case 29:
-            //     return complex_7(input, ctx);
-            // case 30:
-            //     return complex_8(input, ctx);
+        case 23:
+            return complex_1(input, ctx);
+        case 24:
+            return complex_2(input, ctx);
+        case 25:
+            return complex_3(input, ctx);
+        case 26:
+            return complex_4(input, ctx);
+        case 27:
+            return complex_5(input, ctx);
+        case 28:
+            return complex_6(input, ctx);
+        case 29:
+            return complex_7(input, ctx);
+        case 30:
+            return complex_8(input, ctx);
     }
     std::unreachable();
 }

@@ -1,40 +1,18 @@
 #pragma once
 
 #include "cecxx/benchmark/detail/problem_invokers/affine_transformations.hpp"
-#include "cecxx/functions/multimodal/rastrigin.hpp"
-#include "cecxx/functions/unimodal/ellips.hpp"
 #include <cecxx/benchmark/cec_2014/basic_problems.hpp>
 #include <cecxx/benchmark/detail/problem_invokers/hybrid_problem_invoker.hpp>
 
 namespace cecxx::benchmark::cec_2014 {
-const auto hybrid_1 = detail::hybrid_problem_invoker{
-    std::tuple{
-        cecxx::benchmark::detail::shift{},
-        cecxx::benchmark::detail::rotation{},
-        cecxx::benchmark::detail::shuffle{},
+const auto hybrid_1 = detail::hybrid_problem_invoker{std::tuple{
+                                                         cecxx::benchmark::detail::shift{},
+                                                         cecxx::benchmark::detail::rotation{},
+                                                         cecxx::benchmark::detail::shuffle{},
 
-    },
-    std::tuple{
-        basic_10, basic_8, basic_1
-
-        // detail::basic_problem_invoker{cecxx::functions::multimodal::schwefel,
-        //                               {.rot = do_affine_trans::no, .shift = do_affine_trans::no},
-        //                               std::tuple{
-        //                                   cecxx::benchmark::detail::scale{1000.0, 100.0},
-        //                                   cecxx::benchmark::detail::shift_by_scalar{4.209687462275036e+002},
-        //                               }},
-        //
-        // detail::basic_problem_invoker{cecxx::functions::multimodal::rastrigin,
-        //                               {.rot = do_affine_trans::no, .shift = do_affine_trans::no},
-        //                               std::tuple{
-        //                                   cecxx::benchmark::detail::scale{5.12, 100.0},
-        //                               }},
-        //
-        // detail::basic_problem_invoker{cecxx::functions::unimodal::ellips,
-        //                               {.rot = do_affine_trans::no, .shift = do_affine_trans::no},
-        //                               std::tuple{}},
-    },
-    {0.3, 0.3, 0.4}};
+                                                     },
+                                                     std::tuple{basic_10, basic_8, basic_1},
+                                                     {0.3, 0.3, 0.4}};
 
 const auto hybrid_2 = detail::hybrid_problem_invoker{std::tuple{
                                                          cecxx::benchmark::detail::shift{},

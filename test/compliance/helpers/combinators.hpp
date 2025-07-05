@@ -17,7 +17,7 @@ inline auto InCecProblemRange(cecxx::benchmark::cec_edition_t edition) {
         case cec2013:
             return fuzztest::Filter([](int x) { return x != 31; }, fuzztest::InRange(1, 28));
         case cec2014:
-            return fuzztest::Filter([](int x) { return x != 31; }, fuzztest::InRange(17, 22));
+            return fuzztest::Filter([](int x) { return x != 31; }, fuzztest::InRange(1, 30));
         case cec2017: {
             return fuzztest::Filter([](int x) { return x != 2; }, fuzztest::InRange(1, 30));
         }
