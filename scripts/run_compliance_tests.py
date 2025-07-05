@@ -47,6 +47,7 @@ def run_test(
     p = subprocess.run(
         [f"{target}", "--gtest_filter", str(test), "--fuzz_for", f"{duration}s"],
         env=os.environ | _DISABLE_ASAN,
+        stdout=subprocess.DEVNULL,
     )
     return (test, p.returncode)
 
